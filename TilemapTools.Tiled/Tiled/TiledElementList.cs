@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace TilemapTools.Tiled
 {
+    /// <summary>
+    /// A collection of <see cref="ITiledElement"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class TiledElementList<T> : KeyedCollection<string, T> where T : ITiledElement
     {
         private Dictionary<string, int> nameCount = new Dictionary<string, int>();

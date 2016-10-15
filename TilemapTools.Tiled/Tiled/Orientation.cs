@@ -1,6 +1,9 @@
 ﻿namespace TilemapTools.Tiled
 {
-    public enum OrientationType
+    /// <summary>
+    /// The orientation of the tile map.
+    /// </summary>
+    public enum Orientation
     {
         Unknown,
         Orthogonal,

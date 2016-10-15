@@ -59,7 +59,7 @@
     <Compile Include="Tiled\LayerTile.cs" />
     <Compile Include="Tiled\ObjectGroup.cs" />
     <Compile Include="Tiled\ObjectGroupDrawOrder.cs" />
-    <Compile Include="Tiled\OrientationType.cs" />
+    <Compile Include="Tiled\Orientation.cs" />
     <Compile Include="Tiled\Point.cs" />
     <Compile Include="Tiled\Property.cs" />
     <Compile Include="Tiled\PropertyDictionary.cs" />

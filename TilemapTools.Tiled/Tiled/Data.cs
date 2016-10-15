@@ -5,15 +5,35 @@ using System.IO.Compression;
 
 namespace TilemapTools.Tiled
 {
+    /// <summary>
+    /// Reresents embedded data.
+    /// </summary>
     public class Data
     {
+        /// <summary>
+        /// Gets or sets the encoding.
+        /// </summary>
         public DataEncoding Encoding { get; set; }
 
+        /// <summary>
+        /// Gets or sets the encoding.
+        /// </summary>
         public DataCompression Compression { get; set; }
 
+        /// <summary>
+        /// Gets or sets the raw content.
+        /// </summary>
         public string Content { get; set; }
 
-        public Stream OpenStream()
+        /// <summary>
+        /// Opens a <see cref="Stream"/> of the embedded data. Decompressing if necessary.
+        /// </summary>
+        /// <returns>A decodded and decompressed <see cref="Stream"/>.</returns>
+        /// <exception cref="InvalidOperationException">The <see cref="Encoding"/> was not <see cref="DataEncoding.Base64"/>.</exception>
+        /// <remarks>
+        /// Use <see cref="ReadTiles(int, int)"/> to get layer tiles. 
+        /// </remarks>
+        public Stream OpenDecodedStream()
         {
             if (Encoding != DataEncoding.Base64)
                 throw new InvalidOperationException($"{nameof(Data.Encoding)} must be Base64");
@@ -25,7 +45,7 @@ namespace TilemapTools.Tiled
             var compression = Compression;
 
             if (compression == DataCompression.None)
-                throw new InvalidOperationException($"{nameof(Data.Encoding)} must be GZip or zLib");
+                return stream;
 
             if (compression == DataCompression.zLib)
                 stream = new DeflateStream(stream, CompressionMode.Decompress);
@@ -35,6 +55,14 @@ namespace TilemapTools.Tiled
             return stream;
         }
 
+        /// <summary>
+        /// Reads tiles from layer data.
+        /// </summary>
+        /// <param name="width">Width of the layer/map in tiles.</param>
+        /// <param name="height">Height of the layer/map in tiles</param>
+        /// <returns>Tiles from layer.</returns>
+        /// <exception cref="InvalidOperationException">The <see cref="Encoding"/> was not a <see cref="DataEncoding"/> value.</exception>
+        /// <exception cref="NotImplementedException">Currently the only <see cref="DataEncoding"/> values supported are <see cref="DataEncoding.CSV"/> and <see cref="DataEncoding.Base64"/>.</exception>
         public IEnumerable<LayerTile> ReadTiles(int width, int height)
         {
             switch (Encoding)
@@ -42,7 +70,7 @@ namespace TilemapTools.Tiled
                 case DataEncoding.None:
                     throw new NotImplementedException($"Currently {nameof(Data.Encoding)} must be Base64 or CSV");
                 case DataEncoding.Base64:
-                    using (var stream = OpenStream())
+                    using (var stream = OpenDecodedStream())
                     using (var reader = new BinaryReader(stream))
                     {
                         var count = width * height;

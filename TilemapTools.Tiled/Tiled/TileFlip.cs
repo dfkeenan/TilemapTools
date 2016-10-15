@@ -1,10 +1,32 @@
 ﻿namespace TilemapTools.Tiled
 {
+    /// <summary>
+    /// The filipping of a tile.
+    /// </summary>
+    /// <remarks>
+    /// When rendering a tile, the order of operation matters. 
+    /// The diagonal flip (x/y axis swap) is done first, followed by the horizontal and vertical flips.
+    /// </remarks>
     public enum TileFlip
     {
+        /// <summary>
+        /// Tile is not flipped.
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// Tile is flipped horizontally.
+        /// </summary>
         Horizontally = 4,
-        Vertacally = 2,
+
+        /// <summary>
+        /// Tile is flipped vertically.
+        /// </summary>
+        Vertically = 2,
+
+        /// <summary>
+        /// Tile is flipped diagonally.
+        /// </summary>
         Diagonally = 1
     }
 

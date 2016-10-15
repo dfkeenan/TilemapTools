@@ -79,7 +79,7 @@ namespace TilemapTools.Tiled.Serialization
             map.HexSideLength = (int?)mapElement.Attribute("hexsidelength");
 
             var orientValue = (string)mapElement.Attribute("orientation");
-            map.Orientation = ParseEnum<OrientationType>(orientValue);
+            map.Orientation = ParseEnum<Orientation>(orientValue);
 
             var staggerAxisValue = (string)mapElement.Attribute("staggeraxis");
             map.StaggerAxis = ParseEnum<StaggerAxis>(staggerAxisValue);
