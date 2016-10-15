@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools", "TilemapTools\TilemapTools.csproj", "{A3654FC8-1510-450A-9F3B-AFF0E0226EB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools.Tiled", "TilemapTools.Tiled\TilemapTools.Tiled.csproj", "{ED77DB86-EEF0-49E7-95A8-1279D5051033}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools.Tiled.Tests", "TilemapTools.Tiled.Tests\TilemapTools.Tiled.Tests.csproj", "{2DFEAFCA-D840-4942-999B-68F0E29B63EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{A3654FC8-1510-450A-9F3B-AFF0E0226EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3654FC8-1510-450A-9F3B-AFF0E0226EB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3654FC8-1510-450A-9F3B-AFF0E0226EB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED77DB86-EEF0-49E7-95A8-1279D5051033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED77DB86-EEF0-49E7-95A8-1279D5051033}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED77DB86-EEF0-49E7-95A8-1279D5051033}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED77DB86-EEF0-49E7-95A8-1279D5051033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DFEAFCA-D840-4942-999B-68F0E29B63EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DFEAFCA-D840-4942-999B-68F0E29B63EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DFEAFCA-D840-4942-999B-68F0E29B63EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DFEAFCA-D840-4942-999B-68F0E29B63EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

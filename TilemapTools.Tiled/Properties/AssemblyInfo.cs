@@ -7,4 +7,4 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TilemapTools.Tiled")]
-[assembly: AssemblyDescription("A utility library for tilemaps.")]
+[assembly: AssemblyDescription("A library for reading tilemap (TMX) and tileset (TSX) files created with Tiled.")]
