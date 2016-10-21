@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace TilemapTools
 {
     public class Grid
     {
         private readonly Dictionary<GridBlockKey, GridBlock> blocks = new Dictionary<GridBlockKey, GridBlock>();
-        
+
+        public int BlockSize { get; set; } = GridBlock.DefaultBlockSize;
+
         public TileDefinition this[int x, int y]
         {
             get
@@ -18,10 +15,11 @@ namespace TilemapTools
                 GridBlock block = null;
                 GridBlockKey blockKey = default(GridBlockKey);
                 int tileX, tileY;
+                int blockSsize = BlockSize;
 
-                GridBlock.GetTileLocation(ref x, ref y, out blockKey, out tileX, out tileY);
+                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockKey, out tileX, out tileY);
 
-                if(blocks.TryGetValue(blockKey, out block))
+                if (blocks.TryGetValue(blockKey, out block))
                 {
                     return block[tileX, tileY];
                 }
@@ -34,8 +32,9 @@ namespace TilemapTools
                 GridBlock block = null;
                 GridBlockKey blockKey = default(GridBlockKey);
                 int tileX, tileY;
+                int blockSsize = BlockSize;
 
-                GridBlock.GetTileLocation(ref x, ref y, out blockKey, out tileX, out tileY);
+                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockKey, out tileX, out tileY);
 
                 if (!blocks.TryGetValue(blockKey, out block))
                 {
@@ -43,13 +42,17 @@ namespace TilemapTools
                     {
                         return;
                     }
-                    blocks[blockKey] = block = new GridBlock();
-                }                
+                    blocks[blockKey] = block = CreateBlock(blockKey);
+                }
 
                 block[tileX, tileY] = value;
             }
         }
 
-        
+        protected virtual GridBlock CreateBlock(GridBlockKey blockKey)
+        {
+            GridBlock block = new GridBlock(BlockSize, blockKey, this);
+            return block;
+        }
     }
 }

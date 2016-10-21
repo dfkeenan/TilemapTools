@@ -2,20 +2,30 @@
 
 namespace TilemapTools
 {
-    internal struct GridBlockKey:IEquatable<GridBlockKey>
+    public struct GridBlockKey : IEquatable<GridBlockKey>
     {
-        public short X { get; }
-        public short Y { get; }
-
         public GridBlockKey(short x, short y)
         {
             X = x;
             Y = y;
         }
 
+        public short X { get; }
+
+        public short Y { get; }
+
         public bool Equals(GridBlockKey other)
         {
             return this.X == other.X && this.Y == other.Y;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is GridBlockKey))
+                return false;
+
+            var strongValue = (GridBlockKey)obj;
+            return Equals(strongValue);
         }
 
         public override int GetHashCode()
@@ -24,16 +34,6 @@ namespace TilemapTools
             hash |= (int)Y;
 
             return hash;
-
-        }
-
-        public override bool Equals(object value)
-        {
-            if (!(value is GridBlockKey))
-                return false;
-
-            var strongValue = (GridBlockKey)value;
-            return Equals(strongValue);
         }
     }
 }
