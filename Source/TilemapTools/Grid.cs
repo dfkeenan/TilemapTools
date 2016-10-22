@@ -1,25 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TilemapTools
 {
-    public class Grid
+    public class Grid<TTileDefinition>: IDisposable
+        where TTileDefinition : class
     {
-        private readonly Dictionary<GridBlockKey, GridBlock> blocks = new Dictionary<GridBlockKey, GridBlock>();
+        private readonly GridBlockCollection<TTileDefinition> blocks = new GridBlockCollection<TTileDefinition>();
 
         public int BlockSize { get; set; } = GridBlock.DefaultBlockSize;
 
-        public TileDefinition this[int x, int y]
+        public TTileDefinition this[int x, int y]
         {
             get
             {
-                GridBlock block = null;
-                GridBlockKey blockKey = default(GridBlockKey);
+                GridBlock<TTileDefinition> block = null;
+                ShortPoint blockKey = default(ShortPoint);
                 int tileX, tileY;
                 int blockSsize = BlockSize;
 
                 GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockKey, out tileX, out tileY);
 
-                if (blocks.TryGetValue(blockKey, out block))
+                if (blocks.TryGetItem(blockKey, out block))
                 {
                     return block[tileX, tileY];
                 }
@@ -29,30 +31,41 @@ namespace TilemapTools
 
             set
             {
-                GridBlock block = null;
-                GridBlockKey blockKey = default(GridBlockKey);
+                GridBlock<TTileDefinition> block = null;
+                ShortPoint blockKey = default(ShortPoint);
                 int tileX, tileY;
                 int blockSsize = BlockSize;
 
                 GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockKey, out tileX, out tileY);
 
-                if (!blocks.TryGetValue(blockKey, out block))
+                if (!blocks.TryGetItem(blockKey, out block))
                 {
                     if (value == null)
                     {
                         return;
                     }
-                    blocks[blockKey] = block = CreateBlock(blockKey);
+                    block = CreateBlock(blockKey);
+                    blocks.Add(block);
                 }
 
                 block[tileX, tileY] = value;
             }
         }
 
-        protected virtual GridBlock CreateBlock(GridBlockKey blockKey)
+        protected virtual GridBlock<TTileDefinition> CreateBlock(ShortPoint blockKey)
         {
-            GridBlock block = new GridBlock(BlockSize, blockKey, this);
+            GridBlock<TTileDefinition> block = new GridBlock<TTileDefinition>(BlockSize, blockKey, this);
             return block;
+        }
+
+        public virtual void Dispose()
+        {
+            foreach (var block in blocks)
+            {
+                block.Dispose();                
+            }
+
+            blocks.Clear(); 
         }
     }
 }

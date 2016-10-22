@@ -2,9 +2,9 @@
 
 namespace TilemapTools
 {
-    public struct GridBlockKey : IEquatable<GridBlockKey>
+    public struct ShortPoint : IEquatable<ShortPoint>
     {
-        public GridBlockKey(short x, short y)
+        public ShortPoint(short x, short y)
         {
             X = x;
             Y = y;
@@ -14,17 +14,17 @@ namespace TilemapTools
 
         public short Y { get; }
 
-        public bool Equals(GridBlockKey other)
+        public bool Equals(ShortPoint other)
         {
             return this.X == other.X && this.Y == other.Y;
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is GridBlockKey))
+            if (!(obj is ShortPoint))
                 return false;
 
-            var strongValue = (GridBlockKey)obj;
+            var strongValue = (ShortPoint)obj;
             return Equals(strongValue);
         }
 
@@ -32,7 +32,7 @@ namespace TilemapTools
         {
             int hash = (int)(X << 16);
             hash |= (int)Y;
-
+                        
             return hash;
         }
     }

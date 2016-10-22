@@ -3,33 +3,31 @@ using System.Runtime.CompilerServices;
 
 namespace TilemapTools
 {
-    public class GridBlock
+    public class GridBlock<TTileDefinition> : IDisposable
+        where TTileDefinition : class
     {
-        public const int DefaultBlockSize = 16;
-
-        public const int MinimumBlockSize = 1;
 
         private int tileCount = 0;
 
-        private TileDefinition[] tiles;
+        private TTileDefinition[] tiles;
 
-        public GridBlock(int blockSize, GridBlockKey blockKey, Grid grid)
+        public GridBlock(int blockSize, ShortPoint blockKey, Grid<TTileDefinition> grid)
         {
             Grid = grid;
             BlockSize = blockSize;
             Key = blockKey;
-            tiles = new TileDefinition[BlockSize * BlockSize];
+            tiles = new TTileDefinition[BlockSize * BlockSize];
         }
 
         public int BlockSize { get; }
 
-        public Grid Grid { get; }
+        public Grid<TTileDefinition> Grid { get; }
 
         public bool IsEmpty => tileCount == 0;
 
-        public GridBlockKey Key { get; }
+        public ShortPoint Key { get; }
 
-        public TileDefinition this[int x, int y]
+        public TTileDefinition this[int x, int y]
         {
             get
             {
@@ -52,8 +50,22 @@ namespace TilemapTools
             }
         }
 
+
+
+        public virtual void Dispose()
+        {
+            
+        }
+    }
+
+    public class GridBlock
+    {
+        public const int DefaultBlockSize = 16;
+
+        public const int MinimumBlockSize = 1;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetTileLocation(ref int x, ref int y, ref int blockSize, out GridBlockKey blockKey, out int tileX, out int tileY)
+        internal static void GetTileLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockKey, out int tileX, out int tileY)
         {
             //Block layout
             //+-------+-------+
@@ -64,7 +76,7 @@ namespace TilemapTools
             var blockKeyX = (short)((x / blockSize) + Math.Sign(x));
             var blockKeyY = (short)((y / blockSize) + Math.Sign(y));
 
-            blockKey = new GridBlockKey(blockKeyX, blockKeyY);
+            blockKey = new ShortPoint(blockKeyX, blockKeyY);
 
             tileX = blockSize - (x % blockSize);
             tileY = blockSize - (y % blockSize);
