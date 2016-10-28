@@ -56,10 +56,6 @@
     <Compile Include="TiledSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TilemapTools.Tiled\TilemapTools.Tiled.csproj">
-      <Project>{ed77db86-eef0-49e7-95a8-1279d5051033}</Project>
-      <Name>TilemapTools.Tiled</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TilemapTools\TilemapTools.csproj">
       <Project>{a3654fc8-1510-450a-9f3b-aff0e0226eb8}</Project>
       <Name>TilemapTools</Name>

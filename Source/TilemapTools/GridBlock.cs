@@ -67,7 +67,7 @@ namespace TilemapTools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void GetTileLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockKey, out int tileX, out int tileY)
         {
-            //Block layout
+            //Block/Tile layout
             //+-------+-------+
             //| -1,1  |  1,1  |
             //+-------+-------+

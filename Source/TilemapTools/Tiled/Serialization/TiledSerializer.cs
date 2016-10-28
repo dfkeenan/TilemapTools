@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using TilemapTools.Mathematics;
 
 namespace TilemapTools.Tiled.Serialization
 {
@@ -136,7 +137,7 @@ namespace TilemapTools.Tiled.Serialization
             {
                 if (options.PreLoadTileSet)
                 {
-                    source = path != null ? Path.Combine(path, source) : source;
+                    source = path != null ? options.Combine(path, source) : source;
                     tileSet = LoadTileSet(source);
                 }
 
@@ -435,7 +436,7 @@ namespace TilemapTools.Tiled.Serialization
 
             if (sourceAttribute != null)
                 // Append directory if present
-                image.Source = Path.Combine(path, (string)sourceAttribute);
+                image.Source = options.Combine(path, (string)sourceAttribute);
             else
             {
                 var formatAttribute = imageElement.Attribute("format");

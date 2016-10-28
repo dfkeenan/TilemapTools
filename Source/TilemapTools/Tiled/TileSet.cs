@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using TilemapTools.Mathematics;
 
 namespace TilemapTools.Tiled
 {
@@ -26,6 +29,27 @@ namespace TilemapTools.Tiled
         /// Gets or sets the (maximum) height of the tiles in this tileset.
         /// </summary>
         public int TileHeight { get; set; }
+
+        internal Tile GetTile(uint globalId)
+        {
+            var localId = globalId - FirstGlobalId;
+
+            return Tiles?.FirstOrDefault(t => t.Id == localId);
+        }
+
+        internal Rectangle CalculateSourceRectangle(uint globalId)
+        {
+            var localId = globalId - FirstGlobalId;
+
+            var columns = Columns.GetValueOrDefault(1);
+            var x = localId % columns;
+            var y = localId / columns;
+
+            var left = x * (TileWidth + Spacing) + Margin;
+            var top = y * (TileHeight + Spacing) + Margin;
+
+            return new Rectangle((int)left, (int)top, TileWidth, TileHeight);
+        }
 
         /// <summary>
         /// Gets or sets the spacing in pixels between the tiles in this tileset (applies to the tileset <see cref="TileSet.Image"/>).

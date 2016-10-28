@@ -6,11 +6,13 @@ namespace TilemapTools.Tiled.Serialization
 {
     public class TiledSerializerOptions
     {
+        private readonly Func<String, string, string> combinePath;
         private readonly Func<string, Stream> openStream;
 
-        public TiledSerializerOptions(Func<string, Stream> openStream)
+        public TiledSerializerOptions(Func<string, Stream> openStream, Func<String, string, string> combinePath = null)
         {
             this.openStream = openStream;
+            this.combinePath = combinePath ?? ((p1,p2) => Path.Combine(p1, p2));
         }
 
         public static TiledSerializerOptions Default { get; internal set; } = new TiledSerializerOptions(null);
@@ -20,6 +22,8 @@ namespace TilemapTools.Tiled.Serialization
         public bool PreLoadTileSet { get; set; } = true;
 
         public TiledSerializerOptions Clone() => (TiledSerializerOptions)this.MemberwiseClone();
+
+        public string Combine(string path1, string path2) => combinePath(path1, path2);
 
         public Stream OpenStream(string source)
         {

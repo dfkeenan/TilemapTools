@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TilemapTools.Mathematics;
 using TilemapTools.Tiled;
 
 namespace TilemapTools.Tiled.Tests

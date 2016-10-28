@@ -1,4 +1,6 @@
-﻿namespace TilemapTools.Tiled
+﻿using TilemapTools.Mathematics;
+
+namespace TilemapTools.Tiled
 {
     /// <summary>
     /// Represents an image.
