@@ -14,7 +14,23 @@ namespace TilemapTools.Tiled.Serialization
 
         public TileLookup(TileMap map)
         {
+            if (map == null)
+                throw new ArgumentNullException(nameof(map));
+
             this.map = map;
+        }
+
+
+        public TileInfo<TTexture> this[Layer layer, int x, int y]
+        {
+            get
+            {
+                var layerTile = layer.Tiles[map.Width * y + x];
+
+                if (layerTile.IsEmpty) return null;
+
+                return this[layerTile];
+            }
         }
 
         public TileInfo<TTexture> this[LayerTile tile] => this[tile.GlobalId];
@@ -23,6 +39,8 @@ namespace TilemapTools.Tiled.Serialization
         {
             get
             {
+
+
                 TileInfo<TTexture> tileInfo = null;
 
                 if (cachedTiles.TryGetValue(globalId, out tileInfo))
@@ -38,12 +56,12 @@ namespace TilemapTools.Tiled.Serialization
                 if(tile?.Image != null)
                 {
                     sourceRectangle = new Rectangle(0, 0, tile.Image.Width.GetValueOrDefault(), tile.Image.Height.GetValueOrDefault());
-                    texture = GetTexture(tile?.Image?.Source);
+                    texture = GetTexture(tile?.Image);
                 }
                 else
                 {
                     sourceRectangle = tileset.CalculateSourceRectangle(globalId);
-                    texture = GetTexture(tileset.Image.Source);
+                    texture = GetTexture(tileset.Image);
                 }
                 
                 cachedTiles[globalId] = tileInfo = new TileInfo<TTexture>(texture, sourceRectangle, tile, tileset);
@@ -52,12 +70,12 @@ namespace TilemapTools.Tiled.Serialization
             }
         }
 
-        protected abstract TTexture GetTexture(string source);
+        protected abstract TTexture GetTexture(Image image);
 
 
         public TileSet FindTileSet(uint tileGlobalId)
         {
-            for (int i = map.TileSets.Count; i >= 0; --i)
+            for (int i = map.TileSets.Count - 1; i >= 0; --i)
             {
                 var currentTileSet = map.TileSets[i];
                 if (currentTileSet.FirstGlobalId <= tileGlobalId)

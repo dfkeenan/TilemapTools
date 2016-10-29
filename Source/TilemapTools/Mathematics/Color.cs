@@ -123,6 +123,20 @@ namespace TilemapTools.Mathematics
         }
 
         /// <summary>
+        /// Converts the color into a packed integer.
+        /// </summary>
+        /// <returns>A packed integer containing all four color components.</returns>
+        public int ToRgba()
+        {
+            int value = R;
+            value |= G << 8;
+            value |= B << 16;
+            value |= A << 24;
+
+            return value;
+        }
+
+        /// <summary>
         /// Converts <see cref="string"/> to a <see cref="Color"/>.
         /// </summary>
         /// <param name="color">The supported color formats are #AARRBBGG and #RRGGBB.</param>

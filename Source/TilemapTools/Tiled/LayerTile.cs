@@ -22,5 +22,10 @@
         /// The flip of the tile.
         /// </summary>
         public TileFlip Flip;
+
+        /// <summary>
+        /// Gets layer tile is empty.
+        /// </summary>
+        public bool IsEmpty => GlobalId == 0;
     }
 }
