@@ -27,6 +27,8 @@ namespace TilemapTools
 
         public ShortPoint Key { get; }
 
+        public int TileCount => tileCount;
+
         public TTileDefinition this[int x, int y]
         {
             get
@@ -44,13 +46,18 @@ namespace TilemapTools
                         tileCount -= 1;
                     else if (tiles[index] == null)
                         tileCount += 1;
+
+                    OnTileChanged(x, y);
                 }
 
                 tiles[index] = value;
             }
         }
 
+        protected virtual void OnTileChanged(int x, int y)
+        {
 
+        }
 
         public virtual void Dispose()
         {
