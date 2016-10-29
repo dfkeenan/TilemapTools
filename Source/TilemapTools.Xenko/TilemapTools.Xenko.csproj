@@ -487,6 +487,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xenko\CachedQuadBatch.cs" />
     <Compile Include="Xenko\CachedQuadBatchBuilder.cs" />
+    <Compile Include="Xenko\CachedQuadBatchRenderer.cs" />
     <Compile Include="Xenko\Tiled\XenkoTileLookup.cs" />
   </ItemGroup>
   <ItemGroup />

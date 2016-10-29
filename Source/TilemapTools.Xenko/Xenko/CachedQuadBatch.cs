@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Core;
 
+using Buffer = SiliconStudio.Xenko.Graphics.Buffer;
+
 namespace TilemapTools.Xenko
 {
-    public class CachedQuadBatch<TVertex> : IDisposable
-        where TVertex : struct, IVertex
+    public class CachedQuadBatch : IDisposable
     {
-        internal Buffer<TVertex> VertexBuffer;
-        internal Buffer<short> IndexBuffer;
+        internal Buffer VertexBuffer;
+        internal Buffer IndexBuffer;
         internal List<DrawRange> Ranges;
+        internal int VertexSize;
 
         internal CachedQuadBatch()
         {

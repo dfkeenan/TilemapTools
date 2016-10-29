@@ -31,11 +31,11 @@ namespace TilemapTools.Xenko
         }
 
 
-        public CachedQuadBatch<TVertex> ToCachedQuadBatch(GraphicsDevice graphicsDevice)
+        public CachedQuadBatch ToCachedQuadBatch(GraphicsDevice graphicsDevice)
         {
             var vertices = new List<TVertex>();
             short[] indices = null;
-            var ranges = new List<CachedQuadBatch<TVertex>.DrawRange>();
+            var ranges = new List<CachedQuadBatch.DrawRange>();
 
 
             int quadCount = 0;
@@ -53,7 +53,7 @@ namespace TilemapTools.Xenko
                     vertices.Add(CreateVertex(source.BottomRight, dest.BottomRight, new Vector2(pair.Key.Width, pair.Key.Height)));
                 }
 
-                ranges.Add(new CachedQuadBatch<TVertex>.DrawRange
+                ranges.Add(new CachedQuadBatch.DrawRange
                 {
                     Texture = pair.Key,
                     StartIndex = quadCount * 6,
@@ -75,9 +75,10 @@ namespace TilemapTools.Xenko
                 indices[i * 6 + 5] = (short)(i * 4 + 2);
             }
 
-            var batch = new CachedQuadBatch<TVertex>()
+            var batch = new CachedQuadBatch()
             {
                 VertexBuffer = SiliconStudio.Xenko.Graphics.Buffer.Vertex.New(graphicsDevice, vertices.ToArray()),
+                VertexSize = vertices[0].GetLayout().CalculateSize(),
                 IndexBuffer = SiliconStudio.Xenko.Graphics.Buffer.Index.New(graphicsDevice, indices),
                 Ranges = ranges,
             };
