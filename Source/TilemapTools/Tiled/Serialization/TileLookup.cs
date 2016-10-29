@@ -12,6 +12,8 @@ namespace TilemapTools.Tiled.Serialization
         private readonly Dictionary<uint, TileInfo<TTexture>> cachedTiles = new Dictionary<uint, TileInfo<TTexture>>();
         private readonly TileMap map;
 
+        public TileMap Map => map;
+
         public TileLookup(TileMap map)
         {
             if (map == null)
