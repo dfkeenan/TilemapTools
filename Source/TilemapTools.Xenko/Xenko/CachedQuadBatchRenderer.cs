@@ -113,19 +113,19 @@ namespace TilemapTools.Xenko
             hasBegun = false;
         }
 
-        private void CheckBeginHasBeenCalled([CallerMemberName] string functionName = null)
+        private void CheckBeginHasBeenCalled([CallerMemberName] string caller = null)
         {
             if (!hasBegun)
             {
-                throw new InvalidOperationException("Begin must be called before " + functionName);
+                throw new InvalidOperationException("Begin must be called before " + caller);
             }
         }
 
-        private void CheckEndHasBeenCalled([CallerMemberName] string functionName = null)
+        private void CheckEndHasBeenCalled([CallerMemberName] string caller = null)
         {
             if (hasBegun)
             {
-                throw new InvalidOperationException("End must be called before " + functionName);
+                throw new InvalidOperationException("End must be called before " + caller);
             }
         }
     }
