@@ -82,10 +82,10 @@ namespace TilemapTools.Xenko
                 for (int i = 0; i < quadCount; i++)
                 {
                     indices[i * 6 + 0] = (short)(i * 4);
-                    indices[i * 6 + 1] = (short)(i * 4 + 1);
-                    indices[i * 6 + 2] = (short)(i * 4 + 2);
-                    indices[i * 6 + 3] = (short)(i * 4 + 1);
-                    indices[i * 6 + 4] = (short)(i * 4 + 3);
+                    indices[i * 6 + 1] = (short)(i * 4 + 2);
+                    indices[i * 6 + 2] = (short)(i * 4 + 1);
+                    indices[i * 6 + 3] = (short)(i * 4 + 3); 
+                    indices[i * 6 + 4] = (short)(i * 4 + 1);
                     indices[i * 6 + 5] = (short)(i * 4 + 2);
                 }
             }

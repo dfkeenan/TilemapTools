@@ -52,7 +52,7 @@ namespace TilemapTools.Xenko
             MutablePipeline.State.EffectBytecode = Effect.Effect.Bytecode;
             MutablePipeline.State.BlendState = BlendStates.AlphaBlend;
             MutablePipeline.State.DepthStencilState = DepthStencilStates.Default;
-            MutablePipeline.State.RasterizerState = RasterizerStates.CullNone;
+            MutablePipeline.State.RasterizerState = RasterizerStates.CullBack;
             MutablePipeline.State.InputElements = VertexPositionTexture.Layout.CreateInputElements();
             MutablePipeline.State.PrimitiveType = PrimitiveType.TriangleList;
             MutablePipeline.State.Output.CaptureState(GraphicsContext.CommandList);
