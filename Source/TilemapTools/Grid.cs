@@ -15,13 +15,13 @@ namespace TilemapTools
             get
             {
                 GridBlock<TTileDefinition> block = null;
-                ShortPoint blockKey = default(ShortPoint);
+                ShortPoint blockLocation = default(ShortPoint);
                 int tileX, tileY;
                 int blockSsize = BlockSize;
 
-                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockKey, out tileX, out tileY);
+                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockLocation, out tileX, out tileY);
 
-                if (blocks.TryGetItem(blockKey, out block))
+                if (blocks.TryGetItem(blockLocation, out block))
                 {
                     return block[tileX, tileY];
                 }
@@ -32,19 +32,19 @@ namespace TilemapTools
             set
             {
                 GridBlock<TTileDefinition> block = null;
-                ShortPoint blockKey = default(ShortPoint);
+                ShortPoint blockLocation = default(ShortPoint);
                 int tileX, tileY;
                 int blockSsize = BlockSize;
 
-                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockKey, out tileX, out tileY);
+                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockLocation, out tileX, out tileY);
 
-                if (!blocks.TryGetItem(blockKey, out block))
+                if (!blocks.TryGetItem(blockLocation, out block))
                 {
                     if (value == null)
                     {
                         return;
                     }
-                    block = CreateBlock(blockKey);
+                    block = CreateBlock(blockLocation);
                     blocks.Add(block);
                 }
 
@@ -52,9 +52,9 @@ namespace TilemapTools
             }
         }
 
-        protected virtual GridBlock<TTileDefinition> CreateBlock(ShortPoint blockKey)
+        protected virtual GridBlock<TTileDefinition> CreateBlock(ShortPoint blockLocation)
         {
-            GridBlock<TTileDefinition> block = new GridBlock<TTileDefinition>(BlockSize, blockKey, this);
+            GridBlock<TTileDefinition> block = new GridBlock<TTileDefinition>(BlockSize, blockLocation, this);
             return block;
         }
 

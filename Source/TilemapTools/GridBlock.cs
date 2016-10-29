@@ -11,11 +11,11 @@ namespace TilemapTools
 
         private TTileDefinition[] tiles;
 
-        public GridBlock(int blockSize, ShortPoint blockKey, Grid<TTileDefinition> grid)
+        public GridBlock(int blockSize, ShortPoint location, Grid<TTileDefinition> grid)
         {
             Grid = grid;
             BlockSize = blockSize;
-            Key = blockKey;
+            Location = location;
             tiles = new TTileDefinition[BlockSize * BlockSize];
         }
 
@@ -25,7 +25,7 @@ namespace TilemapTools
 
         public bool IsEmpty => tileCount == 0;
 
-        public ShortPoint Key { get; }
+        public ShortPoint Location { get; }
 
         public int TileCount => tileCount;
 
@@ -72,7 +72,7 @@ namespace TilemapTools
         public const int MinimumBlockSize = 1;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetTileLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockKey, out int tileX, out int tileY)
+        internal static void GetTileLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockLocation, out int tileX, out int tileY)
         {
             //Block/Tile layout
             //+-------+-------+
@@ -83,7 +83,7 @@ namespace TilemapTools
             var blockKeyX = (short)((x / blockSize) + Math.Sign(x));
             var blockKeyY = (short)((y / blockSize) + Math.Sign(y));
 
-            blockKey = new ShortPoint(blockKeyX, blockKeyY);
+            blockLocation = new ShortPoint(blockKeyX, blockKeyY);
 
             tileX = blockSize - (x % blockSize);
             tileY = blockSize - (y % blockSize);

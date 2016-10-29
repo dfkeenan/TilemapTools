@@ -12,6 +12,12 @@ namespace TilemapTools.Xenko
         where TVertex : struct, IVertex
     {
         private readonly Dictionary<Texture, List<Tuple<Rectangle, RectangleF>>> quads = new Dictionary<Texture, List<Tuple<Rectangle, RectangleF>>>();
+        private bool flipY;
+
+        public CachedQuadBatchBuilder(bool flipY = true)
+        {
+            this.flipY = flipY;
+        }
 
         public void Clear()
         {
@@ -22,7 +28,7 @@ namespace TilemapTools.Xenko
         {
             List<Tuple<Rectangle, RectangleF>> list;
 
-            if(!quads.TryGetValue(texture, out list))
+            if (!quads.TryGetValue(texture, out list))
             {
                 quads[texture] = list = new List<Tuple<Rectangle, RectangleF>>();
             }
@@ -47,10 +53,16 @@ namespace TilemapTools.Xenko
                     var source = quad.Item1;
                     var dest = quad.Item2;
 
-                    vertices.Add(CreateVertex(source.TopLeft, dest.TopLeft, new Vector2(pair.Key.Width, pair.Key.Height)));
-                    vertices.Add(CreateVertex(source.BottomLeft, dest.BottomLeft, new Vector2(pair.Key.Width, pair.Key.Height)));
-                    vertices.Add(CreateVertex(source.TopRight, dest.TopRight, new Vector2(pair.Key.Width, pair.Key.Height)));
-                    vertices.Add(CreateVertex(source.BottomRight, dest.BottomRight, new Vector2(pair.Key.Width, pair.Key.Height)));
+                    var left = dest.X;
+                    var top = dest.Y;
+                    var right = dest.X + dest.Width;
+                    var bottom = dest.Y + (dest.Height * (flipY ? -1 : 1));
+
+
+                    vertices.Add(CreateVertex(source.TopLeft, new Vector2(left, top), new Vector2(pair.Key.Width, pair.Key.Height)));
+                    vertices.Add(CreateVertex(source.BottomLeft, new Vector2(left, bottom), new Vector2(pair.Key.Width, pair.Key.Height)));
+                    vertices.Add(CreateVertex(source.TopRight, new Vector2(right, top), new Vector2(pair.Key.Width, pair.Key.Height)));
+                    vertices.Add(CreateVertex(source.BottomRight, new Vector2(right, bottom), new Vector2(pair.Key.Width, pair.Key.Height)));
                 }
 
                 ranges.Add(new CachedQuadBatch.DrawRange
@@ -65,14 +77,29 @@ namespace TilemapTools.Xenko
 
             indices = new short[quadCount * 6];
 
-            for (int i = 0; i < quadCount; i++)
+            if (flipY)
             {
-                indices[i * 6 + 0] = (short)(i * 4);
-                indices[i * 6 + 1] = (short)(i * 4 + 1);
-                indices[i * 6 + 2] = (short)(i * 4 + 2);
-                indices[i * 6 + 3] = (short)(i * 4 + 1);
-                indices[i * 6 + 4] = (short)(i * 4 + 3);
-                indices[i * 6 + 5] = (short)(i * 4 + 2);
+                for (int i = 0; i < quadCount; i++)
+                {
+                    indices[i * 6 + 0] = (short)(i * 4);
+                    indices[i * 6 + 1] = (short)(i * 4 + 1);
+                    indices[i * 6 + 2] = (short)(i * 4 + 2);
+                    indices[i * 6 + 3] = (short)(i * 4 + 1);
+                    indices[i * 6 + 4] = (short)(i * 4 + 3);
+                    indices[i * 6 + 5] = (short)(i * 4 + 2);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < quadCount; i++)
+                {
+                    indices[i * 6 + 0] = (short)(i * 4);
+                    indices[i * 6 + 1] = (short)(i * 4 + 1);
+                    indices[i * 6 + 2] = (short)(i * 4 + 2);
+                    indices[i * 6 + 3] = (short)(i * 4 + 1);
+                    indices[i * 6 + 4] = (short)(i * 4 + 3);
+                    indices[i * 6 + 5] = (short)(i * 4 + 2);
+                }
             }
 
             var batch = new CachedQuadBatch()

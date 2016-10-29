@@ -12,6 +12,6 @@ namespace TilemapTools
     {
         public bool TryGetItem(ShortPoint key, out GridBlock<TTileDefinition> block) => Dictionary.TryGetValue(key, out block);
 
-        protected override ShortPoint GetKeyForItem(GridBlock<TTileDefinition> item) => item.Key;
+        protected override ShortPoint GetKeyForItem(GridBlock<TTileDefinition> item) => item.Location;
     }
 }
