@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace TilemapTools
 {
@@ -34,6 +35,11 @@ namespace TilemapTools
             hash |= (int)Y;
                         
             return hash;
+        }
+
+        public override string ToString()
+        {
+            return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1}", X, Y);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TilemapTools.Tiled;
 using TilemapTools.Tiled.Serialization;
 
-namespace TilemapTools.Tiled.Tests
+namespace TilemapTools.Tests.Tiled
 {
     [TestClass]
     public class TiledSerializerTests

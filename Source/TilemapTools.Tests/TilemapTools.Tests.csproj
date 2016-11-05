@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2DFEAFCA-D840-4942-999B-68F0E29B63EA}</ProjectGuid>
+    <ProjectGuid>{D537FCCC-5880-4AD4-B79C-F5D50EF2F872}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TilemapTools.Tiled.Tests</RootNamespace>
-    <AssemblyName>TilemapTools.Tiled.Tests</AssemblyName>
+    <RootNamespace>TilemapTools.Tests</RootNamespace>
+    <AssemblyName>TilemapTools.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,7 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TilemapTools">
+      <HintPath>..\TilemapTools\bin\Debug\TilemapTools.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -51,15 +53,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CoreTests.cs" />
+    <Compile Include="Tiled\CoreTests.cs" />
+    <Compile Include="Tiled\TiledSerializerTests.cs" />
+    <Compile Include="GridTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TiledSerializerTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TilemapTools\TilemapTools.csproj">
-      <Project>{a3654fc8-1510-450a-9f3b-aff0e0226eb8}</Project>
-      <Name>TilemapTools</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

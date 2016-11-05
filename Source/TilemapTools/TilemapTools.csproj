@@ -40,9 +40,12 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CellLocationPair.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridBlock.cs" />
     <Compile Include="GridBlockCollection.cs" />
+    <Compile Include="IGrid.cs" />
+    <Compile Include="IGridBlock.cs" />
     <Compile Include="Mathematics\Rectangle.cs" />
     <Compile Include="ShortPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

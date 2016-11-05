@@ -1,29 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace TilemapTools
 {
-    public class Grid<TTileDefinition>: IDisposable
-        where TTileDefinition : class
+    public class Grid<TCell, TCellSize> : IDisposable, IGrid<TCell, TCellSize> 
+        where TCell : class
+        where TCellSize : struct, IEquatable<TCellSize>
     {
-        private readonly GridBlockCollection<TTileDefinition> blocks = new GridBlockCollection<TTileDefinition>();
+        private GridBlockCollection<IGridBlock<TCell, TCellSize>> blocks;
 
-        public int BlockSize { get; set; } = GridBlock.DefaultBlockSize;
+        private int blockSize;
+        private TCellSize cellSize;
 
-        public TTileDefinition this[int x, int y]
+        public Grid()
+        {
+            blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
+            blockSize = GridBlock.DefaultBlockSize;
+        }
+
+        public int BlockSize
+        {
+            get { return blockSize; }
+            set
+            {
+                if (blockSize == value)
+                    return;
+
+                if (value < GridBlock.MinimumBlockSize)
+                    throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} must be greater than or equal to {GridBlock.MinimumBlockSize}.");
+                
+                blockSize = value;
+
+                OnBlockSizeChanged();
+            }
+        }
+
+        public virtual TCellSize CellSize
+        {
+            get { return cellSize; }
+            set
+            {
+                if (cellSize.Equals(value))
+                    return;
+                cellSize = value;
+
+                OnCellSizeChanged();
+            }
+        }
+
+        public TCell this[int x, int y]
         {
             get
             {
-                GridBlock<TTileDefinition> block = null;
-                ShortPoint blockLocation = default(ShortPoint);
-                int tileX, tileY;
-                int blockSsize = BlockSize;
+                CheckLocation(ref x, ref y);
 
-                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockLocation, out tileX, out tileY);
+                IGridBlock<TCell, TCellSize> block = null;
+                ShortPoint blockLocation = default(ShortPoint);
+                int cellX, cellY;
+                int blockSize = BlockSize;
+
+                GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize, out blockLocation, out cellX, out cellY);
 
                 if (blocks.TryGetItem(blockLocation, out block))
                 {
-                    return block[tileX, tileY];
+                    return block[cellX, cellY];
                 }
 
                 return null;
@@ -31,12 +70,14 @@ namespace TilemapTools
 
             set
             {
-                GridBlock<TTileDefinition> block = null;
+                CheckLocation(ref x, ref y);
+
+                IGridBlock<TCell, TCellSize> block = null;
                 ShortPoint blockLocation = default(ShortPoint);
                 int tileX, tileY;
-                int blockSsize = BlockSize;
+                int blockSize = BlockSize;
 
-                GridBlock.GetTileLocation(ref x, ref y, ref blockSsize, out blockLocation, out tileX, out tileY);
+                GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize, out blockLocation, out tileX, out tileY);
 
                 if (!blocks.TryGetItem(blockLocation, out block))
                 {
@@ -52,20 +93,64 @@ namespace TilemapTools
             }
         }
 
-        protected virtual GridBlock<TTileDefinition> CreateBlock(ShortPoint blockLocation)
+        private void CheckLocation(ref int x, ref int y)
         {
-            GridBlock<TTileDefinition> block = new GridBlock<TTileDefinition>(BlockSize, blockLocation, this);
-            return block;
+            if (x == 0) throw new ArgumentOutOfRangeException(nameof(x));
+            if (y == 0) throw new ArgumentOutOfRangeException(nameof(y));
         }
 
         public virtual void Dispose()
         {
             foreach (var block in blocks)
             {
-                block.Dispose();                
+                block.Dispose();
             }
 
-            blocks.Clear(); 
+            blocks.Clear();
+        }
+
+        protected virtual IGridBlock<TCell, TCellSize> CreateBlock(ShortPoint blockLocation)
+        {
+            return new GridBlock<TCell, TCellSize>(BlockSize, blockLocation, this);
+        }
+
+
+
+        protected virtual void OnBlockSizeChanged()
+        {
+            ResizeBlocks();
+        }
+
+        protected void ResizeBlocks()
+        {
+            if (this.blocks.Count == 0)
+                return;
+
+            var tempGrid = CloneEmptyGrid();
+
+            foreach (var block in blocks)
+            {
+                foreach (var cell in block)
+                {
+                    tempGrid[cell.X, cell.Y] = cell.Content;
+                }
+            }
+
+            this.blocks = tempGrid.blocks;
+        }
+
+        protected virtual Grid<TCell, TCellSize> CloneEmptyGrid()
+        {
+            var tempGrid = new Grid<TCell, TCellSize>();
+            tempGrid.cellSize = this.cellSize;
+            tempGrid.blockSize = this.blockSize;
+
+            return tempGrid;
+        }
+
+        protected virtual void OnCellSizeChanged()
+        {
+
         }
     }
 }

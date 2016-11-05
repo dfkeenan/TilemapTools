@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace TilemapTools
 {
-    public class GridBlockCollection<TTileDefinition> : KeyedCollection<ShortPoint, GridBlock<TTileDefinition>>
-        where TTileDefinition : class
+    public class GridBlockCollection<TGridBlock> : KeyedCollection<ShortPoint, TGridBlock>
+        where TGridBlock : class, IGridBlock
     {
-        public bool TryGetItem(ShortPoint key, out GridBlock<TTileDefinition> block) => Dictionary.TryGetValue(key, out block);
+        public bool TryGetItem(ShortPoint key, out TGridBlock block) => Dictionary.TryGetValue(key, out block);
 
-        protected override ShortPoint GetKeyForItem(GridBlock<TTileDefinition> item) => item.Location;
+        protected override ShortPoint GetKeyForItem(TGridBlock item) => item.Location;
     }
 }

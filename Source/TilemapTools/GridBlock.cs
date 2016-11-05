@@ -1,60 +1,64 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using static System.Math;
 
 namespace TilemapTools
 {
-    public class GridBlock<TTileDefinition> : IDisposable
-        where TTileDefinition : class
+    public class GridBlock<TCell, TCellSize> : IDisposable, IGridBlock<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
+        where TCell : class
+        where TCellSize : struct, IEquatable<TCellSize>
     {
 
-        private int tileCount = 0;
+        private int cellCount = 0;
 
-        private TTileDefinition[] tiles;
+        private TCell[] cells;
 
-        public GridBlock(int blockSize, ShortPoint location, Grid<TTileDefinition> grid)
+        public GridBlock(int blockSize, ShortPoint location, Grid<TCell, TCellSize> grid)
         {
             Grid = grid;
             BlockSize = blockSize;
             Location = location;
-            tiles = new TTileDefinition[BlockSize * BlockSize];
+            cells = new TCell[BlockSize * BlockSize];
         }
 
         public int BlockSize { get; }
 
-        public Grid<TTileDefinition> Grid { get; }
+        public Grid<TCell, TCellSize> Grid { get; }
 
-        public bool IsEmpty => tileCount == 0;
+        public bool IsEmpty => cellCount == 0;
 
         public ShortPoint Location { get; }
 
-        public int TileCount => tileCount;
+        public int CellCount => cellCount;
 
-        public TTileDefinition this[int x, int y]
+        public TCell this[int x, int y]
         {
             get
             {
-                return tiles[y * BlockSize + x];
+                return cells[y * BlockSize + x];
             }
 
             set
             {
                 var index = y * BlockSize + x;
 
-                if (tiles[index] != value)
+                if (cells[index] != value)
                 {
                     if (value == null)
-                        tileCount -= 1;
-                    else if (tiles[index] == null)
-                        tileCount += 1;
+                        cellCount -= 1;
+                    else if (cells[index] == null)
+                        cellCount += 1;
 
-                    OnTileChanged(x, y);
+                    OnCellContentChanged(x, y);
                 }
 
-                tiles[index] = value;
+                cells[index] = value;
             }
         }
 
-        protected virtual void OnTileChanged(int x, int y)
+        protected virtual void OnCellContentChanged(int x, int y)
         {
 
         }
@@ -62,6 +66,64 @@ namespace TilemapTools
         public virtual void Dispose()
         {
             
+        }
+
+        public IEnumerator<CellLocationPair<TCell>> GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+
+        struct Enumerator : IEnumerator<CellLocationPair<TCell>>
+        {
+            private int index;
+            private GridBlock<TCell,TCellSize> gridBlock;
+            private CellLocationPair<TCell> current;
+
+            public Enumerator(GridBlock<TCell, TCellSize> gridBlock)
+            {
+                index = 0;
+                current = default(CellLocationPair<TCell>);
+                this.gridBlock = gridBlock;
+            }
+
+            public CellLocationPair<TCell> Current => current;
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose() { }
+
+            public bool MoveNext()
+            {
+                var localGridBlock = gridBlock;
+                var blockSize = localGridBlock.BlockSize;
+                var blockLocation = localGridBlock.Location;
+
+                if (index < localGridBlock.cells.Length)
+                {
+                    var currentCell = localGridBlock.cells[index];
+                    int x, y;
+
+                    GridBlock.GetCellLocation(ref index, ref blockSize, ref blockLocation, out x, out y);
+
+                    current = new CellLocationPair<TCell>(currentCell, x, y);
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            public void Reset()
+            {
+                index = 0;
+                current = default(CellLocationPair<TCell>);
+            }
         }
     }
 
@@ -71,22 +133,36 @@ namespace TilemapTools
 
         public const int MinimumBlockSize = 1;
 
+        //Block/Cell layout
+        //+-------+-------+
+        //| -1,1  |  1,1  |
+        //+-------+-------+
+        //| -1,-1 | 1,-1  |
+        //+-------+-------+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetTileLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockLocation, out int tileX, out int tileY)
+        internal static void GetBlockCellLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockLocation, out int cellX, out int cellY)
         {
-            //Block/Tile layout
-            //+-------+-------+
-            //| -1,1  |  1,1  |
-            //+-------+-------+
-            //| -1,-1 | 1,-1  |
-            //+-------+-------+
-            var blockKeyX = (short)((x / blockSize) + Math.Sign(x));
-            var blockKeyY = (short)((y / blockSize) + Math.Sign(y));
+
+            var blockKeyX = (short)(((x - Sign(x)) / blockSize) + Sign(x));
+            var blockKeyY = (short)(((y - Sign(y)) / blockSize) + Sign(y));
 
             blockLocation = new ShortPoint(blockKeyX, blockKeyY);
 
-            tileX = blockSize - (x % blockSize);
-            tileY = blockSize - (y % blockSize);
+
+            cellX = blockSize - (x % blockSize);
+            cellY = blockSize - (y % blockSize);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void GetCellLocation(ref int index, ref int blockSize, ref ShortPoint blockLocation, out int x, out int y)
+        {
+            int localX = index / blockSize;
+            int localY = index % blockSize;
+
+            x = blockLocation.X * blockSize - localX;
+            y = blockLocation.Y * blockSize - localY;
+
         }
     }
 }
