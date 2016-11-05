@@ -114,8 +114,6 @@ namespace TilemapTools
             return new GridBlock<TCell, TCellSize>(BlockSize, blockLocation, this);
         }
 
-
-
         protected virtual void OnBlockSizeChanged()
         {
             ResizeBlocks();
@@ -126,26 +124,16 @@ namespace TilemapTools
             if (this.blocks.Count == 0)
                 return;
 
-            var tempGrid = CloneEmptyGrid();
+            var tempBlocks = blocks;
+            blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
 
-            foreach (var block in blocks)
+            foreach (var block in tempBlocks)
             {
                 foreach (var cell in block)
                 {
-                    tempGrid[cell.X, cell.Y] = cell.Content;
+                    this[cell.X, cell.Y] = cell.Content;
                 }
             }
-
-            this.blocks = tempGrid.blocks;
-        }
-
-        protected virtual Grid<TCell, TCellSize> CloneEmptyGrid()
-        {
-            var tempGrid = new Grid<TCell, TCellSize>();
-            tempGrid.cellSize = this.cellSize;
-            tempGrid.blockSize = this.blockSize;
-
-            return tempGrid;
         }
 
         protected virtual void OnCellSizeChanged()
