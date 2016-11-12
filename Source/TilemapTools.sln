@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools.Xenko", "TilemapTools.Xenko\TilemapTools.Xenko.csproj", "{2EC3775D-5F84-495C-A728-FAFA23518CE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools.Tests", "TilemapTools.Tests\TilemapTools.Tests.csproj", "{D537FCCC-5880-4AD4-B79C-F5D50EF2F872}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A3654FC8-1510-450A-9F3B-AFF0E0226EB8} = {A3654FC8-1510-450A-9F3B-AFF0E0226EB8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

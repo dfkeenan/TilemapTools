@@ -134,6 +134,7 @@ namespace TilemapTools
                     this[cell.X, cell.Y] = cell.Content;
                 }
             }
+            
         }
 
         protected virtual void OnCellSizeChanged()

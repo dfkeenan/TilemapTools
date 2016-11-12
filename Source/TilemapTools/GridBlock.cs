@@ -143,15 +143,26 @@ namespace TilemapTools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void GetBlockCellLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockLocation, out int cellX, out int cellY)
         {
+            var signX = Sign(x);
+            var signY = Sign(y);
 
-            var blockKeyX = (short)(((x - Sign(x)) / blockSize) + Sign(x));
-            var blockKeyY = (short)(((y - Sign(y)) / blockSize) + Sign(y));
+            var zeroX = x - signX;
+            var zeroY = y - signY;
+
+            var blockKeyX = (short)(zeroX / blockSize + signX);
+            var blockKeyY = (short)(zeroY / blockSize + signY);
 
             blockLocation = new ShortPoint(blockKeyX, blockKeyY);
 
+            if (signX < 0)
+                cellX = Math.Abs(blockSize + (zeroX % blockSize)) - 1;
+            else
+                cellX = Math.Abs(zeroX % blockSize);
 
-            cellX = blockSize - (x % blockSize);
-            cellY = blockSize - (y % blockSize);
+            if (signY > 0)
+                cellY = Math.Abs(blockSize - (zeroY % blockSize)) - 1;
+            else
+                cellY = Math.Abs(zeroY % blockSize);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
