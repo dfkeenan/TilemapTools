@@ -8,7 +8,7 @@ namespace TilemapTools.Tests
     public class GridTests
     {
         [TestMethod]
-        public void GridBlock_GetBlockCellLocation_BlockLocations()
+        public void GridBlock_GetBlockCellLocation()
         {
             ShortPoint blockLocation;
             int cellX;
@@ -96,7 +96,59 @@ namespace TilemapTools.Tests
         }
 
 
-        static void GetBlockCellLocation(int x, int y, out ShortPoint blockLocation, out int cellX, out int cellY, int blockSize = 16)
+        [TestMethod]
+        public void GridBlock_GetCellLocation()
+        {
+            ShortPoint blockLocation;
+            int cellX;
+            int cellY;
+            int index;
+
+            blockLocation = new ShortPoint(1, 1);
+
+            GetCellLocation(0, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, 1);
+            Assert.AreEqual(cellY, 16);
+
+            GetCellLocation(15, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, 16);
+            Assert.AreEqual(cellY, 16);
+
+            GetCellLocation(240, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, 1);
+            Assert.AreEqual(cellY, 1);
+
+            GetCellLocation(255, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, 16);
+            Assert.AreEqual(cellY, 1);
+
+
+            blockLocation = new ShortPoint(-1, -1);
+
+            GetCellLocation(0, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, -16);
+            Assert.AreEqual(cellY, -1);
+
+            GetCellLocation(15, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, -1);
+            Assert.AreEqual(cellY, -1);
+
+            GetCellLocation(240, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, -16);
+            Assert.AreEqual(cellY, -16);
+
+            GetCellLocation(255, blockLocation, out cellX, out cellY);
+            Assert.AreEqual(cellX, -1);
+            Assert.AreEqual(cellY, -16);
+
+        }
+
+        static void GetCellLocation(int index, ShortPoint blockLocation, out int cellX, out int cellY, int blockSize = GridBlock.DefaultBlockSize)
+        {
+            GridBlock.GetCellLocation(ref index, ref blockSize, ref blockLocation, out cellX, out cellY);
+        }
+
+        static void GetBlockCellLocation(int x, int y, out ShortPoint blockLocation, out int cellX, out int cellY, int blockSize = GridBlock.DefaultBlockSize)
         {
             GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize,out blockLocation, out cellX, out cellY);
         }
