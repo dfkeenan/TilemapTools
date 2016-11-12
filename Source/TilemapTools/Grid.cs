@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace TilemapTools
 {
-    public class Grid<TCell, TCellSize> : IDisposable, IGrid<TCell, TCellSize> 
-        where TCell : class
+    public class Grid<TCell, TCellSize> : IDisposable, IGrid<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
         where TCellSize : struct, IEquatable<TCellSize>
     {
         private GridBlockCollection<IGridBlock<TCell, TCellSize>> blocks;
@@ -11,11 +12,16 @@ namespace TilemapTools
         private int blockSize;
         private TCellSize cellSize;
 
-        public Grid()
+        public Grid(IEqualityComparer<TCell> cellEqualityComparer = null)
         {
+            CellEqualityComparer = cellEqualityComparer ?? EqualityComparer<TCell>.Default;
+
+
             blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
             blockSize = GridBlock.DefaultBlockSize;
         }
+
+        internal IEqualityComparer<TCell> CellEqualityComparer { get; }
 
         public int BlockSize
         {
@@ -65,7 +71,7 @@ namespace TilemapTools
                     return block[cellX, cellY];
                 }
 
-                return null;
+                return default(TCell);
             }
 
             set
@@ -81,7 +87,7 @@ namespace TilemapTools
 
                 if (!blocks.TryGetItem(blockLocation, out block))
                 {
-                    if (value == null)
+                    if (CellEqualityComparer.Equals(value,default(TCell)))
                     {
                         return;
                     }
@@ -92,6 +98,8 @@ namespace TilemapTools
                 block[tileX, tileY] = value;
             }
         }
+
+        
 
         private void CheckLocation(ref int x, ref int y)
         {
@@ -140,6 +148,22 @@ namespace TilemapTools
         protected virtual void OnCellSizeChanged()
         {
 
+        }
+
+        IEnumerator<CellLocationPair<TCell>> IEnumerable<CellLocationPair<TCell>>.GetEnumerator()
+        {
+            foreach (var block in blocks)
+            {
+                foreach (var cell in block)
+                {
+                    yield return cell;
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<CellLocationPair<TCell>>)this).GetEnumerator();
         }
     }
 }

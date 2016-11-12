@@ -10,7 +10,14 @@ namespace TilemapTools
     public class GridBlockCollection<TGridBlock> : KeyedCollection<ShortPoint, TGridBlock>
         where TGridBlock : class, IGridBlock
     {
-        public bool TryGetItem(ShortPoint key, out TGridBlock block) => Dictionary.TryGetValue(key, out block);
+        public bool TryGetItem(ShortPoint key, out TGridBlock block)
+        {
+            if(Dictionary != null)
+                return Dictionary.TryGetValue(key, out block);
+
+            block = null;
+            return false;
+        }
 
         protected override ShortPoint GetKeyForItem(TGridBlock item) => item.Location;
     }

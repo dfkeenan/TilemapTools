@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TilemapTools
 {
-    public interface IGrid<TCell, TCellSize> : IDisposable
-        where TCell : class
+    public interface IGrid<TCell, TCellSize> : IDisposable, IEnumerable<CellLocationPair<TCell>>
         where TCellSize : struct, IEquatable<TCellSize>
     {
         int BlockSize { get; set; }

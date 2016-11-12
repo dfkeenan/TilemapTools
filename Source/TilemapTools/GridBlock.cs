@@ -7,7 +7,6 @@ using static System.Math;
 namespace TilemapTools
 {
     public class GridBlock<TCell, TCellSize> : IDisposable, IGridBlock<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
-        where TCell : class
         where TCellSize : struct, IEquatable<TCellSize>
     {
 
@@ -44,11 +43,11 @@ namespace TilemapTools
             {
                 var index = y * BlockSize + x;
 
-                if (cells[index] != value)
+                if (!Grid.CellEqualityComparer.Equals(cells[index], value))
                 {
-                    if (value == null)
+                    if (Grid.CellEqualityComparer.Equals(value , default(TCell)))
                         cellCount -= 1;
-                    else if (cells[index] == null)
+                    else if (Grid.CellEqualityComparer.Equals(cells[index], default(TCell)))
                         cellCount += 1;
 
                     OnCellContentChanged(x, y);
@@ -112,6 +111,8 @@ namespace TilemapTools
                     GridBlock.GetCellLocation(ref index, ref blockSize, ref blockLocation, out x, out y);
 
                     current = new CellLocationPair<TCell>(currentCell, x, y);
+
+                    index++;
 
                     return true;
                 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TilemapTools;
 
@@ -143,6 +145,38 @@ namespace TilemapTools.Tests
 
         }
 
+        [TestMethod]
+        public void Grid_Enumerable()
+        {
+            var grid = new Grid<int, int>();
+
+            var input = new List<CellLocationPair<int>>()
+            {
+
+                new CellLocationPair<int>(1, 1, 1),
+                new CellLocationPair<int>(2, 1, -1),
+                new CellLocationPair<int>(3, -1, -1),
+                new CellLocationPair<int>(4, -1, 1),
+                new CellLocationPair<int>(5, 16, 16),
+                new CellLocationPair<int>(6, 16, -16),
+                new CellLocationPair<int>(7, -16, -16),
+                new CellLocationPair<int>(8, -16, 16),
+            };
+
+            foreach (var item in input)
+            {
+                grid[item.X, item.Y] = item.Content;
+            }
+
+
+            var cells = (grid as IEnumerable<CellLocationPair<int>>).ToList();
+
+            var sortedInputContent = input.OrderBy(c => c.X).ThenBy(c => c.Y).Select(c => c.Content);
+            var sortedContent = cells.Where(c => c.Content != 0).OrderBy(c => c.X).ThenBy(c => c.Y).Select(c => c.Content);
+
+            Assert.IsTrue(Enumerable.SequenceEqual(sortedInputContent, sortedContent));
+        }
+
         static void GetCellLocation(int index, ShortPoint blockLocation, out int cellX, out int cellY, int blockSize = GridBlock.DefaultBlockSize)
         {
             GridBlock.GetCellLocation(ref index, ref blockSize, ref blockLocation, out cellX, out cellY);
@@ -150,7 +184,7 @@ namespace TilemapTools.Tests
 
         static void GetBlockCellLocation(int x, int y, out ShortPoint blockLocation, out int cellX, out int cellY, int blockSize = GridBlock.DefaultBlockSize)
         {
-            GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize,out blockLocation, out cellX, out cellY);
+            GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize, out blockLocation, out cellX, out cellY);
         }
     }
 }

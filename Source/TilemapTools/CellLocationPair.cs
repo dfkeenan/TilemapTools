@@ -1,7 +1,6 @@
 ﻿namespace TilemapTools
 {
     public struct CellLocationPair<TCell>
-        where TCell : class
     {
         public CellLocationPair(TCell content, int x, int y) : this()
         {
