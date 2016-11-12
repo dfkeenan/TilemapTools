@@ -7,8 +7,6 @@ namespace TilemapTools
     public class Grid<TCell, TCellSize> : IDisposable, IGrid<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
         where TCellSize : struct, IEquatable<TCellSize>
     {
-        private GridBlockCollection<IGridBlock<TCell, TCellSize>> blocks;
-
         private int blockSize;
         private TCellSize cellSize;
 
@@ -16,12 +14,9 @@ namespace TilemapTools
         {
             CellEqualityComparer = cellEqualityComparer ?? EqualityComparer<TCell>.Default;
 
-
-            blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
+            Blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
             blockSize = GridBlock.DefaultBlockSize;
         }
-
-        internal IEqualityComparer<TCell> CellEqualityComparer { get; }
 
         public int BlockSize
         {
@@ -33,7 +28,7 @@ namespace TilemapTools
 
                 if (value < GridBlock.MinimumBlockSize)
                     throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} must be greater than or equal to {GridBlock.MinimumBlockSize}.");
-                
+
                 blockSize = value;
 
                 OnBlockSizeChanged();
@@ -53,6 +48,10 @@ namespace TilemapTools
             }
         }
 
+        internal IEqualityComparer<TCell> CellEqualityComparer { get; }
+
+        protected GridBlockCollection<IGridBlock<TCell, TCellSize>> Blocks { get; private set; }
+
         public TCell this[int x, int y]
         {
             get
@@ -66,7 +65,7 @@ namespace TilemapTools
 
                 GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize, out blockLocation, out cellX, out cellY);
 
-                if (blocks.TryGetItem(blockLocation, out block))
+                if (Blocks.TryGetItem(blockLocation, out block))
                 {
                     return block[cellX, cellY];
                 }
@@ -85,36 +84,35 @@ namespace TilemapTools
 
                 GridBlock.GetBlockCellLocation(ref x, ref y, ref blockSize, out blockLocation, out tileX, out tileY);
 
-                if (!blocks.TryGetItem(blockLocation, out block))
+                if (!Blocks.TryGetItem(blockLocation, out block))
                 {
-                    if (CellEqualityComparer.Equals(value,default(TCell)))
+                    if (CellEqualityComparer.Equals(value, default(TCell)))
                     {
                         return;
                     }
                     block = CreateBlock(blockLocation);
-                    blocks.Add(block);
+                    Blocks.Add(block);
                 }
 
                 block[tileX, tileY] = value;
             }
         }
 
-        
+        public void ClearCell(int x, int y) => this[x, y] = default(TCell);
 
-        private void CheckLocation(ref int x, ref int y)
-        {
-            if (x == 0) throw new ArgumentOutOfRangeException(nameof(x));
-            if (y == 0) throw new ArgumentOutOfRangeException(nameof(y));
-        }
+        /// <summary>
+        /// Removes Empty <see cref="GridBlock{TCell, TCellSize}"/>
+        /// </summary>
+        public void TrimExcess() => Blocks.RemoveAll(b => b.IsEmpty, true);
 
         public virtual void Dispose()
         {
-            foreach (var block in blocks)
+            foreach (var block in Blocks)
             {
                 block.Dispose();
             }
 
-            blocks.Clear();
+            Blocks.Clear();
         }
 
         protected virtual IGridBlock<TCell, TCellSize> CreateBlock(ShortPoint blockLocation)
@@ -127,13 +125,18 @@ namespace TilemapTools
             ResizeBlocks();
         }
 
+        protected virtual void OnCellSizeChanged()
+        {
+            Blocks.ForEach(b => b.OnCellSizeChanged(this.cellSize));
+        }
+
         protected void ResizeBlocks()
         {
-            if (this.blocks.Count == 0)
+            if (this.Blocks.Count == 0)
                 return;
 
-            var tempBlocks = blocks;
-            blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
+            var tempBlocks = Blocks;
+            Blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
 
             foreach (var block in tempBlocks)
             {
@@ -142,17 +145,17 @@ namespace TilemapTools
                     this[cell.X, cell.Y] = cell.Content;
                 }
             }
-            
         }
 
-        protected virtual void OnCellSizeChanged()
+        private void CheckLocation(ref int x, ref int y)
         {
-
+            if (x == 0) throw new ArgumentOutOfRangeException(nameof(x));
+            if (y == 0) throw new ArgumentOutOfRangeException(nameof(y));
         }
 
         IEnumerator<CellLocationPair<TCell>> IEnumerable<CellLocationPair<TCell>>.GetEnumerator()
         {
-            foreach (var block in blocks)
+            foreach (var block in Blocks)
             {
                 foreach (var cell in block)
                 {

@@ -41,5 +41,9 @@ namespace TilemapTools
         {
             return string.Format(CultureInfo.CurrentCulture, "X:{0} Y:{1}", X, Y);
         }
+
+        public static bool operator ==(ShortPoint x, ShortPoint y) => x.Equals(y);
+
+        public static bool operator !=(ShortPoint x, ShortPoint y) => !x.Equals(y);
     }
 }

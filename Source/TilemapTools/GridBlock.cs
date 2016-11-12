@@ -77,6 +77,10 @@ namespace TilemapTools
             return GetEnumerator();
         }
 
+        public virtual void OnCellSizeChanged(TCellSize cellSize)
+        {
+            
+        }
 
         struct Enumerator : IEnumerator<CellLocationPair<TCell>>
         {

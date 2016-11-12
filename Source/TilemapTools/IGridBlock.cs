@@ -20,5 +20,7 @@ namespace TilemapTools
         Grid<TCell, TCellSize> Grid { get; }
 
         TCell this[int x, int y] { get; set; }
+
+        void OnCellSizeChanged(TCellSize cellSize);
     }
 }
