@@ -49,7 +49,6 @@
     <Compile Include="Mathematics\Rectangle.cs" />
     <Compile Include="ShortPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TileDefinition.cs" />
     <Compile Include="Tiled\AnimationFrame.cs" />
     <Compile Include="Mathematics\Color.cs" />
     <Compile Include="Tiled\Data.cs" />

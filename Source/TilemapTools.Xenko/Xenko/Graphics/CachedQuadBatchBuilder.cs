@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Graphics;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Graphics
 {
     public abstract class CachedQuadBatchBuilder<TVertex> : IDisposable
         where TVertex : struct, IVertex

@@ -138,9 +138,9 @@ namespace TilemapTools
             var tempBlocks = Blocks;
             Blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
 
-            foreach (var block in tempBlocks)
+            for (int i = 0; i < Blocks.Count; i++)
             {
-                foreach (var cell in block)
+                foreach (var cell in Blocks[i])
                 {
                     this[cell.X, cell.Y] = cell.Content;
                 }
@@ -155,9 +155,9 @@ namespace TilemapTools
 
         IEnumerator<CellLocationPair<TCell>> IEnumerable<CellLocationPair<TCell>>.GetEnumerator()
         {
-            foreach (var block in Blocks)
+            for (int i = 0; i < Blocks.Count; i++)
             {
-                foreach (var cell in block)
+                foreach (var cell in Blocks[i])
                 {
                     yield return cell;
                 }

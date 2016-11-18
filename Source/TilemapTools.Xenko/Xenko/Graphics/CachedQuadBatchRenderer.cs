@@ -8,7 +8,7 @@ using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Graphics
 {
     public class CachedQuadBatchRenderer
     {

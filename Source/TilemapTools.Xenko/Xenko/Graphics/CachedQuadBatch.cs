@@ -8,7 +8,7 @@ using SiliconStudio.Core;
 
 using Buffer = SiliconStudio.Xenko.Graphics.Buffer;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Graphics
 {
     public class CachedQuadBatch : IDisposable
     {
