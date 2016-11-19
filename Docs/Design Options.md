@@ -1,4 +1,4 @@
-## TileMapComponent Design Document
+## TileMapComponent Design Options
 
 
 **THIS IS A DRAFT**
