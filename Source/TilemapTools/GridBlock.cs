@@ -133,7 +133,7 @@ namespace TilemapTools
         }
     }
 
-    public class GridBlock
+    public static class GridBlock
     {
         public const int DefaultBlockSize = 16;
 

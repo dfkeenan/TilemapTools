@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\TilemapTools.Xenko.Common.props" Condition="Exists('..\TilemapTools.Xenko.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -18,7 +19,6 @@
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <SiliconStudioPackageXenkoVersionOverride>1.8</SiliconStudioPackageXenkoVersionOverride>
     <SiliconStudioProjectType>Library</SiliconStudioProjectType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -481,6 +481,9 @@
       <Project>{a3654fc8-1510-450a-9f3b-aff0e0226eb8}</Project>
       <Name>TilemapTools</Name>
     </ProjectReference>
+    <!--<Reference Include="SiliconStudio.Core.Native">
+      <HintPath>$(SiliconStudioPackageXenkoPlatformBin)\SiliconStudio.Core.Native.dll</HintPath>
+    </Reference>-->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\CommonAssemblyInfo.cs" />
@@ -488,13 +491,18 @@
     <Compile Include="Xenko\Graphics\CachedQuadBatch.cs" />
     <Compile Include="Xenko\Graphics\CachedQuadBatchBuilder.cs" />
     <Compile Include="Xenko\Graphics\CachedQuadBatchRenderer.cs" />
+    <Compile Include="Xenko\Module.cs" />
     <Compile Include="Xenko\RenderTileMap.cs" />
+    <Compile Include="Xenko\Tile.cs" />
     <Compile Include="Xenko\Tiled\XenkoTileLookup.cs" />
+    <Compile Include="Xenko\TileGrid.cs" />
+    <Compile Include="Xenko\TileGridBlock.cs" />
     <Compile Include="Xenko\TileMapComponent.cs" />
     <Compile Include="Xenko\TileMapPipelinePlugin.cs" />
     <Compile Include="Xenko\TileMapProcessor.cs" />
     <Compile Include="Xenko\TileMapRendererProcessor.cs" />
     <Compile Include="Xenko\TileMapRenderFeature.cs" />
+    <Compile Include="Xenko\TileSet.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
