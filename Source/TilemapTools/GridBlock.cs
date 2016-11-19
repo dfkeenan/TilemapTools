@@ -9,22 +9,23 @@ namespace TilemapTools
     public class GridBlock<TCell, TCellSize> : IDisposable, IGridBlock<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
         where TCellSize : struct, IEquatable<TCellSize>
     {
-
+        private readonly IEqualityComparer<TCell> cellEqualityComparer;
         private int cellCount = 0;
 
         private TCell[] cells;
 
-        public GridBlock(int blockSize, ShortPoint location, Grid<TCell, TCellSize> grid)
+        public GridBlock(int blockSize, ShortPoint location, IEqualityComparer<TCell> cellEqualityComparer)
         {
-            Grid = grid;
+            if (cellEqualityComparer == null)
+                throw new ArgumentNullException(nameof(cellEqualityComparer));
+
             BlockSize = blockSize;
             Location = location;
             cells = new TCell[BlockSize * BlockSize];
+            this.cellEqualityComparer = cellEqualityComparer;
         }
 
         public int BlockSize { get; }
-
-        public Grid<TCell, TCellSize> Grid { get; }
 
         public bool IsEmpty => cellCount == 0;
 
@@ -43,11 +44,11 @@ namespace TilemapTools
             {
                 var index = y * BlockSize + x;
 
-                if (!Grid.CellEqualityComparer.Equals(cells[index], value))
+                if (!cellEqualityComparer.Equals(cells[index], value))
                 {
-                    if (Grid.CellEqualityComparer.Equals(value , default(TCell)))
+                    if (cellEqualityComparer.Equals(value , default(TCell)))
                         cellCount -= 1;
-                    else if (Grid.CellEqualityComparer.Equals(cells[index], default(TCell)))
+                    else if (cellEqualityComparer.Equals(cells[index], default(TCell)))
                         cellCount += 1;
 
                     OnCellContentChanged(x, y);
@@ -77,7 +78,7 @@ namespace TilemapTools
             return GetEnumerator();
         }
 
-        public virtual void OnCellSizeChanged(TCellSize cellSize)
+        internal protected virtual void OnCellSizeChanged(TCellSize cellSize)
         {
             
         }

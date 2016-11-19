@@ -48,7 +48,7 @@ namespace TilemapTools
             }
         }
 
-        internal IEqualityComparer<TCell> CellEqualityComparer { get; }
+        protected IEqualityComparer<TCell> CellEqualityComparer { get; }
 
         protected GridBlockCollection<IGridBlock<TCell, TCellSize>> Blocks { get; private set; }
 
@@ -117,7 +117,7 @@ namespace TilemapTools
 
         protected virtual IGridBlock<TCell, TCellSize> CreateBlock(ShortPoint blockLocation)
         {
-            return new GridBlock<TCell, TCellSize>(BlockSize, blockLocation, this);
+            return new GridBlock<TCell, TCellSize>(BlockSize, blockLocation, CellEqualityComparer);
         }
 
         protected virtual void OnBlockSizeChanged()
@@ -127,7 +127,7 @@ namespace TilemapTools
 
         protected virtual void OnCellSizeChanged()
         {
-            Blocks.ForEach(b => b.OnCellSizeChanged(this.cellSize));
+            Blocks.ForEach(b => (b as GridBlock<TCell,TCellSize>)?.OnCellSizeChanged(this.cellSize));
         }
 
         protected void ResizeBlocks()

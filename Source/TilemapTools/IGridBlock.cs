@@ -17,10 +17,6 @@ namespace TilemapTools
     public interface IGridBlock<TCell, TCellSize> : IGridBlock, IEnumerable<CellLocationPair<TCell>>
         where TCellSize : struct, IEquatable<TCellSize>
     {
-        Grid<TCell, TCellSize> Grid { get; }
-
         TCell this[int x, int y] { get; set; }
-
-        void OnCellSizeChanged(TCellSize cellSize);
     }
 }
