@@ -18,7 +18,7 @@ namespace TilemapTools
             blockSize = GridBlock.DefaultBlockSize;
         }
 
-        public int BlockSize
+        public virtual int BlockSize
         {
             get { return blockSize; }
             set
