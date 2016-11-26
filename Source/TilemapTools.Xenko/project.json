@@ -5,7 +5,10 @@
     "NETStandard.Library": "1.6.1"
   },
   "frameworks": {
-    "netstandard1.4": { },
-    "net46": { }
+    "netstandard1.4": {
+      "dependencies": {
+        
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using SiliconStudio.Xenko.Rendering;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Rendering
 {
     public class TileMapRenderFeature : RootRenderFeature
     {
@@ -21,16 +21,16 @@ namespace TilemapTools.Xenko
                 var renderNodeReference = renderViewStage.SortedRenderNodes[index].RenderNode;
                 var renderNode = GetRenderNode(renderNodeReference);
 
-                var renderSprite = (RenderTileMap)renderNode.RenderObject;
+                var renderTileMap = (RenderTileMap)renderNode.RenderObject;
 
-                var tileMapComp = renderSprite.TileMapComponent;
-                var transfoComp = renderSprite.TransformComponent;
+                var tileMapComp = renderTileMap.TileMapComponent;
+                var transformComp = renderTileMap.TransformComponent;
 
                 var grid = tileMapComp.Grid;
                 if (grid == null)
                     continue;
 
-                var world = renderSprite.TransformComponent.WorldMatrix;
+                var world = renderTileMap.TransformComponent.WorldMatrix;
                 var viewProjection = renderView.ViewProjection;
 
 

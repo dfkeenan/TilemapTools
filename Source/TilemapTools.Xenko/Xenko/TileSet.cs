@@ -15,57 +15,54 @@ namespace TilemapTools.Xenko
     [DataSerializerGlobal(typeof(ReferenceSerializer<TileSet>), Profile = "Content")]
     [ContentSerializer(typeof(DataContentSerializer<TileSet>))]
     public class TileSet
-    {
-        public const int DefaultTileSize = 32;
-
-        /// <summary>
-        /// The tile width in pixels.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(10)]
-        [Display("Tile Width")]
-        [DefaultValue(DefaultTileSize)]
-
-        public int TileWidth { get; set; }
-
-        /// <summary>
-        /// The tile height in pixels.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(20)]
-        [Display("Block Height")]
-        [DefaultValue(DefaultTileSize)]
-        public int TileHeight { get; set; }
-
-        /// <summary>
-        /// The amount of padding around the perimeter of the tile sheet (in pixels).
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(30)]
-        [Display("Margin")]
-        public int Margin { get; set; }
-
-        /// <summary>
-        /// The amount of padding between tiles in the tile sheet (in pixels).
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(40)]
-        [Display("Spacing")]
-        public int Spacing { get; set; }
-
-        /// <summary>
-        /// The texture of the <see cref="TileSet"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(50)]
-        [Display("Tile Sheet")]
-        public Texture TileSheet { get; set; }
-
+    {     
         /// <summary>
         /// The list of tiles.
         /// </summary>
-        //[MemberCollection(NotNullItems = true)] //TODO: 1.9
+        [MemberCollection(NotNullItems = true)]
         public List<Tile> Tiles { get; } = new List<Tile>();
 
+        /// <summary>
+        /// Find the index of a tile in the set using its name.
+        /// </summary>
+        /// <param name="name">The name of the tile</param>
+        /// <returns>The index value</returns>
+        /// <remarks>If two tiles have the provided name then the first tile found is returned</remarks>
+        /// <exception cref="KeyNotFoundException">No tile in the set have the given name</exception>
+        public int FindImageIndex(string name)
+        {
+            if (Tiles != null)
+            {
+                for (int i = 0; i < Tiles.Count; i++)
+                {
+                    if (Tiles[i].Name == name)
+                        return i;
+                }
+            }
+
+            throw new KeyNotFoundException(name);
+        }
+
+        /// <summary>
+        /// Gets or sets the image of the group at <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The image index</param>
+        /// <returns>The image</returns>
+        public Tile this[int index]
+        {
+            get { return Tiles[index]; }
+            set { Tiles[index] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the image of the group having the provided <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name of the image</param>
+        /// <returns>The image</returns>
+        public Tile this[string name]
+        {
+            get { return Tiles[FindImageIndex(name)]; }
+            set { Tiles[FindImageIndex(name)] = value; }
+        }
     }
 }

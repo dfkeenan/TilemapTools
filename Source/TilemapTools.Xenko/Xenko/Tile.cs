@@ -12,6 +12,9 @@ namespace TilemapTools.Xenko
     [DataSerializerGlobal(typeof(ReferenceSerializer<Tile>), Profile = "Content")]
     public class Tile
     {
-
+        /// <summary>
+        /// Gets or sets the name of the tile.
+        /// </summary>
+        public string Name { get; set; }
     }
 }

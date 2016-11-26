@@ -11,16 +11,18 @@ namespace TilemapTools
     {
         private readonly IEqualityComparer<TCell> cellEqualityComparer;
         private int cellCount = 0;
-
+        private TCellSize cellSize;
         private TCell[] cells;
 
-        public GridBlock(int blockSize, ShortPoint location, IEqualityComparer<TCell> cellEqualityComparer)
+        public GridBlock(int blockSize, TCellSize cellSize, ShortPoint location, IEqualityComparer<TCell> cellEqualityComparer)
         {
             if (cellEqualityComparer == null)
                 throw new ArgumentNullException(nameof(cellEqualityComparer));
 
             BlockSize = blockSize;
             Location = location;
+            this.cellSize = cellSize;
+
             cells = new TCell[BlockSize * BlockSize];
             this.cellEqualityComparer = cellEqualityComparer;
         }
@@ -32,6 +34,20 @@ namespace TilemapTools
         public ShortPoint Location { get; }
 
         public int CellCount => cellCount;
+
+        public TCellSize CellSize
+        {
+            get { return cellSize; }
+            set
+            {
+                if (cellSize.Equals(value))
+                    return;
+
+                cellSize = value;
+
+                OnCellSizeChanged();
+            }
+        }
 
         public TCell this[int x, int y]
         {
@@ -78,9 +94,9 @@ namespace TilemapTools
             return GetEnumerator();
         }
 
-        internal protected virtual void OnCellSizeChanged(TCellSize cellSize)
+        protected virtual void OnCellSizeChanged()
         {
-            
+
         }
 
         struct Enumerator : IEnumerator<CellLocationPair<TCell>>

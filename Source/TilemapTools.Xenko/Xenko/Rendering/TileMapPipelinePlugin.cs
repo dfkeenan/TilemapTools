@@ -1,7 +1,7 @@
 ﻿using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Rendering
 {
     public class TileMapPipelinePlugin : PipelinePlugin<TileMapRenderFeature>
     {

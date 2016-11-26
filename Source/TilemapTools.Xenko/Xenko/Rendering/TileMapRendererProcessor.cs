@@ -3,7 +3,7 @@ using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Rendering;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Rendering
 {
     public class TileMapRendererProcessor : EntityProcessor<TileMapComponent, RenderTileMap>, IEntityComponentRenderProcessor
     {

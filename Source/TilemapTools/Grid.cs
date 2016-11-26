@@ -117,7 +117,7 @@ namespace TilemapTools
 
         protected virtual IGridBlock<TCell, TCellSize> CreateBlock(ShortPoint blockLocation)
         {
-            return new GridBlock<TCell, TCellSize>(BlockSize, blockLocation, CellEqualityComparer);
+            return new GridBlock<TCell, TCellSize>(BlockSize, CellSize, blockLocation, CellEqualityComparer);
         }
 
         protected virtual void OnBlockSizeChanged()
@@ -127,7 +127,13 @@ namespace TilemapTools
 
         protected virtual void OnCellSizeChanged()
         {
-            Blocks.ForEach(b => (b as GridBlock<TCell,TCellSize>)?.OnCellSizeChanged(this.cellSize));
+            for (int i = 0; i < Blocks.Count; i++)
+            {
+                var block = Blocks[i] as GridBlock<TCell, TCellSize>;
+
+                if (block != null)
+                    block.CellSize = cellSize;
+            }
         }
 
         protected void ResizeBlocks()

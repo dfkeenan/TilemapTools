@@ -72,5 +72,35 @@ namespace TilemapTools.Xenko
         {
             throw new NotImplementedException();
         }
+
+        public ISet<TileGridBlock> FindVisibleGridBlocks(BoundingFrustum localFrustum)
+        {
+            var result = new HashSet<TileGridBlock>();
+
+            for (int i = 0; i < this.Blocks.Count; i++)
+            {
+                var block = Blocks[i] as TileGridBlock;
+
+                if (block == null) continue;
+
+                var bounds = block.LocalBounds;
+
+                if (CollisionHelper.FrustumContainsBox(ref localFrustum, ref bounds))
+                    result.Add(block);
+            }
+            return result;
+        }
+
+        public ISet<TileGridBlock> FindVisibleGridBlocks(Matrix world, Matrix viewProjection)
+        {
+            Matrix inverseWorld = world;
+
+            Matrix.Invert(ref world, out inverseWorld);
+
+            var matrix = inverseWorld * viewProjection;
+            var frustum = new BoundingFrustum(ref matrix);
+
+            return FindVisibleGridBlocks(frustum);
+        }
     }
 }
