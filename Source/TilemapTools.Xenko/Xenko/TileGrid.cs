@@ -70,10 +70,10 @@ namespace TilemapTools.Xenko
 
         protected override IGridBlock<Tile, Vector2> CreateBlock(ShortPoint blockLocation)
         {
-            throw new NotImplementedException();
+            return new TileGridBlock(BlockSize, CellSize, blockLocation, CellEqualityComparer);
         }
 
-        public ISet<TileGridBlock> FindVisibleGridBlocks(BoundingFrustum localFrustum)
+        public ISet<TileGridBlock> FindVisibleGridBlocks(ref BoundingFrustum localFrustum)
         {
             var result = new HashSet<TileGridBlock>();
 
@@ -91,16 +91,16 @@ namespace TilemapTools.Xenko
             return result;
         }
 
-        public ISet<TileGridBlock> FindVisibleGridBlocks(Matrix world, Matrix viewProjection)
+        public ISet<TileGridBlock> FindVisibleGridBlocks(ref Matrix world, ref Matrix viewProjection)
         {
-            Matrix inverseWorld = world;
+            Matrix inverseWorld;
 
             Matrix.Invert(ref world, out inverseWorld);
 
             var matrix = inverseWorld * viewProjection;
             var frustum = new BoundingFrustum(ref matrix);
 
-            return FindVisibleGridBlocks(frustum);
+            return FindVisibleGridBlocks(ref frustum);
         }
     }
 }

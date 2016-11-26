@@ -9,7 +9,7 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SharpTiled")]
+[assembly: AssemblyProduct("TilemapTools")]
 [assembly: AssemblyCopyright("Copyright © 2016 - Daniel Keenan")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

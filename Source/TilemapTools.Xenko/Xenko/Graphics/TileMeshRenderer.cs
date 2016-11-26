@@ -10,7 +10,7 @@ using SiliconStudio.Xenko.Rendering;
 
 namespace TilemapTools.Xenko.Graphics
 {
-    public class CachedQuadBatchRenderer
+    public class TileMeshRenderer
     {
         private EffectInstance DefaultEffect;
 
@@ -26,7 +26,7 @@ namespace TilemapTools.Xenko.Graphics
 
         public ParameterCollection Parameters => Effect.Parameters;
 
-        public CachedQuadBatchRenderer(GraphicsDevice graphicsDevice)
+        public TileMeshRenderer(GraphicsDevice graphicsDevice)
         {
             if (graphicsDevice == null)
                 throw new ArgumentNullException(nameof(graphicsDevice));
@@ -60,7 +60,7 @@ namespace TilemapTools.Xenko.Graphics
 
         }
 
-        public void Begin(GraphicsContext graphicsContex, Matrix viewProjection)
+        public void Begin(GraphicsContext graphicsContex, Matrix world, Matrix viewProjection)
         {
             CheckEndHasBeenCalled();
 
@@ -82,22 +82,22 @@ namespace TilemapTools.Xenko.Graphics
 
             GraphicsContext.CommandList.SetPipelineState(MutablePipeline.CurrentState);
 
-            hasBegun = true;
-        }
-        
-        public void Draw(CachedQuadBatch batch, Matrix world)
-        {
-            CheckBeginHasBeenCalled();
-
             var wvp = world * ViewProjectionMatrix;
 
             Effect.Apply(GraphicsContext);
             Parameters.Set(SpriteBaseKeys.MatrixTransform, wvp);
 
-            GraphicsContext.CommandList.SetVertexBuffer(0, batch.VertexBuffer, 0, batch.VertexSize);
-            GraphicsContext.CommandList.SetIndexBuffer(batch.IndexBuffer, 0, false);
+            hasBegun = true;
+        }
+        
+        public void Draw(TileMeshDraw tileMeshDraw)
+        {
+            CheckBeginHasBeenCalled();
 
-            foreach (var range in batch.Ranges)
+            GraphicsContext.CommandList.SetVertexBuffer(0, tileMeshDraw.VertexBuffer.Buffer, tileMeshDraw.VertexBuffer.Offset, tileMeshDraw.VertexBuffer.Stride);
+            GraphicsContext.CommandList.SetIndexBuffer(tileMeshDraw.IndexBuffer.Buffer, 0, tileMeshDraw.IndexBuffer.Is32Bit);
+
+            foreach (var range in tileMeshDraw.Ranges)
             {
                 if (textureUpdater.HasValue)
                     Parameters.Set(textureUpdater.Value, range.Texture);

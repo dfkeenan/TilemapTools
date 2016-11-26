@@ -487,12 +487,15 @@
     </Reference>-->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Xenko\Graphics\OrthogonalTileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\OrthogonalTileGrid.cs" />
-    <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xenko\Graphics\CachedQuadBatch.cs" />
-    <Compile Include="Xenko\Graphics\CachedQuadBatchBuilder.cs" />
-    <Compile Include="Xenko\Graphics\CachedQuadBatchRenderer.cs" />
+    <Compile Include="Xenko\Graphics\TileMeshDraw.cs" />
+    <Compile Include="Xenko\Graphics\TileMeshDrawBuilder.cs" />
+    <Compile Include="Xenko\Graphics\TileMeshRenderer.cs" />
     <Compile Include="Xenko\Module.cs" />
     <Compile Include="Xenko\Rendering\RenderTileMap.cs" />
     <Compile Include="Xenko\Tile.cs" />

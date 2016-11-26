@@ -26,13 +26,20 @@ namespace TilemapTools.Xenko.Rendering
                 if (renderTileMap.Enabled)
                 {
                     //TODO: Is this where meshes should be updated/generated??
+                    var grid = tileMapStateKeyPair.Key.Grid;
+
+                    var viewProjection = context.GetCurrentCamera().ViewProjectionMatrix;
+                    var world = renderTileMap.TransformComponent.WorldMatrix;
+
+                    var visibleBlocks = grid.FindVisibleGridBlocks(ref world, ref viewProjection);
 
 
-                    var transform = renderTileMap.TransformComponent;
 
-                    // TODO GRAPHICS REFACTOR: Proper bounding box. Reuse calculations in sprite batch.
+
+
+                    // TODO GRAPHICS REFACTOR: Proper bounding box.
                     // For now we only set a center for sorting, but no extent (which disable culling)
-                    renderTileMap.BoundingBox = new BoundingBoxExt { Center = transform.WorldMatrix.TranslationVector };
+                    renderTileMap.BoundingBox = new BoundingBoxExt { Center = world.TranslationVector };
                     renderTileMap.RenderGroup = renderTileMap.TileMapComponent.Entity.Group;
                 }
             }
