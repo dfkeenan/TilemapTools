@@ -7,7 +7,6 @@
   "frameworks": {
     "netstandard1.4": {
       "dependencies": {
-        
       }
     }
   }

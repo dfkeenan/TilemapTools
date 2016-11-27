@@ -1,5 +1,6 @@
 ﻿using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Rendering;
+using TilemapTools.Xenko.Graphics;
 
 namespace TilemapTools.Xenko.Rendering
 {
@@ -8,5 +9,6 @@ namespace TilemapTools.Xenko.Rendering
     {
         public TileMapComponent TileMapComponent;
         public TransformComponent TransformComponent;
+        public TileMesh TileMesh;
     }
 }

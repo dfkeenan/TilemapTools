@@ -73,9 +73,10 @@ namespace TilemapTools.Xenko
             return new TileGridBlock(BlockSize, CellSize, blockLocation, CellEqualityComparer);
         }
 
-        public ISet<TileGridBlock> FindVisibleGridBlocks(ref BoundingFrustum localFrustum)
+        public void FindVisibleGridBlocks(ref BoundingFrustum localFrustum, IList<TileGridBlock> result)
         {
-            var result = new HashSet<TileGridBlock>();
+            if (result == null)
+                throw new ArgumentNullException(nameof(result));
 
             for (int i = 0; i < this.Blocks.Count; i++)
             {
@@ -88,10 +89,9 @@ namespace TilemapTools.Xenko
                 if (CollisionHelper.FrustumContainsBox(ref localFrustum, ref bounds))
                     result.Add(block);
             }
-            return result;
         }
 
-        public ISet<TileGridBlock> FindVisibleGridBlocks(ref Matrix world, ref Matrix viewProjection)
+        public void FindVisibleGridBlocks(ref Matrix world, ref Matrix viewProjection, IList<TileGridBlock> result)
         {
             Matrix inverseWorld;
 
@@ -100,7 +100,7 @@ namespace TilemapTools.Xenko
             var matrix = inverseWorld * viewProjection;
             var frustum = new BoundingFrustum(ref matrix);
 
-            return FindVisibleGridBlocks(ref frustum);
+            FindVisibleGridBlocks(ref frustum, result);
         }
     }
 }
