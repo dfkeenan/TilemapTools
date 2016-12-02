@@ -27,11 +27,15 @@ namespace TilemapTools.Xenko.Rendering
                 if (renderTileMap.Enabled)
                 {
                     //TODO: Is this where meshes should be updated/generated??
-                    var world = renderTileMap.TransformComponent.WorldMatrix;
-                    
+                    if(renderTileMap.TileMesh == null)
+                    {
+                        renderTileMap.TileMesh = new TileMesh(renderTileMap.Grid.CreateMeshDrawBuilder());
+                    }
+
 
                     // TODO GRAPHICS REFACTOR: Proper bounding box.
                     // For now we only set a center for sorting, but no extent (which disable culling)
+                    var world = renderTileMap.TransformComponent.WorldMatrix;
                     renderTileMap.BoundingBox = new BoundingBoxExt { Center = world.TranslationVector };
                     renderTileMap.RenderGroup = renderTileMap.TileMapComponent.Entity.Group;
                 }
@@ -44,7 +48,7 @@ namespace TilemapTools.Xenko.Rendering
             {
                 TileMapComponent = component,
                 TransformComponent = entity.Transform,
-                TileMesh = new TileMesh(),
+                Grid = component.Grid,
             };
         }
 
@@ -52,6 +56,7 @@ namespace TilemapTools.Xenko.Rendering
         {
             return
                 component == associatedData.TileMapComponent &&
+                component.Grid == associatedData.Grid &&
                 entity.Transform == associatedData.TransformComponent;
         }
 
@@ -62,7 +67,8 @@ namespace TilemapTools.Xenko.Rendering
 
         protected override void OnEntityComponentRemoved(Entity entity, TileMapComponent component, RenderTileMap data)
         {
-            
+            data.TileMesh?.Dispose();
+            data.TileMesh = null;
             VisibilityGroup.RenderObjects.Remove(data);
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TilemapTools
 {
-    public interface IGridBlock : IDisposable
+    public interface IGridBlock
     {
         int BlockSize { get; }
 
@@ -14,9 +14,9 @@ namespace TilemapTools
         ShortPoint Location { get; }
     }
 
-    public interface IGridBlock<TCell, TCellSize> : IGridBlock, IEnumerable<CellLocationPair<TCell>>
-        where TCellSize : struct, IEquatable<TCellSize>
+    public interface IGridBlock<TCell> : IGridBlock, IEnumerable<CellLocationPair<TCell>>
     {
-        TCell this[int x, int y] { get; set; }
+        TCell GetCell(int x, int y);
+        bool SetCell(int x, int y, TCell value);
     }
 }

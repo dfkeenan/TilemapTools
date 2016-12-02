@@ -6,22 +6,19 @@ using static System.Math;
 
 namespace TilemapTools
 {
-    public class GridBlock<TCell, TCellSize> : IDisposable, IGridBlock<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
-        where TCellSize : struct, IEquatable<TCellSize>
+    public class GridBlock<TCell> : IGridBlock<TCell>, IEnumerable<CellLocationPair<TCell>>
     {
         private readonly IEqualityComparer<TCell> cellEqualityComparer;
         private int cellCount = 0;
-        private TCellSize cellSize;
         private TCell[] cells;
 
-        public GridBlock(int blockSize, TCellSize cellSize, ShortPoint location, IEqualityComparer<TCell> cellEqualityComparer)
+        public GridBlock(int blockSize, ShortPoint location, IEqualityComparer<TCell> cellEqualityComparer)
         {
             if (cellEqualityComparer == null)
                 throw new ArgumentNullException(nameof(cellEqualityComparer));
 
             BlockSize = blockSize;
             Location = location;
-            this.cellSize = cellSize;
 
             cells = new TCell[BlockSize * BlockSize];
             this.cellEqualityComparer = cellEqualityComparer;
@@ -35,53 +32,35 @@ namespace TilemapTools
 
         public int CellCount => cellCount;
 
-        public TCellSize CellSize
+        public TCell GetCell(int x, int y)
         {
-            get { return cellSize; }
-            set
-            {
-                if (cellSize.Equals(value))
-                    return;
-
-                cellSize = value;
-
-                OnCellSizeChanged();
-            }
+            return cells[y * BlockSize + x];
         }
 
-        public TCell this[int x, int y]
+        public bool SetCell(int x, int y, TCell value)
         {
-            get
+            bool changed = false;
+
+            var index = y * BlockSize + x;
+
+            if (!cellEqualityComparer.Equals(cells[index], value))
             {
-                return cells[y * BlockSize + x];
+                if (cellEqualityComparer.Equals(value, default(TCell)))
+                    cellCount -= 1;
+                else if (cellEqualityComparer.Equals(cells[index], default(TCell)))
+                    cellCount += 1;
+
+                changed = true;
+                OnCellContentChanged(x, y);
             }
 
-            set
-            {
-                var index = y * BlockSize + x;
-
-                if (!cellEqualityComparer.Equals(cells[index], value))
-                {
-                    if (cellEqualityComparer.Equals(value , default(TCell)))
-                        cellCount -= 1;
-                    else if (cellEqualityComparer.Equals(cells[index], default(TCell)))
-                        cellCount += 1;
-
-                    OnCellContentChanged(x, y);
-                }
-
-                cells[index] = value;
-            }
+            cells[index] = value;
+            return changed;
         }
 
         protected virtual void OnCellContentChanged(int x, int y)
         {
 
-        }
-
-        public virtual void Dispose()
-        {
-            
         }
 
         public IEnumerator<CellLocationPair<TCell>> GetEnumerator()
@@ -93,19 +72,14 @@ namespace TilemapTools
         {
             return GetEnumerator();
         }
-
-        protected virtual void OnCellSizeChanged()
-        {
-
-        }
-
+ 
         struct Enumerator : IEnumerator<CellLocationPair<TCell>>
         {
             private int index;
-            private GridBlock<TCell,TCellSize> gridBlock;
+            private GridBlock<TCell> gridBlock;
             private CellLocationPair<TCell> current;
 
-            public Enumerator(GridBlock<TCell, TCellSize> gridBlock)
+            public Enumerator(GridBlock<TCell> gridBlock)
             {
                 index = 0;
                 current = default(CellLocationPair<TCell>);
@@ -163,7 +137,7 @@ namespace TilemapTools
         //+-------+-------+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetBlockCellLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockLocation, out int cellX, out int cellY)
+        public static void GetBlockCellLocation(ref int x, ref int y, ref int blockSize, out ShortPoint blockLocation, out int cellX, out int cellY)
         {
             var signX = Sign(x);
             var signY = Sign(y);
@@ -188,7 +162,7 @@ namespace TilemapTools
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetCellLocation(ref int index, ref int blockSize, ref ShortPoint blockLocation, out int x, out int y)
+        public static void GetCellLocation(ref int index, ref int blockSize, ref ShortPoint blockLocation, out int x, out int y)
         {
             int localX = index % blockSize;
             int localY = index / blockSize;
@@ -207,6 +181,31 @@ namespace TilemapTools
 
             y = topCellY - localY;
             
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void CalculateEdges(ref int blockSize, ref ShortPoint location, out int left, out int top, out int right, out int bottom)
+        {
+            if (location.X < 0)
+            {
+                left = location.X * blockSize;
+            }
+            else
+            {
+                left = (location.X - 1) * blockSize;
+            }
+            right = left + blockSize;
+
+
+            if (location.Y < 0)
+            {
+                top = (location.Y + 1) * blockSize;
+            }
+            else
+            {
+                top = location.Y * blockSize;
+            }
+            bottom = top - blockSize;
         }
     }
 }

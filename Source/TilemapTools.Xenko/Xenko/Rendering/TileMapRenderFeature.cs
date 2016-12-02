@@ -9,6 +9,7 @@ namespace TilemapTools.Xenko.Rendering
     public class TileMapRenderFeature : RootRenderFeature
     {
         private TileMeshRenderer tileMeshRenderer;
+        private List<TileGridBlock> visibleBlocks = new List<TileGridBlock>();
 
         public override Type SupportedRenderObjectType => typeof(RenderTileMap);
 
@@ -27,8 +28,6 @@ namespace TilemapTools.Xenko.Rendering
         public override void Draw(RenderDrawContext context, RenderView renderView, RenderViewStage renderViewStage, int startIndex, int endIndex)
         {
             base.Draw(context, renderView, renderViewStage, startIndex, endIndex);
-
-            var visibleBlocks = new List<TileGridBlock>();
 
             for (var index = startIndex; index < endIndex; index++)
             {
@@ -55,7 +54,7 @@ namespace TilemapTools.Xenko.Rendering
                     var block = visibleBlocks[i];
                     TileMeshDraw tileMeshDraw;
 
-                    if(tileMesh.TryGetTileMeshDraw(block, out tileMeshDraw))
+                    if(tileMesh.TryGetTileMeshDraw(block, context.GraphicsDevice, out tileMeshDraw))
                     {
                         tileMeshRenderer.Draw(tileMeshDraw);
                     }
@@ -65,6 +64,11 @@ namespace TilemapTools.Xenko.Rendering
                 visibleBlocks.Clear();
             }
         }
-        
+        protected override void Destroy()
+        {
+            base.Destroy();
+            visibleBlocks.Clear();
+        }
+
     }
 }

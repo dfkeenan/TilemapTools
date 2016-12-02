@@ -490,6 +490,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Xenko\Graphics\ITileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\OrthogonalTileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\TileMesh.cs" />
     <Compile Include="Xenko\OrthogonalTileGrid.cs" />

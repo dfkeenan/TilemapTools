@@ -33,10 +33,9 @@ namespace TilemapTools
         /// Removes all the elements that match the conditions defined by the specified predicate, optionally disposing them.
         /// </summary>
         /// <param name="match">The <see cref="Predicate{TGridBlock}"/> delegate that defines the conditions of the elements to remove.</param>
-        /// <param name="dispose">When <c>true</c> disposes grid block on removal./></param>
         /// <returns>The number of elements removed from the <see cref="GridBlockCollection{TGridBlock}"/>.</returns>
         /// <exception cref="ArgumentNullException">match is <c>null</c></exception>
-        public int RemoveAll(Predicate<TGridBlock> match, bool dispose = true)
+        public int RemoveAll(Predicate<TGridBlock> match)
         {
             if (match == null)
                 throw new ArgumentNullException(nameof(match)); 
@@ -46,12 +45,7 @@ namespace TilemapTools
             for (int i = this.Count - 1; i >= 0; i--)
             {
                 if(match(this[i]))
-                {
-                    if(dispose)
-                    {
-                        this[i].Dispose();
-                    }
-
+                {                   
                     RemoveAt(i);
                     count++;
                 }

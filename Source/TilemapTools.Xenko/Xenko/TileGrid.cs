@@ -8,13 +8,14 @@ using SiliconStudio.Core;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Core.Serialization;
 using SiliconStudio.Core.Serialization.Contents;
+using TilemapTools.Xenko.Graphics;
 
 namespace TilemapTools.Xenko
 {
     //[DataSerializerGlobal(typeof(ReferenceSerializer<TileGrid>), Profile = "Content")]
     //[ContentSerializer(typeof(DataContentSerializer<TileGrid>))]
     [DataContract("TileGrid")]
-    public abstract class TileGrid: Grid<Tile,Vector2>
+    public abstract class TileGrid: Grid<Tile, Vector2, TileGridBlock>        
     {
         public const int DefaultCellSize = 1;
 
@@ -68,10 +69,25 @@ namespace TilemapTools.Xenko
             }
         }
 
-        protected override IGridBlock<Tile, Vector2> CreateBlock(ShortPoint blockLocation)
+        protected override TileGridBlock CreateBlock(ShortPoint blockLocation)
         {
-            return new TileGridBlock(BlockSize, CellSize, blockLocation, CellEqualityComparer);
+            return new TileGridBlock(BlockSize, blockLocation, CellEqualityComparer)
+            {
+                LocalBounds = CalculateBounds(ref blockLocation),
+            };
         }
+        protected override void OnCellSizeChanged()
+        {
+            for (int i = 0; i < this.Blocks.Count; i++)
+            {
+                var block = Blocks[i];
+                var location = block.Location;
+
+                block.LocalBounds = CalculateBounds(ref location);                
+            }
+        }
+
+        public abstract ITileMeshDrawBuilder CreateMeshDrawBuilder();
 
         public void FindVisibleGridBlocks(ref BoundingFrustum localFrustum, IList<TileGridBlock> result)
         {
@@ -102,5 +118,24 @@ namespace TilemapTools.Xenko
 
             FindVisibleGridBlocks(ref frustum, result);
         }
+
+        protected virtual BoundingBoxExt CalculateBounds(ref ShortPoint location)
+        {        
+            var blockSize = BlockSize;
+            int left, top, right, bottom;
+
+            GridBlock.CalculateEdges(ref blockSize, ref location, out left, out top, out right, out bottom);
+
+            var size = CellSize;
+            var topLeft = new Vector3(left * size.X, top * size.Y, 0);
+            var bottomRight = new Vector3(right * size.X, bottom * size.Y, 0);
+            Vector3 min, max;
+
+            Vector3.Min(ref topLeft, ref bottomRight, out min);
+            Vector3.Max(ref topLeft, ref bottomRight, out max);
+
+            return new BoundingBoxExt(min, max);
+        }
+   
     }
 }

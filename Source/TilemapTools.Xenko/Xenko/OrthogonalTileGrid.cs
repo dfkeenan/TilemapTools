@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SiliconStudio.Core;
 using TilemapTools.Xenko;
+using TilemapTools.Xenko.Graphics;
 
 namespace TilemapTools.Xenko
 {
@@ -12,5 +13,9 @@ namespace TilemapTools.Xenko
     [DataContract("OrthogonalTileGrid")]
     public class OrthogonalTileGrid : TileGrid
     {
+        public override ITileMeshDrawBuilder CreateMeshDrawBuilder()
+        {
+            return new OrthogonalTileMeshDrawBuilder();
+        }
     }
 }

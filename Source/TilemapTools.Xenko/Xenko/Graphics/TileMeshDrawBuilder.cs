@@ -8,8 +8,7 @@ using SiliconStudio.Xenko.Graphics;
 
 namespace TilemapTools.Xenko.Graphics
 {
-    public abstract class TileMeshDrawBuilder<TVertex> : IDisposable
-        where TVertex : struct, IVertex
+    public abstract class TileMeshDrawBuilder<TVertex> : IDisposable, ITileMeshDrawBuilder where TVertex : struct, IVertex
     {
         private readonly Dictionary<Texture, List<Tuple<Rectangle, RectangleF>>> tilesByTexture = new Dictionary<Texture, List<Tuple<Rectangle, RectangleF>>>();
         private readonly VertexDeclaration layout;
@@ -78,17 +77,12 @@ namespace TilemapTools.Xenko.Graphics
 
             BuildIndicies(indices, tileCount);
 
-            return Build(graphicsDevice, vertices.ToArray(), indices.ToArray(), ranges);
+            return TileMeshDraw.New<TVertex>(graphicsDevice, layout,vertices.ToArray(), indices.ToArray(), ranges);
         }
 
         protected abstract void BuildIndicies(short[] indices, int tileCount);        
 
         protected abstract void BuildTile(List<TVertex> vertices, int textureWidth, int textureHeight, Rectangle source, RectangleF dest);
-
-        protected TileMeshDraw Build(GraphicsDevice graphicsDevice, TVertex[] vertices, short[] indices, IEnumerable<TileMeshDraw.DrawRange> ranges)
-        {
-            return TileMeshDraw.New<TVertex>(graphicsDevice, layout, vertices, indices, ranges);
-        }
 
         protected abstract TVertex CreateVertex(Vector2 source, Vector2 destination, Vector2 size);
 

@@ -8,61 +8,14 @@ using SiliconStudio.Core.Mathematics;
 
 namespace TilemapTools.Xenko
 {
-    public class TileGridBlock : GridBlock<Tile, Vector2>
+    public class TileGridBlock : GridBlock<Tile>
     {
-        public TileGridBlock(int blockSize, Vector2 cellSize, ShortPoint location, IEqualityComparer<Tile> cellEqualityComparer) : base(blockSize, cellSize, location, cellEqualityComparer)
+        public TileGridBlock(int blockSize, ShortPoint location, IEqualityComparer<Tile> cellEqualityComparer) : base(blockSize, location, cellEqualityComparer)
         {
-            CalculateBounds();
+            
         }
 
-        public BoundingBoxExt LocalBounds { get; private set; }
-
-        protected override void OnCellContentChanged(int x, int y)
-        {
-            base.OnCellContentChanged(x, y);
-        }
-
-        protected override void OnCellSizeChanged()
-        {
-            CalculateBounds();
-        }
-
-        private void CalculateBounds()
-        {
-            var blockSize = BlockSize;
-            var location = Location;
-
-            int left, top, right, bottom;
-
-            if (location.X < 0)
-            {
-                left = location.X * blockSize;
-            }
-            else
-            {
-                left = (location.X - 1) * blockSize;
-            }
-            right = left + blockSize;
-
-
-            if (location.Y < 0)
-            {
-                top = (location.Y + 1) * blockSize;
-            }
-            else
-            {
-                top = location.Y * blockSize;
-            }
-            bottom = top - blockSize;
-
-            var topLeft = new Vector3(left, top, 0);
-            var bottomRight = new Vector3(right, bottom, 0);
-            Vector3 min, max;
-
-            Vector3.Min(ref topLeft, ref bottomRight, out min);
-            Vector3.Max(ref topLeft, ref bottomRight, out max);
-
-            LocalBounds = new BoundingBoxExt(min, max);
-        }
+        public BoundingBoxExt LocalBounds { get; internal set; }
+                
     }
 }

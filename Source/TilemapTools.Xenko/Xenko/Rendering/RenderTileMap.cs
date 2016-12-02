@@ -10,5 +10,6 @@ namespace TilemapTools.Xenko.Rendering
         public TileMapComponent TileMapComponent;
         public TransformComponent TransformComponent;
         public TileMesh TileMesh;
+        public TileGrid Grid;
     }
 }

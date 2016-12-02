@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TilemapTools
 {
-    public class Grid<TCell, TCellSize> : IDisposable, IGrid<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
+    public abstract class Grid<TCell, TCellSize,TGridBlock> : IGrid<TCell, TCellSize>, IEnumerable<CellLocationPair<TCell>>
         where TCellSize : struct, IEquatable<TCellSize>
+        where TGridBlock : class, IGridBlock<TCell>
     {
         private int blockSize;
         private TCellSize cellSize;
@@ -14,7 +16,7 @@ namespace TilemapTools
         {
             CellEqualityComparer = cellEqualityComparer ?? EqualityComparer<TCell>.Default;
 
-            Blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
+            Blocks = new GridBlockCollection<TGridBlock>();
             blockSize = GridBlock.DefaultBlockSize;
         }
 
@@ -50,7 +52,7 @@ namespace TilemapTools
 
         protected IEqualityComparer<TCell> CellEqualityComparer { get; }
 
-        protected GridBlockCollection<IGridBlock<TCell, TCellSize>> Blocks { get; private set; }
+        protected GridBlockCollection<TGridBlock> Blocks { get; private set; }
 
         public TCell this[int x, int y]
         {
@@ -58,7 +60,7 @@ namespace TilemapTools
             {
                 CheckLocation(ref x, ref y);
 
-                IGridBlock<TCell, TCellSize> block = null;
+                TGridBlock block = null;
                 ShortPoint blockLocation = default(ShortPoint);
                 int cellX, cellY;
                 int blockSize = BlockSize;
@@ -67,7 +69,7 @@ namespace TilemapTools
 
                 if (Blocks.TryGetItem(blockLocation, out block))
                 {
-                    return block[cellX, cellY];
+                    return block.GetCell(cellX, cellY);
                 }
 
                 return default(TCell);
@@ -77,7 +79,7 @@ namespace TilemapTools
             {
                 CheckLocation(ref x, ref y);
 
-                IGridBlock<TCell, TCellSize> block = null;
+                TGridBlock block = null;
                 ShortPoint blockLocation = default(ShortPoint);
                 int tileX, tileY;
                 int blockSize = BlockSize;
@@ -91,34 +93,49 @@ namespace TilemapTools
                         return;
                     }
                     block = CreateBlock(blockLocation);
-                    Blocks.Add(block);
+                    AddBlock(block);
                 }
 
-                block[tileX, tileY] = value;
+                if (block.SetCell(tileX, tileY, value))
+                    OnCellContentChanged(tileX, tileY);
             }
         }
 
         public void ClearCell(int x, int y) => this[x, y] = default(TCell);
 
         /// <summary>
-        /// Removes Empty <see cref="GridBlock{TCell, TCellSize}"/>
+        /// Removes Empty grid blocks/>
         /// </summary>
-        public void TrimExcess() => Blocks.RemoveAll(b => b.IsEmpty, true);
-
-        public virtual void Dispose()
+        public void TrimExcess()
         {
-            foreach (var block in Blocks)
+            var remove = new HashSet<TGridBlock>();
+            for (int i = 0; i < Blocks.Count; i++)
             {
-                block.Dispose();
+                remove.Add(Blocks[i]);
+                OnBlockRemoved(Blocks[i]);
             }
 
-            Blocks.Clear();
+            Blocks.RemoveAll(remove.Contains);
         }
 
-        protected virtual IGridBlock<TCell, TCellSize> CreateBlock(ShortPoint blockLocation)
+        protected virtual void AddBlock(TGridBlock block)
         {
-            return new GridBlock<TCell, TCellSize>(BlockSize, CellSize, blockLocation, CellEqualityComparer);
+            Blocks.Add(block);
+            OnBlockAdded(block);
         }
+
+        protected virtual void OnBlockAdded(TGridBlock block)
+        {
+            
+        }
+
+        protected virtual void OnBlockRemoved(TGridBlock block)
+        {
+
+        }
+
+        protected abstract TGridBlock CreateBlock(ShortPoint blockLocation);
+        
 
         protected virtual void OnBlockSizeChanged()
         {
@@ -127,13 +144,12 @@ namespace TilemapTools
 
         protected virtual void OnCellSizeChanged()
         {
-            for (int i = 0; i < Blocks.Count; i++)
-            {
-                var block = Blocks[i] as GridBlock<TCell, TCellSize>;
+            
+        }
 
-                if (block != null)
-                    block.CellSize = cellSize;
-            }
+        protected virtual void OnCellContentChanged(int x, int y)
+        {
+
         }
 
         protected void ResizeBlocks()
@@ -142,11 +158,12 @@ namespace TilemapTools
                 return;
 
             var tempBlocks = Blocks;
-            Blocks = new GridBlockCollection<IGridBlock<TCell, TCellSize>>();
+            Blocks = new GridBlockCollection<TGridBlock>();
 
-            for (int i = 0; i < Blocks.Count; i++)
+            for (int i = 0; i < tempBlocks.Count; i++)
             {
-                foreach (var cell in Blocks[i])
+                OnBlockRemoved(tempBlocks[i]);
+                foreach (var cell in tempBlocks[i])
                 {
                     this[cell.X, cell.Y] = cell.Content;
                 }
@@ -173,6 +190,15 @@ namespace TilemapTools
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable<CellLocationPair<TCell>>)this).GetEnumerator();
+        }
+    }
+
+    public class Grid<TCell, TCellSize> : Grid<TCell, TCellSize, GridBlock<TCell>>
+        where TCellSize : struct, IEquatable<TCellSize>
+    {
+        protected override GridBlock<TCell> CreateBlock(ShortPoint blockLocation)
+        {
+            return new GridBlock<TCell>(BlockSize, blockLocation, CellEqualityComparer);
         }
     }
 }
