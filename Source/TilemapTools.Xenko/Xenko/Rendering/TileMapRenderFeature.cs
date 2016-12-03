@@ -45,23 +45,26 @@ namespace TilemapTools.Xenko.Rendering
 
                 var world = renderTileMap.TransformComponent.WorldMatrix;
                 var viewProjection = renderView.ViewProjection;
+                var cellSize = grid.CellSize;
 
                 grid.FindVisibleGridBlocks(ref world, ref viewProjection, visibleBlocks);
-
-                tileMeshRenderer.Begin(context.GraphicsContext, world, viewProjection);
-                for (int i = 0; i < visibleBlocks.Count; i++)
+                if (visibleBlocks.Count > 0)
                 {
-                    var block = visibleBlocks[i];
-                    TileMeshDraw tileMeshDraw;
-
-                    if(tileMesh.TryGetTileMeshDraw(block, context.GraphicsDevice, out tileMeshDraw))
+                    tileMeshRenderer.Begin(context.GraphicsContext, world, viewProjection);
+                    for (int i = 0; i < visibleBlocks.Count; i++)
                     {
-                        tileMeshRenderer.Draw(tileMeshDraw);
-                    }
-                }
-                tileMeshRenderer.End();
+                        var block = visibleBlocks[i];
+                        TileMeshDraw tileMeshDraw;
 
-                visibleBlocks.Clear();
+                        if (tileMesh.TryGetTileMeshDraw(block, context.GraphicsDevice, ref cellSize, out tileMeshDraw))
+                        {
+                            tileMeshRenderer.Draw(tileMeshDraw);
+                        }
+                    }
+                    tileMeshRenderer.End();
+
+                    visibleBlocks.Clear();
+                }
             }
         }
         protected override void Destroy()

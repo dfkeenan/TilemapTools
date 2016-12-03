@@ -11,11 +11,10 @@ namespace TilemapTools.Xenko.Graphics
     public abstract class OrthogonalTileMeshDrawBuilder<TVertex> : TileMeshDrawBuilder<TVertex>, IDisposable
         where TVertex : struct, IVertex
     {
-        private bool flipY;
-
-        public OrthogonalTileMeshDrawBuilder(VertexDeclaration layout, bool flipY):base(layout, 6)
+        
+        public OrthogonalTileMeshDrawBuilder(VertexDeclaration layout):base(layout, 6)
         {
-            this.flipY = flipY;
+
         }
 
         protected override void BuildTile(List<TVertex> vertices, int textureWidth, int textureHeight, Rectangle source, RectangleF dest)
@@ -23,7 +22,7 @@ namespace TilemapTools.Xenko.Graphics
             var left = dest.X;
             var top = dest.Y;
             var right = dest.X + dest.Width;
-            var bottom = dest.Y + (dest.Height * (flipY ? -1 : 1));
+            var bottom = dest.Y + dest.Height * -1;
 
             vertices.Add(CreateVertex(source.TopLeft, new Vector2(left, top), new Vector2(textureWidth, textureHeight)));
             vertices.Add(CreateVertex(source.BottomLeft, new Vector2(left, bottom), new Vector2(textureWidth, textureHeight)));
@@ -33,36 +32,21 @@ namespace TilemapTools.Xenko.Graphics
 
         protected override void BuildIndicies(short[] indices, int tileCount)
         {
-            if (flipY)
+            for (int i = 0; i < tileCount; i++)
             {
-                for (int i = 0; i < tileCount; i++)
-                {
-                    indices[i * IndiciesPerTile + 0] = (short)(i * 4);
-                    indices[i * IndiciesPerTile + 1] = (short)(i * 4 + 2);
-                    indices[i * IndiciesPerTile + 2] = (short)(i * 4 + 1);
-                    indices[i * IndiciesPerTile + 3] = (short)(i * 4 + 3);
-                    indices[i * IndiciesPerTile + 4] = (short)(i * 4 + 1);
-                    indices[i * IndiciesPerTile + 5] = (short)(i * 4 + 2);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < tileCount; i++)
-                {
-                    indices[i * IndiciesPerTile + 0] = (short)(i * 4);
-                    indices[i * IndiciesPerTile + 1] = (short)(i * 4 + 1);
-                    indices[i * IndiciesPerTile + 2] = (short)(i * 4 + 2);
-                    indices[i * IndiciesPerTile + 3] = (short)(i * 4 + 1);
-                    indices[i * IndiciesPerTile + 4] = (short)(i * 4 + 3);
-                    indices[i * IndiciesPerTile + 5] = (short)(i * 4 + 2);
-                }
+                indices[i * IndiciesPerTile + 0] = (short)(i * 4);
+                indices[i * IndiciesPerTile + 1] = (short)(i * 4 + 2);
+                indices[i * IndiciesPerTile + 2] = (short)(i * 4 + 1);
+                indices[i * IndiciesPerTile + 3] = (short)(i * 4 + 3);
+                indices[i * IndiciesPerTile + 4] = (short)(i * 4 + 1);
+                indices[i * IndiciesPerTile + 5] = (short)(i * 4 + 2);
             }
         }
     }
 
     public class OrthogonalTileMeshDrawBuilder : OrthogonalTileMeshDrawBuilder<VertexPositionTexture>
     {
-        public OrthogonalTileMeshDrawBuilder(bool flipY = true) : base(VertexPositionTexture.Layout, flipY)
+        public OrthogonalTileMeshDrawBuilder() : base(VertexPositionTexture.Layout)
         {
 
         }

@@ -15,7 +15,16 @@ namespace TilemapTools.Xenko
             
         }
 
-        public BoundingBoxExt LocalBounds { get; internal set; }
+        /// <summary>
+        /// The bounds of the block in grid local space
+        /// </summary>
+        internal BoundingBoxExt LocalBounds;
+
+        /// <summary>
+        /// The top, left corner of the block
+        /// </summary>
+        internal Vector2 Origin;
+
                 
     }
 }

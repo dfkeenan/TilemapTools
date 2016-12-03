@@ -29,7 +29,7 @@ namespace TilemapTools.Xenko.Graphics
             tilesByTexture.Clear();
         }
 
-        public void Add(Texture texture, Rectangle source, RectangleF destination)
+        public void Add(Texture texture, ref Rectangle source, ref RectangleF destination)
         {
             List<Tuple<Rectangle, RectangleF>> list;
 
@@ -77,7 +77,9 @@ namespace TilemapTools.Xenko.Graphics
 
             BuildIndicies(indices, tileCount);
 
-            return TileMeshDraw.New<TVertex>(graphicsDevice, layout,vertices.ToArray(), indices.ToArray(), ranges);
+            var tileMeshDraw = TileMeshDraw.New<TVertex>(graphicsDevice, layout,vertices.ToArray(), indices.ToArray(), ranges);
+            tilesByTexture.Clear();
+            return tileMeshDraw;
         }
 
         protected abstract void BuildIndicies(short[] indices, int tileCount);        

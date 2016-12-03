@@ -8,7 +8,7 @@ namespace TilemapTools.Xenko.Graphics
     {
         int IndiciesPerTile { get; }
 
-        void Add(Texture texture, Rectangle source, RectangleF destination);
+        void Add(Texture texture, ref Rectangle source, ref RectangleF destination);
         TileMeshDraw Build(GraphicsDevice graphicsDevice);
         void Clear();
     }

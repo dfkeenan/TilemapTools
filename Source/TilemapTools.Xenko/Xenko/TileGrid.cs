@@ -71,10 +71,12 @@ namespace TilemapTools.Xenko
 
         protected override TileGridBlock CreateBlock(ShortPoint blockLocation)
         {
-            return new TileGridBlock(BlockSize, blockLocation, CellEqualityComparer)
-            {
-                LocalBounds = CalculateBounds(ref blockLocation),
-            };
+            var block = new TileGridBlock(BlockSize, blockLocation, CellEqualityComparer);
+
+            CalculateBounds(ref blockLocation, out block.LocalBounds, out block.Origin);
+
+            return block;
+                            
         }
         protected override void OnCellSizeChanged()
         {
@@ -82,8 +84,7 @@ namespace TilemapTools.Xenko
             {
                 var block = Blocks[i];
                 var location = block.Location;
-
-                block.LocalBounds = CalculateBounds(ref location);                
+                CalculateBounds(ref location, out block.LocalBounds, out block.Origin);               
             }
         }
 
@@ -119,7 +120,7 @@ namespace TilemapTools.Xenko
             FindVisibleGridBlocks(ref frustum, result);
         }
 
-        protected virtual BoundingBoxExt CalculateBounds(ref ShortPoint location)
+        protected virtual void CalculateBounds(ref ShortPoint location, out BoundingBoxExt bounds, out Vector2 origin)
         {        
             var blockSize = BlockSize;
             int left, top, right, bottom;
@@ -134,7 +135,9 @@ namespace TilemapTools.Xenko
             Vector3.Min(ref topLeft, ref bottomRight, out min);
             Vector3.Max(ref topLeft, ref bottomRight, out max);
 
-            return new BoundingBoxExt(min, max);
+            bounds = new BoundingBoxExt(min, max);
+            origin = topLeft.XY();
+
         }
    
     }

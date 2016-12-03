@@ -60,6 +60,7 @@ namespace TilemapTools.Xenko
             {
                 Frames.Add(new TileFrame
                 {
+                    Texture = texture,
                     TextureRegion = region.HasValue ? region.Value : new Rectangle(0, 0, texture.ViewWidth, texture.ViewHeight),
                 });
             }
