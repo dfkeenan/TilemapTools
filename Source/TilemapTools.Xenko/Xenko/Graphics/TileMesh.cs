@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SiliconStudio.Core;
 using SiliconStudio.Xenko.Graphics;
+using SiliconStudio.Core.Mathematics;
 
 namespace TilemapTools.Xenko.Graphics
 {
@@ -28,6 +29,8 @@ namespace TilemapTools.Xenko.Graphics
         {
             tileMeshDraw = null;
 
+            if (tileMeshDrawBuilder == null) return false;
+
             if(tileMeshDraws.TryGetValue(block.Location, out tileMeshDraw))
             {
                 return true;
@@ -41,9 +44,13 @@ namespace TilemapTools.Xenko.Graphics
                 {
                     var tile = block.GetCell(x, y);
 
-                    if (tile == null) continue;
+                    if (tile == null || !tile.CanCacheTileMesh) continue;
 
-                    //tileMeshDrawBuilder.Add(tile.)
+                    var frame = tile[0];
+
+                    RectangleF outRect = new RectangleF();
+
+                    tileMeshDrawBuilder.Add(frame.Texture, frame.TextureRegion, outRect);
                 }
             }
 

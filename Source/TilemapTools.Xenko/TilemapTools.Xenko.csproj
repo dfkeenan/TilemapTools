@@ -502,6 +502,7 @@
     <Compile Include="Xenko\Rendering\RenderTileMap.cs" />
     <Compile Include="Xenko\Tile.cs" />
     <Compile Include="Xenko\Tiled\XenkoTileLookup.cs" />
+    <Compile Include="Xenko\TileFrame.cs" />
     <Compile Include="Xenko\TileGrid.cs" />
     <Compile Include="Xenko\TileGridBlock.cs" />
     <Compile Include="Xenko\TileMapComponent.cs" />

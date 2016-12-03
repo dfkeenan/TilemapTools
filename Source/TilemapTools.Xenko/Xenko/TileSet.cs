@@ -44,9 +44,9 @@ namespace TilemapTools.Xenko
         }
 
         /// <summary>
-        /// Gets or sets the image of the group at <paramref name="index"/>.
+        /// Gets or sets the tile of the set at <paramref name="index"/>.
         /// </summary>
-        /// <param name="index">The image index</param>
+        /// <param name="index">The tile index</param>
         /// <returns>The image</returns>
         public Tile this[int index]
         {
@@ -55,9 +55,9 @@ namespace TilemapTools.Xenko
         }
 
         /// <summary>
-        /// Gets or sets the image of the group having the provided <paramref name="name"/>.
+        /// Gets or sets the tile of the set having the provided <paramref name="name"/>.
         /// </summary>
-        /// <param name="name">The name of the image</param>
+        /// <param name="name">The name of the tile</param>
         /// <returns>The image</returns>
         public Tile this[string name]
         {
