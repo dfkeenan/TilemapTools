@@ -8,9 +8,9 @@ using SiliconStudio.Core.Mathematics;
 
 namespace TilemapTools.Xenko
 {
-    public class TileGridBlock : GridBlock<Tile>
+    public class TileGridBlock : GridBlock<TileReference>
     {
-        public TileGridBlock(int blockSize, ShortPoint location, IEqualityComparer<Tile> cellEqualityComparer) : base(blockSize, location, cellEqualityComparer)
+        public TileGridBlock(int blockSize, ShortPoint location, IEqualityComparer<TileReference> cellEqualityComparer) : base(blockSize, location, cellEqualityComparer)
         {
             
         }

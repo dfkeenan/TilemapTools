@@ -15,7 +15,7 @@ namespace TilemapTools.Xenko
     //[DataSerializerGlobal(typeof(ReferenceSerializer<TileGrid>), Profile = "Content")]
     //[ContentSerializer(typeof(DataContentSerializer<TileGrid>))]
     [DataContract("TileGrid")]
-    public abstract class TileGrid: Grid<Tile, Vector2, TileGridBlock>        
+    public abstract class TileGrid: Grid<TileReference, Vector2, TileGridBlock>, ITileDefinitionSource    
     {
         public const int DefaultCellSize = 1;
 
@@ -69,6 +69,27 @@ namespace TilemapTools.Xenko
             }
         }
 
+        /// <summary>
+        /// The tile sets used by this tile grid.
+        /// </summary>
+        [DataMember(30)]
+        [Display("Tile Sets")]
+        public IList<TileSet> TileSets { get; } = new List<TileSet>();
+
+
+        Tile ITileDefinitionSource.GetTile(ref TileReference reference)
+        {
+            if (reference.TileSet >= TileSets.Count)
+                return null;
+
+            var tileSet = TileSets[reference.TileSet];
+
+            if (reference.Tile >= tileSet.Tiles.Count)
+                return null;
+
+            return tileSet.Tiles[reference.Tile];
+        }
+
         protected override TileGridBlock CreateBlock(ShortPoint blockLocation)
         {
             var block = new TileGridBlock(BlockSize, blockLocation, CellEqualityComparer);
@@ -97,9 +118,7 @@ namespace TilemapTools.Xenko
 
             for (int i = 0; i < this.Blocks.Count; i++)
             {
-                var block = Blocks[i] as TileGridBlock;
-
-                if (block == null) continue;
+                var block = Blocks[i];
 
                 var bounds = block.LocalBounds;
 

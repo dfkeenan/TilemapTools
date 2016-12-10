@@ -30,14 +30,15 @@ namespace TilemapTools.Tiled
         /// </summary>
         public int TileHeight { get; set; }
 
-        internal Tile GetTile(uint globalId)
+
+        public Tile GetTile(uint globalId)
         {
             var localId = globalId - FirstGlobalId;
 
             return Tiles?.FirstOrDefault(t => t.Id == localId);
         }
 
-        internal Rectangle CalculateSourceRectangle(uint globalId)
+        public Rectangle CalculateSourceRectangle(uint globalId)
         {
             var localId = globalId - FirstGlobalId;
 

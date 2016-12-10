@@ -493,6 +493,7 @@
     <Compile Include="Xenko\Graphics\ITileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\OrthogonalTileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\TileMesh.cs" />
+    <Compile Include="Xenko\ITileDefinitionSource.cs" />
     <Compile Include="Xenko\OrthogonalTileGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Xenko\Graphics\TileMeshDraw.cs" />
@@ -505,6 +506,7 @@
     <Compile Include="Xenko\TileFrame.cs" />
     <Compile Include="Xenko\TileGrid.cs" />
     <Compile Include="Xenko\TileGridBlock.cs" />
+    <Compile Include="Xenko\TileReference.cs" />
     <Compile Include="Xenko\TileMapComponent.cs" />
     <Compile Include="Xenko\Rendering\TileMapPipelinePlugin.cs" />
     <Compile Include="Xenko\TileMapProcessor.cs" />

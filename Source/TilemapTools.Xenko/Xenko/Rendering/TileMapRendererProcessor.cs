@@ -29,7 +29,7 @@ namespace TilemapTools.Xenko.Rendering
                     //TODO: Is this where meshes should be updated/generated??
                     if(renderTileMap.TileMesh == null)
                     {
-                        renderTileMap.TileMesh = new TileMesh(renderTileMap.Grid.CreateMeshDrawBuilder());
+                        renderTileMap.TileMesh = new TileMesh(renderTileMap.Grid.CreateMeshDrawBuilder(), renderTileMap.Grid as ITileDefinitionSource);
                     }
 
 

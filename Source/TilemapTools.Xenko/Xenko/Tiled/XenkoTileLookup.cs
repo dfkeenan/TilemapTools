@@ -23,7 +23,7 @@ namespace TilemapTools.Xenko.Tiled
             this.content = content;
         }
 
-        protected override Texture GetTexture(TilemapTools.Tiled.Image image)
+        public override Texture GetTexture(TilemapTools.Tiled.Image image)
         {
             if (image?.Source == null) return null;
 

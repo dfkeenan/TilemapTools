@@ -10,6 +10,8 @@ namespace TilemapTools.Xenko.Rendering
     {
         private TileMeshRenderer tileMeshRenderer;
         private List<TileGridBlock> visibleBlocks = new List<TileGridBlock>();
+        private List<TileMeshDraw> visibleTileMeshDraws = new List<TileMeshDraw>();
+
 
         public override Type SupportedRenderObjectType => typeof(RenderTileMap);
 
@@ -51,19 +53,18 @@ namespace TilemapTools.Xenko.Rendering
                 if (visibleBlocks.Count > 0)
                 {
                     tileMeshRenderer.Begin(context.GraphicsContext, world, viewProjection);
-                    for (int i = 0; i < visibleBlocks.Count; i++)
-                    {
-                        var block = visibleBlocks[i];
-                        TileMeshDraw tileMeshDraw;
 
-                        if (tileMesh.TryGetTileMeshDraw(block, context.GraphicsDevice, ref cellSize, out tileMeshDraw))
-                        {
-                            tileMeshRenderer.Draw(tileMeshDraw);
-                        }
+                    tileMesh.GetTileMeshDraws(visibleBlocks, context.GraphicsDevice, ref cellSize, visibleTileMeshDraws);
+
+                    for (int i = 0; i < visibleTileMeshDraws.Count; i++)
+                    {
+                        var tileMeshDraw = visibleTileMeshDraws[i];
+                        tileMeshRenderer.Draw(tileMeshDraw);                        
                     }
                     tileMeshRenderer.End();
 
                     visibleBlocks.Clear();
+                    visibleTileMeshDraws.Clear();
                 }
             }
         }

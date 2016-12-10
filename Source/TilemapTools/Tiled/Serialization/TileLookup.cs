@@ -72,22 +72,25 @@ namespace TilemapTools.Tiled.Serialization
             }
         }
 
-        protected abstract TTexture GetTexture(Image image);
+        public abstract TTexture GetTexture(Image image);
 
 
-        public TileSet FindTileSet(uint tileGlobalId)
+        public int FindTileSetIndex(uint tileGlobalId)
         {
             for (int i = map.TileSets.Count - 1; i >= 0; --i)
             {
                 var currentTileSet = map.TileSets[i];
                 if (currentTileSet.FirstGlobalId <= tileGlobalId)
                 {
-                    return currentTileSet;
+                    return i;
                 }
-                
+
             }
 
             throw new ArgumentOutOfRangeException(nameof(tileGlobalId), "Unable to find TileSet.");
         }
+
+
+        public TileSet FindTileSet(uint tileGlobalId) => map.TileSets[FindTileSetIndex(tileGlobalId)];
     }
 }
