@@ -1,0 +1,45 @@
+!Package
+Id: bc2662c7-a144-4742-b021-290747e184b1
+SerializedVersion: {Assets: 0.0.4}
+Meta:
+    Name: TilemapTools.Demo
+    Version: 1.0.0.0
+    Authors: []
+    Owners: []
+    RootNamespace: TilemapTools.Demo
+    Dependencies:
+        -   Name: Xenko
+            Version: 1.9.2-beta
+            RootAssets: []
+LocalDependencies:
+    - fb29ae63-5448-4151-a0db-49a1a90f4efa:../TilemapTools.Xenko/TilemapTools.Xenko.xkpkg
+Profiles:
+    -   Name: Shared
+        Platform: Shared
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Shared
+            -   Path: TilemapTools.Demo.Game/Effects
+        OutputGroupDirectories: {}
+        ProjectReferences:
+            -   Id: 1fc5e44a-ae49-4d33-b727-2685e07b1280
+                Location: TilemapTools.Demo.Game/TilemapTools.Demo.Game.csproj
+                Type: Library
+    -   Name: Windows
+        Platform: Windows
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Windows
+        OutputGroupDirectories: {}
+        ProjectReferences:
+            -   Id: 664c4d09-1c6d-4299-82e9-99b4d401e0d9
+                Location: TilemapTools.Demo.Windows/TilemapTools.Demo.Windows.csproj
+                Type: Executable
+ExplicitFolders: []
+Bundles: []
+TemplateFolders: []
+RootAssets:
+    - 71c03aa4-0b08-4775-8033-2649c1afeb8b:Maps/Doors
+    - a0559ca8-17d6-488d-be29-e3412aa6819b:Maps/Dungeon set
+    - b1b50f3d-8c15-4a4a-9531-fd324d8c7bb0:Maps/Dungeon
+    - e6594e10-9fb9-4982-b31e-8dc4dacb42c1:Maps/Objects

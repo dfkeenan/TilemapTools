@@ -1,0 +1,6 @@
+!Texture
+Id: a0559ca8-17d6-488d-be29-e3412aa6819b
+SerializedVersion: {Xenko: 1.4.0-beta}
+Tags: []
+Source: ../../../Resources/Dungeon set.png
+ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

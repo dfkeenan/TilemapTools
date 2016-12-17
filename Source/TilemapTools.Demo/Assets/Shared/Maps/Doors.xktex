@@ -1,0 +1,6 @@
+!Texture
+Id: 71c03aa4-0b08-4775-8033-2649c1afeb8b
+SerializedVersion: {Xenko: 1.4.0-beta}
+Tags: []
+Source: ../../../Resources/Doors.png
+ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}

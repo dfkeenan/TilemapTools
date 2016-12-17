@@ -1,0 +1,61 @@
+!SceneAsset
+Id: 2b7bab49-40c9-4730-a950-660ebcaa0e54
+SerializedVersion: {Xenko: 1.9.0-beta05}
+Tags: []
+SceneSettings:
+    Id: a9295c0d-6f62-4bbc-8190-d0ab9898e8b3
+    GraphicsCompositor: !SceneGraphicsCompositorLayers
+        Cameras:
+            6ea142336361e908afdcbe79f925c276:
+                Name: null
+                Camera: c06b34cf-2a10-4374-ba2f-2222109628ca/4aec135e-7ff4-4d56-8d67-8aa729cd6e76
+        Layers: {}
+        Master:
+            Name: SceneGraphicsLayer
+            Output: !MasterRenderFrameProvider {}
+            Renderers: {}
+    EditorSettings:
+        GridColor: {R: 0.7058824, G: 0.7058824, B: 0.7058824}
+        SceneUnit: 1.0
+        Mode: !SceneEditorGraphicsModeLDRSettings
+            BackgroundColor: {R: 0.196078435, G: 0.196078435, B: 0.196078435}
+Hierarchy:
+    RootPartIds:
+        - d0a9db31-7143-444c-a7f1-f44b351cc3b1
+        - c06b34cf-2a10-4374-ba2f-2222109628ca
+    Parts:
+        -   Entity:
+                Id: c06b34cf-2a10-4374-ba2f-2222109628ca
+                Name: Camera
+                Components:
+                    ba616eaabfeab0eb3bcacc964217cd94: !TransformComponent
+                        Id: 92ed0a61-dc88-4ba8-b80e-b26eb98e3a1f
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    cb6d668b4a63a39bfaa214e24adfe602: !CameraComponent
+                        Id: 4aec135e-7ff4-4d56-8d67-8aa729cd6e76
+                        Projection: Orthographic
+                    1f2a97163df92b1c7cc4b1a35bd0c25e: !TilemapTools.Demo.BasicCameraController,TilemapTools.Demo.Game
+                        Id: 038fafb3-d7ec-4730-b1dc-20ba40e4a768
+                        KeyboardMovementSpeed: {X: 5.0, Y: 5.0, Z: 5.0}
+                        TouchMovementSpeed: {X: 40.0, Y: 40.0, Z: 20.0}
+                        SpeedFactor: 5.0
+                        KeyboardRotationSpeed: {X: 3.0, Y: 3.0}
+                        MouseRotationSpeed: {X: 90.0, Y: 60.0}
+                        TouchRotationSpeed: {X: 60.0, Y: 40.0}
+        -   Entity:
+                Id: d0a9db31-7143-444c-a7f1-f44b351cc3b1
+                Name: Map
+                Components:
+                    1675a441acd19d48a5f52ae1df580716: !TransformComponent
+                        Id: 25e4886d-0741-44f5-855d-a473baa069b7
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    13da14ff1d7f778fa36aedde63472e24: !TiledExperiment.TileMapRenderer,TilemapTools.Demo.Game
+                        Id: aa788212-0ab9-4cc9-8410-d435c3943edc
+                        Camera: c06b34cf-2a10-4374-ba2f-2222109628ca/4aec135e-7ff4-4d56-8d67-8aa729cd6e76
+                        MapName: Maps/Dungeon

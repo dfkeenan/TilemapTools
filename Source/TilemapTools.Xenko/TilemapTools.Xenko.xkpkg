@@ -1,0 +1,33 @@
+!Package
+Id: fb29ae63-5448-4151-a0db-49a1a90f4efa
+SerializedVersion: {Assets: 0.0.4}
+Meta:
+    Name: TilemapTools.Xenko
+    Version: 1.0.0.0
+    Authors: []
+    Owners: []
+    RootNamespace: TilemapTools
+    Dependencies:
+        -   Name: Xenko
+            Version: 1.9.2-beta
+            RootAssets: []
+LocalDependencies: []
+Profiles:
+    -   Name: Shared
+        Platform: Shared
+        InheritProfiles: []
+        AssetFolders:
+            -   Path: Assets/Shared
+            -   Path: TilemapTools.Xenko/Effects
+        OutputGroupDirectories: {}
+        ProjectReferences:
+            -   Id: 43d47b0a-c7b2-4c02-bb45-6a5115174528
+                Location: TilemapTools.Xenko/TilemapTools.Xenko.csproj
+                Type: Library
+            -   Id: 61ca7c15-8a9b-4dd1-8f97-9a7272399c30
+                Location: TilemapTools.Xenko.Offline/TilemapTools.Xenko.Offline.csproj
+                Type: Library
+ExplicitFolders: []
+Bundles: []
+TemplateFolders: []
+RootAssets: []
