@@ -1,3 +1,4 @@
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
@@ -15,6 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TilemapTools.Demo", "Tilema
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools.Demo.Windows", "TilemapTools.Demo\TilemapTools.Demo.Windows\TilemapTools.Demo.Windows.csproj", "{664C4D09-1C6D-4299-82E9-99B4D401E0D9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1FC5E44A-AE49-4D33-B727-2685E07B1280} = {1FC5E44A-AE49-4D33-B727-2685E07B1280}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilemapTools.Demo.Game", "TilemapTools.Demo\TilemapTools.Demo.Game\TilemapTools.Demo.Game.csproj", "{1FC5E44A-AE49-4D33-B727-2685E07B1280}"
 EndProject

@@ -64,11 +64,11 @@ namespace TilemapTools.Demo
             // Move with keyboard
             if (Input.IsKeyDown(Keys.W) || Input.IsKeyDown(Keys.Up))
             {
-                translation.Z = -KeyboardMovementSpeed.Z;
+                translation.Y = KeyboardMovementSpeed.Y;
             }
             else if (Input.IsKeyDown(Keys.S) || Input.IsKeyDown(Keys.Down))
             {
-                translation.Z = KeyboardMovementSpeed.Z;
+                translation.Y = -KeyboardMovementSpeed.Y;
             }
 
             if (Input.IsKeyDown(Keys.A) || Input.IsKeyDown(Keys.Left))
@@ -79,15 +79,7 @@ namespace TilemapTools.Demo
             {
                 translation.X = KeyboardMovementSpeed.X;
             }
-
-            if (Input.IsKeyDown(Keys.Q))
-            {
-                translation.Y = -KeyboardMovementSpeed.Y;
-            }
-            else if (Input.IsKeyDown(Keys.E))
-            {
-                translation.Y = KeyboardMovementSpeed.Y;
-            }
+                       
 
             // Alternative translation speed
             if (Input.IsKeyDown(Keys.LeftShift) || Input.IsKeyDown(Keys.RightShift))
@@ -125,29 +117,6 @@ namespace TilemapTools.Demo
             else
             {
                 Input.UnlockMousePosition();
-            }
-
-            // Handle gestures
-            foreach (var gestureEvent in Input.GestureEvents)
-            {
-                switch (gestureEvent.Type)
-                {
-                    // Rotate by dragging
-                    case GestureType.Drag:
-                        var drag = (GestureEventDrag)gestureEvent;
-                        var dragDistance = drag.DeltaTranslation;
-                        yaw = -dragDistance.X * TouchRotationSpeed.X;
-                        pitch = -dragDistance.Y * TouchRotationSpeed.Y;
-                        break;
-
-                    // Move along z-axis by scaling and in xy-plane by multi-touch dragging
-                    case GestureType.Composite:
-                        var composite = (GestureEventComposite)gestureEvent;
-                        translation.X = -composite.DeltaTranslation.X * TouchMovementSpeed.X;
-                        translation.Y = -composite.DeltaTranslation.Y * TouchMovementSpeed.Y;
-                        translation.Z = -(float)Math.Log(composite.DeltaScale + 1) * TouchMovementSpeed.Z;
-                        break;
-                }
             }
         }
 
