@@ -55,7 +55,6 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    13da14ff1d7f778fa36aedde63472e24: !TiledExperiment.TileMapRenderer,TilemapTools.Demo.Game
-                        Id: aa788212-0ab9-4cc9-8410-d435c3943edc
-                        Camera: c06b34cf-2a10-4374-ba2f-2222109628ca/4aec135e-7ff4-4d56-8d67-8aa729cd6e76
+                    34e537d9286974297cd5e734be40605c: !TilemapTools.Demo.TimeMapComponentTest,TilemapTools.Demo.Game
+                        Id: 8e24a5fa-a526-4c70-b471-79e4c05e32e8
                         MapName: Maps/Dungeon

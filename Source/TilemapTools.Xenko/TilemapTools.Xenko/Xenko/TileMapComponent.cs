@@ -21,7 +21,7 @@ namespace TilemapTools.Xenko
     [Display("Tile Map", Expand = ExpandRule.Once)]
     [DefaultEntityComponentProcessor(typeof(TileMapProcessor))]
     [DefaultEntityComponentRenderer(typeof(TileMapRendererProcessor))]
-    [ComponentOrder(20000)]
+    [ComponentOrder(50000)]
     public sealed class TileMapComponent: ActivableEntityComponent
     {      
         /// <summary>

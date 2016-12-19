@@ -10,7 +10,7 @@ using TilemapTools.Tiled.Serialization;
 using TilemapTools.Xenko;
 using TilemapTools.Xenko.Tiled;
 
-namespace TiledExperiment
+namespace TilemapTools.Demo
 {
     public class TimeMapComponentTest: StartupScript
     {

@@ -110,7 +110,6 @@
   <ItemGroup>
     <Compile Include="BasicCameraController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TileMapRenderer.cs" />
     <Compile Include="TimeMapComponentTest.cs" />
   </ItemGroup>
   <ItemGroup>

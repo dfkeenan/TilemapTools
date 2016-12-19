@@ -39,6 +39,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(SolutionDir)\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CellLocationPair.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridBlock.cs" />
