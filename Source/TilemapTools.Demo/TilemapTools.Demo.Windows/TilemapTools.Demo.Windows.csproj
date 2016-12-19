@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TilemapTools.Demo</RootNamespace>
     <AssemblyName>TilemapTools.Demo</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
     <SiliconStudioPackageGuid>{bc2662c7-a144-4742-b021-290747e184b1}</SiliconStudioPackageGuid>

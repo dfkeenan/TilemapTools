@@ -13,7 +13,17 @@ SceneSettings:
         Master:
             Name: SceneGraphicsLayer
             Output: !MasterRenderFrameProvider {}
-            Renderers: {}
+            Renderers:
+                688d8f7b08b44e9043c39f76c31e4ba2: !ClearRenderFrameRenderer
+                    Color: {R: 0.392156869, G: 0.58431375, B: 0.929411769, A: 1.0}
+                    Output: !CurrentRenderFrameProvider {}
+                f0175fc2c75ecf2bcde02819593a3328: !SceneCameraRenderer
+                    Mode: !CameraRendererModeForward {}
+                    Camera:
+                        Index: 0
+                    Output: !CurrentRenderFrameProvider {}
+                    Viewport: {X: 0.0, Y: 0.0, Width: 100.0, Height: 100.0}
+                    ForceAspectRatio: false
     EditorSettings:
         GridColor: {R: 0.7058824, G: 0.7058824, B: 0.7058824}
         SceneUnit: 1.0
@@ -30,7 +40,7 @@ Hierarchy:
                 Components:
                     ba616eaabfeab0eb3bcacc964217cd94: !TransformComponent
                         Id: 92ed0a61-dc88-4ba8-b80e-b26eb98e3a1f
-                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Position: {X: 0.0, Y: 0.0, Z: 7.03218}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
