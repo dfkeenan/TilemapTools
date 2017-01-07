@@ -381,8 +381,33 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xenko\Assets\TilemapToolsConfig.cs" />
+    <Compile Include="Xenko\Assets\TileSetAsset.cs" />
+    <Compile Include="Xenko\Assets\TileSetAssetCompiler.cs" />
     <Compile Include="Xenko\Offline\Module.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TilemapTools\TilemapTools.csproj">
+      <Project>{5d50018d-5369-411a-9edb-55f0f273746b}</Project>
+      <Name>TilemapTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TilemapTools.Xenko\TilemapTools.Xenko.csproj">
+      <Project>{43d47b0a-c7b2-4c02-bb45-6a5115174528}</Project>
+      <Name>TilemapTools.Xenko</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SiliconStudio.Assets">
+      <HintPath>$(SiliconStudioPackageXenkoPlatformBin)\SiliconStudio.Assets.dll</HintPath>
+    </Reference>
+    <Reference Include="SiliconStudio.Xenko.Assets">
+      <HintPath>$(SiliconStudioPackageXenkoPlatformBin)\SiliconStudio.Xenko.Assets.dll</HintPath>
+    </Reference>
+    <Reference Include="SiliconStudio.BuildEngine.Common">
+      <HintPath>$(SiliconStudioPackageXenkoPlatformBin)\SiliconStudio.BuildEngine.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SiliconStudioPackageProps)" Condition="Exists('$(SiliconStudioPackageProps)')" />
   <Import Project="$(SiliconStudioXenkoDir)\Targets\SiliconStudio.Common.targets" Condition="Exists('$(SiliconStudioXenkoDir)\Targets\SiliconStudio.Common.targets')" />
