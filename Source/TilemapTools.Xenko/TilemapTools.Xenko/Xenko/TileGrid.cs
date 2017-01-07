@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SiliconStudio.Core;
 using SiliconStudio.Core.Mathematics;
-using SiliconStudio.Core.Serialization;
-using SiliconStudio.Core.Serialization.Contents;
 using TilemapTools.Xenko.Graphics;
 
 namespace TilemapTools.Xenko

@@ -1,5 +1,4 @@
-﻿using System;
-using SiliconStudio.Xenko.Engine;
+﻿using SiliconStudio.Xenko.Engine;
 
 namespace TilemapTools.Xenko
 {

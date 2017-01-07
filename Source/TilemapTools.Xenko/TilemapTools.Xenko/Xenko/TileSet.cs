@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using SiliconStudio.Core;
 using SiliconStudio.Core.Annotations;
 using SiliconStudio.Core.Serialization;
 using SiliconStudio.Core.Serialization.Contents;
-using SiliconStudio.Xenko.Graphics;
 
 namespace TilemapTools.Xenko
 {

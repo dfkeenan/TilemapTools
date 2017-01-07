@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
 using TilemapTools.Xenko.Graphics;
 

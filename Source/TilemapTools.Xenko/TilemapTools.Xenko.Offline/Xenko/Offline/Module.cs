@@ -2,7 +2,7 @@
 using SiliconStudio.Core;
 using SiliconStudio.Core.Reflection;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Offline
 {
     public static class Module
     {

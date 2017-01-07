@@ -1,5 +1,4 @@
-﻿using System;
-using SiliconStudio.Core.Mathematics;
+﻿using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Rendering;
 using TilemapTools.Xenko.Graphics;

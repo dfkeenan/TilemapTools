@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using SiliconStudio.Core.IO;
 using SiliconStudio.Xenko.Engine;
 using TilemapTools.Tiled;
