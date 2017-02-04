@@ -90,13 +90,13 @@ namespace TilemapTools.Demo
 
             tileMapComponent.PhysicsShapeBuilder = new ColliderShapePerTilePhysicsShapeBuilder();
 
-            var staticColliderComponent = new StaticColliderComponent();
+            //var staticColliderComponent = new StaticColliderComponent();
+            //staticColliderComponent.ColliderShapes.Add(new BoxColliderShapeDesc());
+            //Entity.Add(staticColliderComponent);
 
-
-            Entity.Add(staticColliderComponent);
             Entity.Add(tileMapComponent);
 
-            this.GetSimulation().ColliderShapesRendering = true;
+            //this.GetSimulation().ColliderShapesRendering = true;
         }
     }
 }

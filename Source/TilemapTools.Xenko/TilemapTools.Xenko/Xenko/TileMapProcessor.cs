@@ -31,9 +31,8 @@ namespace TilemapTools.Xenko
                 if (tileMapInfo.PhysicsComponent == null || tileMapInfo.PhysicsShapeBuilder == null || tileMapInfo.TileGrid == null)
                     continue;
 
-                
-
                 tileMapInfo.PhysicsShapeBuilder?.Update(tileMapInfo.TileGrid,tileMapInfo.PhysicsComponent);
+
             }
         }
 

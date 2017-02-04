@@ -54,6 +54,10 @@ namespace TilemapTools.Xenko.Graphics
                 {
                     tileMeshDraw = tileMeshDrawBuilder.Build(currentBlock, tileDefinitionSource, graphicsDevice, ref cellSize);
                 }
+                else
+                {
+                    tileMeshDraws.Remove(currentBlock.Location);
+                }
 
                 tileMeshDrawsSwap[currentBlock.Location] = tileMeshDraw;
                 tileMeshDrawsOut.Add(tileMeshDraw);
@@ -61,6 +65,12 @@ namespace TilemapTools.Xenko.Graphics
             }
 
             Utilities.Swap(ref tileMeshDraws, ref tileMeshDrawsSwap);
+
+            foreach (var tileMeshDraw in tileMeshDrawsSwap.Values)
+            {
+                tileMeshDraw.Dispose();
+            }
+
             tileMeshDrawsSwap.Clear();
 
         }

@@ -63,6 +63,17 @@ namespace TilemapTools.Xenko
                     block.PhysicsInvalidated = false;
                 }
             }
+            if (changed)
+            {
+                var entity = physicsComponent.Entity;
+                if (entity != null)
+                {
+                    entity.Components.Remove(physicsComponent);
+                    entity.Components.Add(physicsComponent);
+                }
+
+            }
+                
 
         }
 
