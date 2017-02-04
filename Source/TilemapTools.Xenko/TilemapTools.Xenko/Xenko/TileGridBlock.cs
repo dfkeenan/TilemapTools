@@ -7,7 +7,7 @@ namespace TilemapTools.Xenko
     {
         public TileGridBlock(int blockSize, ShortPoint location, IEqualityComparer<TileReference> cellEqualityComparer) : base(blockSize, location, cellEqualityComparer)
         {
-            VisualyInvalidated = true;
+            Invalidate();
         }
 
         /// <summary>
@@ -24,5 +24,17 @@ namespace TilemapTools.Xenko
         /// Indicates if cached visuals should be updated
         /// </summary>
         internal bool VisualyInvalidated;
+
+        /// <summary>
+        /// Indicates if physics collider shapes should be updated
+        /// </summary>
+        internal bool PhysicsInvalidated;
+
+
+        public void Invalidate(bool visual = true, bool physics = true)
+        {
+            VisualyInvalidated = visual;
+            PhysicsInvalidated = physics;
+        }
     }
 }

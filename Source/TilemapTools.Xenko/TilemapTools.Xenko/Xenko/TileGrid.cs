@@ -72,6 +72,12 @@ namespace TilemapTools.Xenko
         public IList<TileSet> TileSets { get; } = new List<TileSet>();
 
 
+        /// <summary>
+        /// Internal Blocks
+        /// </summary>
+        internal IList<TileGridBlock> InternalBlocks => Blocks;
+
+
         Tile ITileDefinitionSource.GetTile(ref TileReference reference)
         {
             if (reference.TileSet >= TileSets.Count)
@@ -101,8 +107,17 @@ namespace TilemapTools.Xenko
                 var block = Blocks[i];
                 var location = block.Location;
                 CalculateBounds(ref location, out block.LocalBounds, out block.Origin);
-                block.VisualyInvalidated = true;            
+                block.Invalidate();            
             }
+        }
+
+
+
+        protected override void OnCellContentChanged(int x, int y, TileGridBlock block,TileReference oldValue, TileReference newValue)
+        {
+            var physicsInValidated = oldValue.IsEmpty && !newValue.IsEmpty || !oldValue.IsEmpty && newValue.IsEmpty;
+
+            block.Invalidate(physics: physicsInValidated);
         }
 
         public abstract ITileMeshDrawBuilder CreateMeshDrawBuilder();

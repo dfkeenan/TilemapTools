@@ -32,5 +32,14 @@ namespace TilemapTools.Xenko
         [NotNull]
         [DataMemberCustomSerializer]
         public TileGrid Grid { get; set; } = new OrthogonalTileGrid();
+
+
+        /// <summary>
+        /// The physics shape builder of the tile map.
+        /// </summary>
+        [DataMember(30)]
+        [Display("Physics Shape Builder")]
+        [DataMemberCustomSerializer]
+        public TileMapPhysicsShapeBuilder PhysicsShapeBuilder { get; set; }
     }
 }

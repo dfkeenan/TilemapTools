@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using SiliconStudio.Core.IO;
 using SiliconStudio.Xenko.Engine;
+using SiliconStudio.Xenko.Physics;
 using TilemapTools.Tiled;
 using TilemapTools.Tiled.Serialization;
 using TilemapTools.Xenko;
 using TilemapTools.Xenko.Tiled;
+using SiliconStudio.Xenko.Physics;
 
 namespace TilemapTools.Demo
 {
@@ -16,6 +18,8 @@ namespace TilemapTools.Demo
         {
             if (string.IsNullOrEmpty(MapName) || !Content.Exists(MapName))
                 return;
+
+            
 
             var serial = new TiledSerializer(new TiledSerializerOptions((s) => Content.OpenAsStream(s, StreamFlags.None), VirtualFileSystem.Combine));
             var map = serial.LoadTileMap(MapName);
@@ -84,7 +88,15 @@ namespace TilemapTools.Demo
                 }
             }
 
+            tileMapComponent.PhysicsShapeBuilder = new ColliderShapePerTilePhysicsShapeBuilder();
+
+            var staticColliderComponent = new StaticColliderComponent();
+
+
+            Entity.Add(staticColliderComponent);
             Entity.Add(tileMapComponent);
+
+            this.GetSimulation().ColliderShapesRendering = true;
         }
     }
 }

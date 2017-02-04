@@ -95,8 +95,10 @@ namespace TilemapTools
                     AddBlock(block);
                 }
 
+                var currentValue = block.GetCell(tileX, tileY);
+
                 if (block.SetCell(tileX, tileY, value))
-                    OnCellContentChanged(tileX, tileY);
+                    OnCellContentChanged(tileX, tileY, block, currentValue, value);
             }
         }
 
@@ -146,7 +148,7 @@ namespace TilemapTools
             
         }
 
-        protected virtual void OnCellContentChanged(int x, int y)
+        protected virtual void OnCellContentChanged(int x, int y, TGridBlock block, TCell oldValue, TCell newValue)
         {
 
         }
@@ -162,7 +164,7 @@ namespace TilemapTools
             for (int i = 0; i < tempBlocks.Count; i++)
             {
                 OnBlockRemoved(tempBlocks[i]);
-                foreach (var cell in tempBlocks[i])
+                foreach (var cell in (IEnumerable<CellLocationPair<TCell>>)tempBlocks[i])
                 {
                     this[cell.X, cell.Y] = cell.Content;
                 }
@@ -179,7 +181,7 @@ namespace TilemapTools
         {
             for (int i = 0; i < Blocks.Count; i++)
             {
-                foreach (var cell in Blocks[i])
+                foreach (var cell in (IEnumerable<CellLocationPair<TCell>>)Blocks[i])
                 {
                     yield return cell;
                 }

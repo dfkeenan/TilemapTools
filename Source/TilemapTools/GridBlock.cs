@@ -63,14 +63,14 @@ namespace TilemapTools
 
         }
 
-        public IEnumerator<CellLocationPair<TCell>> GetEnumerator()
+        IEnumerator<CellLocationPair<TCell>> IEnumerable<CellLocationPair<TCell>>.GetEnumerator()
         {
             return new Enumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return new Enumerator(this);
         }
  
         struct Enumerator : IEnumerator<CellLocationPair<TCell>>

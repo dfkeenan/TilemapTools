@@ -13,7 +13,7 @@ namespace TilemapTools
         ShortPoint Location { get; }
     }
 
-    public interface IGridBlock<TCell> : IGridBlock, IEnumerable<CellLocationPair<TCell>>
+    public interface IGridBlock<TCell> : IGridBlock
     {
         TCell GetCell(int x, int y);
         bool SetCell(int x, int y, TCell value);
