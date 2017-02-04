@@ -6,10 +6,7 @@ namespace TilemapTools.Xenko.Graphics
 {
     public interface ITileMeshDrawBuilder:IDisposable
     {
-        int IndiciesPerTile { get; }
-
-        void Add(Texture texture, ref Rectangle source, ref RectangleF destination);
-        TileMeshDraw Build(GraphicsDevice graphicsDevice);
+        TileMeshDraw Build(TileGridBlock block, ITileDefinitionSource tileDefinitionSource,GraphicsDevice graphicsDevice, ref Vector2 cellSize);
         void Clear();
     }
 }

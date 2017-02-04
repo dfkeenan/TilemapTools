@@ -27,7 +27,20 @@ namespace TilemapTools.Xenko.Graphics
             tilesByTexture.Clear();
         }
 
-        public void Add(Texture texture, ref Rectangle source, ref RectangleF destination)
+        public abstract TileMeshDraw Build(TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsDevice graphicsDevice, ref Vector2 cellSize);
+        
+        protected abstract void BuildIndicies(short[] indices, int tileCount);        
+
+        protected abstract void BuildTile(List<TVertex> vertices, int textureWidth, int textureHeight, Rectangle source, RectangleF dest);
+
+        protected abstract TVertex CreateVertex(Vector2 source, Vector2 destination, Vector2 size);
+
+        public void Dispose()
+        {
+            tilesByTexture.Clear();
+        }
+
+        protected virtual void Add(Texture texture, ref Rectangle source, ref RectangleF destination)
         {
             List<Tuple<Rectangle, RectangleF>> list;
 
@@ -40,7 +53,7 @@ namespace TilemapTools.Xenko.Graphics
         }
 
 
-        public TileMeshDraw Build(GraphicsDevice graphicsDevice)
+        protected virtual TileMeshDraw CompleteBuild(GraphicsDevice graphicsDevice)
         {
             var vertices = new List<TVertex>();
             short[] indices = null;
@@ -75,20 +88,9 @@ namespace TilemapTools.Xenko.Graphics
 
             BuildIndicies(indices, tileCount);
 
-            var tileMeshDraw = TileMeshDraw.New<TVertex>(graphicsDevice, layout,vertices.ToArray(), indices.ToArray(), ranges);
+            var tileMeshDraw = TileMeshDraw.New<TVertex>(graphicsDevice, layout, vertices.ToArray(), indices.ToArray(), ranges);
             tilesByTexture.Clear();
             return tileMeshDraw;
-        }
-
-        protected abstract void BuildIndicies(short[] indices, int tileCount);        
-
-        protected abstract void BuildTile(List<TVertex> vertices, int textureWidth, int textureHeight, Rectangle source, RectangleF dest);
-
-        protected abstract TVertex CreateVertex(Vector2 source, Vector2 destination, Vector2 size);
-
-        public void Dispose()
-        {
-            tilesByTexture.Clear();
         }
     }
 }

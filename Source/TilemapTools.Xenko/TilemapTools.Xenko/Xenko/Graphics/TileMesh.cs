@@ -52,7 +52,7 @@ namespace TilemapTools.Xenko.Graphics
 
                 if(currentBlock.VisualyInvalidated || !tileMeshDraws.TryGetValue(currentBlock.Location, out tileMeshDraw))
                 {
-                    tileMeshDraw = BuildTileMeshDraw(currentBlock, graphicsDevice, ref cellSize);
+                    tileMeshDraw = tileMeshDrawBuilder.Build(currentBlock, tileDefinitionSource, graphicsDevice, ref cellSize);
                 }
 
                 tileMeshDrawsSwap[currentBlock.Location] = tileMeshDraw;
@@ -65,39 +65,6 @@ namespace TilemapTools.Xenko.Graphics
 
         }
 
-        private TileMeshDraw BuildTileMeshDraw(TileGridBlock block, GraphicsDevice graphicsDevice, ref Vector2 cellSize)
-        {
-            //TODO: might require changes for non-orthogonal maps
-            var blockSize = block.BlockSize;
-            RectangleF outRect = new RectangleF();
-            outRect.X = block.Origin.X;
-            outRect.Y = block.Origin.Y;
-            outRect.Width = cellSize.X;
-            outRect.Height = cellSize.Y;
-            for (int y = 0; y < blockSize; y++)
-            {
-                for (int x = 0; x < blockSize; x++)
-                {
-                    var tileRef = block.GetCell(x, y);
-
-                    if (!tileRef.IsEmpty)
-                    {
-                        var tile = tileDefinitionSource.GetTile(ref tileRef);
-
-                        if (tile != null && tile.CanCacheTileMesh)
-                        {
-                            var frame = tile[0];
-
-                            tileMeshDrawBuilder.Add(frame.Texture, ref frame.TextureRegion, ref outRect);
-                        }
-                    }
-                    outRect.X += cellSize.X;
-                }
-                outRect.X = block.Origin.X;
-                outRect.Y -= cellSize.Y;
-            }
-
-            return tileMeshDrawBuilder.Build(graphicsDevice);
-        }
+        
     }
 }

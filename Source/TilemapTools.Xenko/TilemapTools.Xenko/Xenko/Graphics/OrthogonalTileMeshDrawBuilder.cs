@@ -39,6 +39,41 @@ namespace TilemapTools.Xenko.Graphics
                 indices[i * IndiciesPerTile + 5] = (short)(i * 4 + 2);
             }
         }
+
+        public override TileMeshDraw Build(TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsDevice graphicsDevice, ref Vector2 cellSize)
+        {
+            var blockSize = block.BlockSize;
+            RectangleF outRect = new RectangleF();
+            outRect.X = block.Origin.X;
+            outRect.Y = block.Origin.Y;
+            outRect.Width = cellSize.X;
+            outRect.Height = cellSize.Y;
+            for (int y = 0; y < blockSize; y++)
+            {
+                for (int x = 0; x < blockSize; x++)
+                {
+                    var tileRef = block.GetCell(x, y);
+
+                    if (!tileRef.IsEmpty)
+                    {
+                        var tile = tileDefinitionSource.GetTile(ref tileRef);
+
+                        if (tile != null && tile.CanCacheTileMesh)
+                        {
+                            var frame = tile[0];
+
+                            Add(frame.Texture, ref frame.TextureRegion, ref outRect);
+                        }
+                    }
+                    outRect.X += cellSize.X;
+                }
+                outRect.X = block.Origin.X;
+                outRect.Y -= cellSize.Y;
+            }
+
+            return CompleteBuild(graphicsDevice);
+        }
+        
     }
 
     public class OrthogonalTileMeshDrawBuilder : OrthogonalTileMeshDrawBuilder<VertexPositionTexture>
