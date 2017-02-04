@@ -10,12 +10,14 @@ namespace TilemapTools.Xenko.Graphics
     {
         private ITileMeshDrawBuilder tileMeshDrawBuilder;
         private readonly ITileDefinitionSource tileDefinitionSource;
-        private readonly Dictionary<ShortPoint, TileMeshDraw> tileMeshDraws;
+        private Dictionary<ShortPoint, TileMeshDraw> tileMeshDraws;
+        private Dictionary<ShortPoint, TileMeshDraw> tileMeshDrawsSwap;
 
         public TileMesh(ITileMeshDrawBuilder tileMeshDrawBuilder, ITileDefinitionSource tileDefinitionSource)
         {
             this.tileMeshDrawBuilder = tileMeshDrawBuilder;
             tileMeshDraws = new Dictionary<ShortPoint, Graphics.TileMeshDraw>();
+            tileMeshDrawsSwap = new Dictionary<ShortPoint, Graphics.TileMeshDraw>();
             this.tileDefinitionSource = tileDefinitionSource;
         }
 
@@ -29,7 +31,7 @@ namespace TilemapTools.Xenko.Graphics
             tileMeshDraws.Clear();
         }
 
-        public void GetTileMeshDraws(IList<TileGridBlock> blocks, GraphicsDevice graphicsDevice, ref Vector2 cellSize, IList<TileMeshDraw> tileMeshDraws)
+        public void GetTileMeshDraws(IList<TileGridBlock> blocks, GraphicsDevice graphicsDevice, ref Vector2 cellSize, IList<TileMeshDraw> tileMeshDrawsOut)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));
@@ -37,24 +39,30 @@ namespace TilemapTools.Xenko.Graphics
             if (graphicsDevice == null)
                 throw new ArgumentNullException(nameof(graphicsDevice));
 
-            if (tileMeshDraws == null)
-                throw new ArgumentNullException(nameof(tileMeshDraws));
+            if (tileMeshDrawsOut == null)
+                throw new ArgumentNullException(nameof(tileMeshDrawsOut));
 
 
             if (tileMeshDrawBuilder == null) return;
 
             for (int i = 0; i < blocks.Count; i++)
             {
+                var currentBlock = blocks[i];
                 TileMeshDraw tileMeshDraw = null;
 
-                if (!this.tileMeshDraws.TryGetValue(blocks[i].Location, out tileMeshDraw))
+                if(currentBlock.VisualyInvalidated || !tileMeshDraws.TryGetValue(currentBlock.Location, out tileMeshDraw))
                 {
-                    this.tileMeshDraws[blocks[i].Location] = tileMeshDraw = BuildTileMeshDraw(blocks[i], graphicsDevice, ref cellSize);
+                    tileMeshDraw = BuildTileMeshDraw(currentBlock, graphicsDevice, ref cellSize);
                 }
-                
-                tileMeshDraws.Add(tileMeshDraw);
-            }            
-            
+
+                tileMeshDrawsSwap[currentBlock.Location] = tileMeshDraw;
+                tileMeshDrawsOut.Add(tileMeshDraw);
+                currentBlock.VisualyInvalidated = false;
+            }
+
+            Utilities.Swap(ref tileMeshDraws, ref tileMeshDrawsSwap);
+            tileMeshDrawsSwap.Clear();
+
         }
 
         private TileMeshDraw BuildTileMeshDraw(TileGridBlock block, GraphicsDevice graphicsDevice, ref Vector2 cellSize)

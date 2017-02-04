@@ -7,7 +7,7 @@ namespace TilemapTools.Xenko
     {
         public TileGridBlock(int blockSize, ShortPoint location, IEqualityComparer<TileReference> cellEqualityComparer) : base(blockSize, location, cellEqualityComparer)
         {
-            
+            VisualyInvalidated = true;
         }
 
         /// <summary>
@@ -20,6 +20,9 @@ namespace TilemapTools.Xenko
         /// </summary>
         internal Vector2 Origin;
 
-                
+        /// <summary>
+        /// Indicates if cached visuals should be updated
+        /// </summary>
+        internal bool VisualyInvalidated;
     }
 }

@@ -100,7 +100,8 @@ namespace TilemapTools.Xenko
             {
                 var block = Blocks[i];
                 var location = block.Location;
-                CalculateBounds(ref location, out block.LocalBounds, out block.Origin);               
+                CalculateBounds(ref location, out block.LocalBounds, out block.Origin);
+                block.VisualyInvalidated = true;            
             }
         }
 
@@ -123,13 +124,19 @@ namespace TilemapTools.Xenko
         }
 
         public void FindVisibleGridBlocks(ref Matrix world, ref Matrix viewProjection, IList<TileGridBlock> result)
-        {
-            Matrix inverseWorld;
+        {   
+            var frustum = new BoundingFrustum(ref viewProjection);
 
+            //Transform Frustum in to local space
+            Matrix inverseWorld;
             Matrix.Invert(ref world, out inverseWorld);
 
-            var matrix = inverseWorld * viewProjection;
-            var frustum = new BoundingFrustum(ref matrix);
+            Plane.Transform(ref frustum.NearPlane, ref inverseWorld, out frustum.NearPlane);
+            Plane.Transform(ref frustum.FarPlane, ref inverseWorld, out frustum.FarPlane);
+            Plane.Transform(ref frustum.LeftPlane, ref inverseWorld, out frustum.LeftPlane);
+            Plane.Transform(ref frustum.TopPlane, ref inverseWorld, out frustum.TopPlane);
+            Plane.Transform(ref frustum.RightPlane, ref inverseWorld, out frustum.RightPlane);
+            Plane.Transform(ref frustum.BottomPlane, ref inverseWorld, out frustum.BottomPlane);
 
             FindVisibleGridBlocks(ref frustum, result);
         }
