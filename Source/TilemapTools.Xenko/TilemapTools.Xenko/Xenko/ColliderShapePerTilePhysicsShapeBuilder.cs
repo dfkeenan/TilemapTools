@@ -16,6 +16,8 @@ namespace TilemapTools.Xenko
         protected override void Update(TileGridBlock block, ref Vector2 cellSize)
         {
             var origin = new Vector3( block.Origin + cellSize / 2f, 0);
+            origin.Y -= cellSize.Y; //TODO: Find out why this is meeded. COuld be a bug in the calculation of TileGridBlock.Origin
+
             var originX = origin.X;
 
             var size = new Vector3(cellSize, 0);

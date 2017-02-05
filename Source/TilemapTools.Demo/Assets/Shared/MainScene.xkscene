@@ -1,6 +1,6 @@
 !SceneAsset
 Id: 2b7bab49-40c9-4730-a950-660ebcaa0e54
-SerializedVersion: {Xenko: 1.9.0-beta05}
+SerializedVersion: {Xenko: 1.9.0-beta06}
 Tags: []
 SceneSettings:
     Id: a9295c0d-6f62-4bbc-8190-d0ab9898e8b3
@@ -68,3 +68,7 @@ Hierarchy:
                     34e537d9286974297cd5e734be40605c: !TilemapTools.Demo.TimeMapComponentTest,TilemapTools.Demo.Game
                         Id: 8e24a5fa-a526-4c70-b471-79e4c05e32e8
                         MapName: Maps/Dungeon
+                    90d5a5cf8d7b0f1353606c5c7f6d35f9: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
+                        Id: 5c999f5b-0276-4d22-b425-668c4db91d0d
+                        ToggleKey: F12
+                        DebuggingEnabled: false

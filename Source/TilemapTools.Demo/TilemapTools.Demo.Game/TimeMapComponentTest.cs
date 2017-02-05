@@ -7,6 +7,8 @@ using TilemapTools.Tiled.Serialization;
 using TilemapTools.Xenko;
 using TilemapTools.Xenko.Tiled;
 using SiliconStudio.Xenko.Physics;
+using System.Collections.Generic;
+using SiliconStudio.Core.Mathematics;
 
 namespace TilemapTools.Demo
 {
@@ -26,8 +28,7 @@ namespace TilemapTools.Demo
 
             var lookup = new XenkoTileLookup(map, Content);
 
-            var tileMapComponent = new TileMapComponent();
-            tileMapComponent.Grid.CellSize = new SiliconStudio.Core.Mathematics.Vector2(1.5f);
+            var tileSets = new List<Xenko.TileSet>();
 
 
             foreach (var tileSet in map.TileSets)
@@ -55,17 +56,24 @@ namespace TilemapTools.Demo
                     xenkoTileSet.Tiles.Add(new TilemapTools.Xenko.Tile(texture, rect));
                 }
 
-                tileMapComponent.Grid.TileSets.Add(xenkoTileSet);
+                tileSets.Add(xenkoTileSet);
+                
             }
 
 
             var firstGlobalId = map.TileSets[0].FirstGlobalId;
 
-            foreach (var layer in map.Layers.OfType<Layer>().Skip(1))
+            float layerDepth = 0;
+
+
+            foreach (var layer in map.Layers.OfType<Layer>())
             {
+                var tileMapComponent = new TileMapComponent();
+                tileMapComponent.Grid.CellSize = new Vector2(1.5f);
+                tileSets.ForEach(ts => tileMapComponent.Grid.TileSets.Add(ts));                
+
                 int x = -map.Width / 2;
                 int y = map.Height / 2;
-
 
                 for (int my = 0; my < map.Height; my++)
                 {
@@ -86,17 +94,28 @@ namespace TilemapTools.Demo
                     y--;
                     if (y == 0) y--;
                 }
+
+                var layerEntity = new Entity()
+                {
+                    tileMapComponent,
+                };
+
+                layerEntity.Transform.Position = new Vector3(0, 0, layerDepth);
+
+                //TODO: Improve properties usability
+                if (layer.Properties.ContainsKey("CollisionEnabled"))
+                {
+                    var physicsShapeBuilder = new ColliderShapePerTilePhysicsShapeBuilder();
+
+                    var staticColliderComponent = new StaticColliderComponent();
+                    physicsShapeBuilder.Update(tileMapComponent.Grid, staticColliderComponent);
+                    layerEntity.Add(staticColliderComponent);
+                }
+
+                Entity.AddChild(layerEntity);
+                layerDepth -= 1f;
             }
 
-            tileMapComponent.PhysicsShapeBuilder = new ColliderShapePerTilePhysicsShapeBuilder();
-
-            //var staticColliderComponent = new StaticColliderComponent();
-            //staticColliderComponent.ColliderShapes.Add(new BoxColliderShapeDesc());
-            //Entity.Add(staticColliderComponent);
-
-            Entity.Add(tileMapComponent);
-
-            //this.GetSimulation().ColliderShapesRendering = true;
         }
     }
 }

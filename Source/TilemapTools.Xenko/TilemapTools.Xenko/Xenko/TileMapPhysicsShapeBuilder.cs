@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SiliconStudio.Core;
 using SiliconStudio.Core.Collections;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Physics;
@@ -12,6 +13,8 @@ namespace TilemapTools.Xenko
     public abstract class TileMapPhysicsShapeBuilder
     {
         private Dictionary<ShortPoint, List<IInlineColliderShapeDesc>> tileBlockColliderShapes = new Dictionary<ShortPoint, List<IInlineColliderShapeDesc>>();
+        private Dictionary<ShortPoint, List<IInlineColliderShapeDesc>> tileBlockColliderShapesSwap = new Dictionary<ShortPoint, List<IInlineColliderShapeDesc>>();
+
 
         private TrackingCollection<IInlineColliderShapeDesc> currentPhysicsComponentColliderShapes;
         private List<IInlineColliderShapeDesc> currentColliderShapes;
@@ -39,41 +42,57 @@ namespace TilemapTools.Xenko
             {
                 var block = blocks[i];
 
-                if(block.PhysicsInvalidated)
-                {
-                    List<IInlineColliderShapeDesc> colliderShapes = null;
+                List<IInlineColliderShapeDesc> colliderShapes = null;
 
-                    if(tileBlockColliderShapes.TryGetValue(block.Location, out colliderShapes))
+                if (tileBlockColliderShapes.TryGetValue(block.Location, out colliderShapes))
+                {
+                    if (block.PhysicsInvalidated)
                     {
                         changed = changed || RemoveAssociatedColliderShapes(physicsComponent, colliderShapes);
                     }
-                    else if(!block.IsEmpty)
-                    {
-                        tileBlockColliderShapes[block.Location] = colliderShapes = new List<IInlineColliderShapeDesc>();
-
-                        currentPhysicsComponentColliderShapes = physicsComponent.ColliderShapes;
-                        currentColliderShapes = colliderShapes;
-
-                        Update(block, ref cellSize);
-
-                        currentPhysicsComponentColliderShapes = null;
-                        currentColliderShapes = null;
-                    }
-                    changed = changed || true;
-                    block.PhysicsInvalidated = false;
+                    tileBlockColliderShapes.Remove(block.Location);
                 }
-            }
-            if (changed)
-            {
-                var entity = physicsComponent.Entity;
-                if (entity != null)
+                else if(!block.IsEmpty)
                 {
-                    entity.Components.Remove(physicsComponent);
-                    entity.Components.Add(physicsComponent);
+                    colliderShapes = new List<IInlineColliderShapeDesc>();
                 }
 
+                if(colliderShapes != null)
+                {
+                    tileBlockColliderShapesSwap[block.Location] = colliderShapes;
+
+                    currentPhysicsComponentColliderShapes = physicsComponent.ColliderShapes;
+                    currentColliderShapes = colliderShapes;
+
+                    Update(block, ref cellSize);
+
+                    currentPhysicsComponentColliderShapes = null;
+                    currentColliderShapes = null;
+                    changed = changed || true;
+                }
+                               
+                block.PhysicsInvalidated = false;
             }
-                
+
+            Utilities.Swap(ref tileBlockColliderShapes, ref tileBlockColliderShapesSwap);
+
+            foreach (var colliderShapes in tileBlockColliderShapesSwap.Values)
+            {
+                changed = changed || RemoveAssociatedColliderShapes(physicsComponent, colliderShapes);
+            }
+
+            tileBlockColliderShapesSwap.Clear();
+
+            //if (changed)
+            //{
+            //    var entity = physicsComponent.Entity;
+            //    if (entity != null)
+            //    {
+            //        entity.Components.Remove(physicsComponent);
+            //        entity.Components.Add(physicsComponent);
+            //    }
+
+            //}               
 
         }
 
