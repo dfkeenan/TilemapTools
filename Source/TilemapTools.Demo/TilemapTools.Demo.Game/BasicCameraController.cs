@@ -80,6 +80,12 @@ namespace TilemapTools.Demo
                 translation.X = KeyboardMovementSpeed.X;
             }
                        
+            if(Input.IsKeyPressed(Keys.R))
+            {
+                yaw = 0;
+                pitch = 0;
+                Entity.Transform.Rotation = Quaternion.Identity;               
+            }
 
             // Alternative translation speed
             if (Input.IsKeyDown(Keys.LeftShift) || Input.IsKeyDown(Keys.RightShift))

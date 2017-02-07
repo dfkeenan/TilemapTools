@@ -12,7 +12,7 @@ using SiliconStudio.Core.Mathematics;
 
 namespace TilemapTools.Demo
 {
-    public class TimeMapComponentTest: StartupScript
+    public class TileMapComponentTest: StartupScript
     {
         public string MapName { get; set; }
 

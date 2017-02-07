@@ -56,7 +56,7 @@ namespace TilemapTools.Xenko.Graphics
 
         }
 
-        public void Begin(GraphicsContext graphicsContex, Matrix world, Matrix viewProjection)
+        public void Begin(GraphicsContext graphicsContex, ref Matrix world, ref Matrix viewProjection)
         {
             CheckEndHasBeenCalled();
 
@@ -78,9 +78,8 @@ namespace TilemapTools.Xenko.Graphics
 
             GraphicsContext.CommandList.SetPipelineState(MutablePipeline.CurrentState);
 
-            var wvp = world * ViewProjectionMatrix;
-
             Effect.Apply(GraphicsContext);
+            var wvp = world * ViewProjectionMatrix;
             Parameters.Set(SpriteBaseKeys.MatrixTransform, wvp);
 
             hasBegun = true;
@@ -89,7 +88,6 @@ namespace TilemapTools.Xenko.Graphics
         public void Draw(TileMeshDraw tileMeshDraw)
         {
             CheckBeginHasBeenCalled();
-
             GraphicsContext.CommandList.SetVertexBuffer(0, tileMeshDraw.VertexBuffer.Buffer, tileMeshDraw.VertexBuffer.Offset, tileMeshDraw.VertexBuffer.Stride);
             GraphicsContext.CommandList.SetIndexBuffer(tileMeshDraw.IndexBuffer.Buffer, 0, tileMeshDraw.IndexBuffer.Is32Bit);
 

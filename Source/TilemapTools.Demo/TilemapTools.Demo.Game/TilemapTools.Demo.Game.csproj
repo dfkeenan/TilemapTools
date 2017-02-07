@@ -111,7 +111,7 @@
     <Compile Include="BasicCameraController.cs" />
     <Compile Include="DebugInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeMapComponentTest.cs" />
+    <Compile Include="TileMapComponentTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TilemapTools.Xenko\TilemapTools.Xenko\TilemapTools.Xenko.csproj">

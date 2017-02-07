@@ -26,9 +26,11 @@ namespace TilemapTools.Xenko.Rendering
             
         }
 
+      
+
         public override void Draw(RenderDrawContext context, RenderView renderView, RenderViewStage renderViewStage, int startIndex, int endIndex)
         {
-            base.Draw(context, renderView, renderViewStage, startIndex, endIndex);
+            //base.Draw(context, renderView, renderViewStage, startIndex, endIndex);
 
             for (var index = startIndex; index < endIndex; index++)
             {
@@ -51,7 +53,7 @@ namespace TilemapTools.Xenko.Rendering
                 grid.FindVisibleGridBlocks(ref world, ref viewProjection, visibleBlocks);
                 if (visibleBlocks.Count > 0)
                 {
-                    tileMeshRenderer.Begin(context.GraphicsContext, world, viewProjection);
+                    tileMeshRenderer.Begin(context.GraphicsContext, ref world, ref viewProjection);
 
                     tileMesh.GetTileMeshDraws(visibleBlocks, context.GraphicsDevice, ref cellSize, visibleTileMeshDraws);
 
