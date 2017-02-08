@@ -125,7 +125,7 @@ namespace TilemapTools.Xenko.Assets
         /// </userdoc>
         [NotNull]
         [DataMember(100)]
-       // [Category("Atlas Packing")]
+        [Category("Atlas Packing")]
         public PackingAttributes Packing { get; set; } = new PackingAttributes();
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace TilemapTools.Xenko.Assets
         /// The list of tiles composing the set.
         /// </userdoc>
         [DataMember(150)]
-       // [Category]
+        [Category]
         [MemberCollection(NotNullItems = true)]
         public List<SpriteInfo> Sprites { get; set; } = new List<SpriteInfo>();
     }
