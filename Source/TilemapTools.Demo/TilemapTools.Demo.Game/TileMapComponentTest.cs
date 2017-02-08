@@ -113,7 +113,7 @@ namespace TilemapTools.Demo
                 }
 
                 Entity.AddChild(layerEntity);
-                layerDepth -= 1f;
+                layerDepth += 1f;
             }
 
         }

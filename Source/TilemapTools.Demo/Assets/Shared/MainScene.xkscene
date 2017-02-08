@@ -55,6 +55,10 @@ Hierarchy:
                         KeyboardRotationSpeed: {X: 3.0, Y: 3.0}
                         MouseRotationSpeed: {X: 90.0, Y: 60.0}
                         TouchRotationSpeed: {X: 60.0, Y: 40.0}
+                    43b83c83d3b447c64f6a04943942e70b: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
+                        Id: 88d3fb8d-6623-4d40-9ae6-0130833cf746
+                        ToggleKey: F12
+                        DebuggingEnabled: false
         -   Entity:
                 Id: d0a9db31-7143-444c-a7f1-f44b351cc3b1
                 Name: Map

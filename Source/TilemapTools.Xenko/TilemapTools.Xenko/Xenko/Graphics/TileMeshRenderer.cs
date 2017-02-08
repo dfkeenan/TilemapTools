@@ -56,11 +56,11 @@ namespace TilemapTools.Xenko.Graphics
 
         }
 
-        public void Begin(GraphicsContext graphicsContex, ref Matrix world, ref Matrix viewProjection)
+        public void Begin(GraphicsContext graphicsContext, ref Matrix world, ref Matrix viewProjection)
         {
             CheckEndHasBeenCalled();
 
-            GraphicsContext = graphicsContex;
+            GraphicsContext = graphicsContext;
             ViewProjectionMatrix = viewProjection;
 
             textureUpdater = null;
@@ -78,7 +78,7 @@ namespace TilemapTools.Xenko.Graphics
 
             GraphicsContext.CommandList.SetPipelineState(MutablePipeline.CurrentState);
 
-            Effect.Apply(GraphicsContext);
+            
             var wvp = world * ViewProjectionMatrix;
             Parameters.Set(SpriteBaseKeys.MatrixTransform, wvp);
 
@@ -95,6 +95,8 @@ namespace TilemapTools.Xenko.Graphics
             {
                 if (textureUpdater.HasValue)
                     Parameters.Set(textureUpdater.Value, range.Texture);
+
+                Effect.Apply(GraphicsContext);
 
                 GraphicsContext.CommandList.DrawIndexed(range.IndexCount, range.StartIndex);
             }
