@@ -8,7 +8,7 @@ using SiliconStudio.Core.Collections;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Physics;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Physics
 {
     public abstract class TileMapPhysicsShapeBuilder
     {

@@ -112,7 +112,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xenko\ColliderShapePerTilePhysicsShapeBuilder.cs" />
+    <Compile Include="Xenko\Physics\ColliderShapePerTilePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Graphics\ITileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\OrthogonalTileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\TileMesh.cs" />
@@ -132,7 +132,7 @@
     <Compile Include="Xenko\TileGrid.cs" />
     <Compile Include="Xenko\TileGridBlock.cs" />
     <Compile Include="Xenko\TileMapComponent.cs" />
-    <Compile Include="Xenko\TileMapPhysicsShapeBuilder.cs" />
+    <Compile Include="Xenko\Physics\TileMapPhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\TileMapProcessor.cs" />
     <Compile Include="Xenko\TileReference.cs" />
     <Compile Include="Xenko\TileSet.cs" />

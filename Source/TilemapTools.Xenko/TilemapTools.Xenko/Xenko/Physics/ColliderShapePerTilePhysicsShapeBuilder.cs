@@ -7,7 +7,7 @@ using SiliconStudio.Core;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Physics;
 
-namespace TilemapTools.Xenko
+namespace TilemapTools.Xenko.Physics
 {
     [Display("Collider Shape Per Tile")]
     [DataContract("ColliderShapePerTilePhysicsShapeBuilder")]

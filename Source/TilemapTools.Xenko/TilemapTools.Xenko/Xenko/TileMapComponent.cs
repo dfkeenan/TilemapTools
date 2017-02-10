@@ -4,6 +4,7 @@ using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Engine.Design;
 using TilemapTools.Xenko.Rendering;
+using TilemapTools.Xenko.Physics;
 
 namespace TilemapTools.Xenko
 {

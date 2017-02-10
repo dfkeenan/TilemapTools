@@ -9,6 +9,7 @@ using TilemapTools.Xenko.Tiled;
 using SiliconStudio.Xenko.Physics;
 using System.Collections.Generic;
 using SiliconStudio.Core.Mathematics;
+using TilemapTools.Xenko.Physics;
 
 namespace TilemapTools.Demo
 {

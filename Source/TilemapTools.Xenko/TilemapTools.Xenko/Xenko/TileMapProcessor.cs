@@ -1,6 +1,7 @@
 ﻿using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Games;
 using SiliconStudio.Xenko.Physics;
+using TilemapTools.Xenko.Physics;
 
 namespace TilemapTools.Xenko
 {
