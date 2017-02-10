@@ -12,7 +12,7 @@ using SiliconStudio.Xenko.Assets.Sprite;
 using SiliconStudio.Xenko.Assets.Textures;
 using SiliconStudio.Xenko.Graphics;
 
-namespace TilemapTools.Xenko.Assets
+namespace TilemapTools.Xenko.Offline
 {
     /// <summary>
     /// This asset represents a sheet (group) of sprites.

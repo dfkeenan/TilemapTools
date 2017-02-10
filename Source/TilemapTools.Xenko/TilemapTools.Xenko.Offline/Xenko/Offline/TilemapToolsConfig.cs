@@ -1,6 +1,6 @@
 ﻿using SiliconStudio.Core;
 
-namespace TilemapTools.Xenko.Assets
+namespace TilemapTools.Xenko.Offline
 {
     [DataContract("TilemapTools")]
     public sealed class TilemapToolsConfig

@@ -15,7 +15,7 @@ using SiliconStudio.Core.Serialization.Contents;
 using SiliconStudio.Xenko.Assets;
 using SiliconStudio.Xenko.Graphics;
 
-namespace TilemapTools.Xenko.Assets
+namespace TilemapTools.Xenko.Offline
 {
     /// <summary>
     /// The <see cref="TileSetAsset"/> compiler.

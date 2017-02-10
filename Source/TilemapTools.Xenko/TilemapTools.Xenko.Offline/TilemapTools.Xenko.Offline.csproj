@@ -373,9 +373,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xenko\Assets\TilemapToolsConfig.cs" />
-    <Compile Include="Xenko\Assets\TileSetAsset.cs" />
-    <Compile Include="Xenko\Assets\TileSetAssetCompiler.cs" />
+    <Compile Include="Xenko\Offline\TilemapToolsConfig.cs" />
+    <Compile Include="Xenko\Offline\TileSetAsset.cs" />
+    <Compile Include="Xenko\Offline\TileSetAssetCompiler.cs" />
     <Compile Include="Xenko\Offline\Module.cs" />
   </ItemGroup>
   <ItemGroup>
