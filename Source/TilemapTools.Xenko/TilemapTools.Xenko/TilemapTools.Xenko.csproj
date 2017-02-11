@@ -112,6 +112,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xenko\Physics\MinimumPhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Physics\PerEdgePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Physics\PerEdgeTilePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Physics\PerTilePhysicsShapeBuilder.cs" />

@@ -122,7 +122,7 @@ namespace TilemapTools.Demo
                 //TODO: Improve properties usability
                 if (!layer.Properties.ContainsKey("CollisionEnabled"))
                 {
-                    var physicsShapeBuilder = new PerEdgePhysicsShapeBuilder();
+                    var physicsShapeBuilder = new MinimumPhysicsShapeBuilder();
 
                     var staticColliderComponent = new StaticColliderComponent();
                     physicsShapeBuilder.Update(tileMapComponent.Grid, staticColliderComponent);
