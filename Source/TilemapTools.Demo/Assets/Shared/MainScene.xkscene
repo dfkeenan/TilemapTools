@@ -33,7 +33,24 @@ Hierarchy:
     RootPartIds:
         - d0a9db31-7143-444c-a7f1-f44b351cc3b1
         - c06b34cf-2a10-4374-ba2f-2222109628ca
+        - 9138ef6a-6287-4c88-b3c4-75e79ec7870d
     Parts:
+        -   Entity:
+                Id: 9138ef6a-6287-4c88-b3c4-75e79ec7870d
+                Name: DebugInfo
+                Components:
+                    dfce521fca97e6ae6084bfc1b916332e: !TransformComponent
+                        Id: f9aac6a6-465b-4e69-a95f-175d9ded99be
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    44a1cc5b354fab0c488e18f288958236: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
+                        Id: bbce3cf6-442b-4f3f-b027-dee808a9f43c
+                        ToggleKey: F12
+                        DebuggingEnabled: false
+                        MessageTimeOut: 0:00:00:01.0000000
+                        Font: 3ead5314-08db-4985-b3b5-05fa7480204b:DebugFont
         -   Entity:
                 Id: c06b34cf-2a10-4374-ba2f-2222109628ca
                 Name: Camera
@@ -47,6 +64,7 @@ Hierarchy:
                     cb6d668b4a63a39bfaa214e24adfe602: !CameraComponent
                         Id: 4aec135e-7ff4-4d56-8d67-8aa729cd6e76
                         Projection: Orthographic
+                        NearClipPlane: 0.001
                     1f2a97163df92b1c7cc4b1a35bd0c25e: !TilemapTools.Demo.BasicCameraController,TilemapTools.Demo.Game
                         Id: 038fafb3-d7ec-4730-b1dc-20ba40e4a768
                         KeyboardMovementSpeed: {X: 5.0, Y: 5.0, Z: 5.0}
@@ -55,10 +73,6 @@ Hierarchy:
                         KeyboardRotationSpeed: {X: 3.0, Y: 3.0}
                         MouseRotationSpeed: {X: 90.0, Y: 60.0}
                         TouchRotationSpeed: {X: 60.0, Y: 40.0}
-                    43b83c83d3b447c64f6a04943942e70b: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
-                        Id: 88d3fb8d-6623-4d40-9ae6-0130833cf746
-                        ToggleKey: F12
-                        DebuggingEnabled: false
         -   Entity:
                 Id: d0a9db31-7143-444c-a7f1-f44b351cc3b1
                 Name: Map

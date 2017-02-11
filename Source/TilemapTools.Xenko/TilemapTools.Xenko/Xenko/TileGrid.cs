@@ -175,6 +175,60 @@ namespace TilemapTools.Xenko
             origin = topLeft.XY();
 
         }
-   
+
+        public static Vector2? GetPoint(ref Matrix world, ref Ray ray)
+        {
+            var plane = new Plane(world.TranslationVector, Vector3.TransformNormal(Vector3.UnitZ, world));
+
+            Vector3 point;
+
+            if (ray.Intersects(ref plane, out point))
+            {
+                Matrix inverseWorld;
+                Matrix.Invert(ref world, out inverseWorld);
+
+                point = Vector3.TransformCoordinate(point, inverseWorld);
+
+                return (Vector2)point;
+            }
+
+            return null;
+        }
+
+
+        public CellLocationPair<TileReference>? GetCell(ref Matrix world, ref Ray ray)
+        {
+            var location = GetPoint(ref world, ref ray);
+
+            if (location.HasValue)
+            {
+                var point = location.Value;
+                var cell =  GetCellLocation(ref point);
+
+                if(cell.HasValue)
+                {
+                    return new CellLocationPair<Xenko.TileReference>(this[cell.Value.X, cell.Value.Y], cell.Value.X, cell.Value.Y);
+                }
+            } 
+
+            return null;
+
+        }
+
+        public Point? GetCellLocation(ref Matrix world, ref Ray ray)
+        {
+            var location = GetPoint(ref world, ref ray);
+
+            if (location.HasValue)
+            {
+                var point = location.Value;
+                return GetCellLocation(ref point);
+            }
+
+            return null;
+        }
+
+        public abstract Point? GetCellLocation(ref Vector2 point);
+
     }
 }

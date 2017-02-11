@@ -10,18 +10,14 @@ using SiliconStudio.Xenko.Physics;
 namespace TilemapTools.Xenko.Physics
 {
     [Display("Collider Shape Per Tile")]
-    [DataContract("ColliderShapePerTilePhysicsShapeBuilder")]
-    public class ColliderShapePerTilePhysicsShapeBuilder : TileMapPhysicsShapeBuilder
+    [DataContract("PerTilePhysicsShapeBuilder")]
+    public class PerTilePhysicsShapeBuilder : TileMapPhysicsShapeBuilder
     {
         protected override void Update(TileGridBlock block, ref Vector2 cellSize)
         {
-            var origin = new Vector3( block.Origin, 0);
-            origin.X += cellSize.X / 2f;
-            origin.Y -= cellSize.Y / 2f; 
+            RectangleF cellBounds = new RectangleF(block.Origin.X,block.Origin.Y, cellSize.X,cellSize.Y);
+            var originX = cellBounds.X;
 
-            var originX = origin.X;
-
-            var size = new Vector3(cellSize, 0);
             for (int y = 0; y < block.BlockSize; y++)
             {
                 for (int x = 0; x < block.BlockSize; x++)
@@ -30,17 +26,20 @@ namespace TilemapTools.Xenko.Physics
 
                     if(!tile.IsEmpty)
                     {
+                        var colliderBounds = CalculateColliderBounds(ref cellBounds, ref cellSize);
+
                         //TODO: Change this so works for other tile grid types
-                        var shape = new BoxColliderShapeDesc() { Is2D = true, Size = size, LocalOffset = origin };
+                        var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
                         AddTileColliderShape(shape);
                     }
 
-                    origin.X += cellSize.X;                
+                    cellBounds.X += cellSize.X;                
                 }
-                origin.Y -= cellSize.Y;
+                cellBounds.Y -= cellSize.Y;
 
-                origin.X = originX;
+                cellBounds.X = originX;
             }
         }
+        
     }
 }

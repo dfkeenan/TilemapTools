@@ -112,7 +112,9 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Xenko\Physics\ColliderShapePerTilePhysicsShapeBuilder.cs" />
+    <Compile Include="Xenko\Physics\PerEdgePhysicsShapeBuilder.cs" />
+    <Compile Include="Xenko\Physics\PerEdgeTilePhysicsShapeBuilder.cs" />
+    <Compile Include="Xenko\Physics\PerTilePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Graphics\ITileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\OrthogonalTileMeshDrawBuilder.cs" />
     <Compile Include="Xenko\Graphics\TileMesh.cs" />

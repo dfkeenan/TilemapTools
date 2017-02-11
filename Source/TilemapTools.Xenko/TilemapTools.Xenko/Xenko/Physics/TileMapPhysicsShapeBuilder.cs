@@ -116,5 +116,75 @@ namespace TilemapTools.Xenko.Physics
 
             return changed;
         }
+
+        protected static BoundingBoxExt CalculateColliderBounds(ref RectangleF cellBounds, ref Vector2 cellSize, bool extentAsSize = true)
+        {
+            var size = new Vector3(cellBounds.Size.Width, cellBounds.Height, 0);
+
+            var adjustedBounds = new BoundingBoxExt()
+            {
+                Center = (Vector3)cellBounds.Center,
+                Extent = extentAsSize ? size : size / 2f,
+            };
+
+            adjustedBounds.Center.Y -= cellBounds.Height;
+
+            return adjustedBounds;
+        }
+
+        protected static bool IsEdge(TileGridBlock block, ref int x, ref int y)
+        {
+            var maxIndex = block.BlockSize - 1;
+
+            return x <= 0 ||                    
+                   x >= maxIndex || 
+                   y <= 0 || 
+                   y >= maxIndex ||
+                   block.GetCell(x - 1,y).IsEmpty ||
+                   block.GetCell(x + 1, y).IsEmpty ||
+                   block.GetCell(x, y - 1).IsEmpty ||
+                   block.GetCell(x, y + 1).IsEmpty;
+        }
+
+        protected static bool IsVerticalEdge(TileGridBlock block, ref int x, ref int y)
+        {
+            return x <= 0 ||
+                   x >= block.BlockSize - 1 ||               
+                   block.GetCell(x - 1, y).IsEmpty ||
+                   block.GetCell(x + 1, y).IsEmpty;
+        }
+
+        protected static bool IsLeftEdge(TileGridBlock block, ref int x, ref int y)
+        {
+            return x <= 0 ||
+                   block.GetCell(x - 1, y).IsEmpty;
+        }
+
+        protected static bool IsRightEdge(TileGridBlock block, ref int x, ref int y)
+        {
+            return x >= block.BlockSize - 1 ||
+                   block.GetCell(x + 1, y).IsEmpty;
+        }
+
+        protected static bool IsHorizontalEdge(TileGridBlock block, ref int x, ref int y)
+        {
+            return y <= 0 ||
+                   y >= block.BlockSize - 1 ||
+                   block.GetCell(x, y - 1).IsEmpty ||
+                   block.GetCell(x, y + 1).IsEmpty;
+        }
+
+        protected static bool IsTopEdge(TileGridBlock block, ref int x, ref int y)
+        {
+             return y <= 0 ||
+                   block.GetCell(x, y - 1).IsEmpty;
+        }
+
+        protected static bool IsBottomEdge(TileGridBlock block, ref int x, ref int y)
+        {
+
+            return y >= block.BlockSize - 1 ||
+                   block.GetCell(x, y + 1).IsEmpty;
+        }
     }
 }
