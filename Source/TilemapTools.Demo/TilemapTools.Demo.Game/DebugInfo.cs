@@ -77,25 +77,32 @@ namespace TilemapTools.Demo
         {
             if(DebuggingEnabled)
             {
-                DrawMessages(renderContext);
+                if (Font != null)
+                {
+                    spriteBatch.Begin(renderContext.GraphicsContext, depthStencilState: DepthStencilStates.None);
+                    DrawMessages(renderContext);
+
+                    var size = spriteBatch.MeasureString(Font, $"FPS: {Game.UpdateTime.FramePerSecond:0.00}");
+                    var position = new Vector2(spriteBatch.VirtualResolution.Value.X - size.X, 0);
+
+
+                    spriteBatch.DrawString(Font, $"FPS: {Game.UpdateTime.FramePerSecond:0.00}", position, Color4.White);
+
+                    spriteBatch.End();
+                }
+                    
             }
         }
 
         private void DrawMessages(RenderDrawContext renderContext)
         {
-            if (Font == null) return;
-
-            spriteBatch.Begin(renderContext.GraphicsContext, depthStencilState: DepthStencilStates.None);
-
             var position = new Vector2();
 
             foreach (var message in messages)
             {
                 spriteBatch.DrawString(Font, message, position, Color4.White);
                 position.Y += spriteBatch.MeasureString(Font, message).Y;
-            }
-
-            spriteBatch.End();
+            }            
         }
 
         public override void Cancel()
