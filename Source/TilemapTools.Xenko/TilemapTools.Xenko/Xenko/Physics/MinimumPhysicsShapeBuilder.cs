@@ -11,21 +11,18 @@ namespace TilemapTools.Xenko.Physics
 {
     [Display("Minimum Collider Shape")]
     [DataContract("MinimumPhysicsShapeBuilder")]
-    public class MinimumPhysicsShapeBuilder : TileMapPhysicsShapeBuilder
+    public class MinimumPhysicsShapeBuilder : PhysicsShapeBuilder
     {
-        private Dictionary<int, RectangleF> previousBounds = new Dictionary<int, RectangleF>();
-        private Dictionary<int, RectangleF> currentBounds = new Dictionary<int, RectangleF>();
+        private Dictionary<int, Rectangle> previousBounds = new Dictionary<int, Rectangle>();
+        private Dictionary<int, Rectangle> currentBounds = new Dictionary<int, Rectangle>();
 
-        protected override void Update(TileGridBlock block, ref Vector2 cellSize)
+        protected override void Update(PhysicsShapeBuilderContext context, TileGridBlock block)
         {
-            RectangleF originCellBounds = new RectangleF(block.Origin.X, block.Origin.Y, cellSize.X, cellSize.Y);
-            var originX = originCellBounds.X;
 
-            var cellBounds = originCellBounds;
+            Rectangle cellSelection = new Rectangle(0, 0, 1, 1);
             int left = 0;
 
-
-            RectangleF adjacentCellBounds = default(RectangleF);
+            Rectangle adjacent = default(Rectangle);
             bool hasAdjacent = false;
 
             for (int y = 0; y < block.BlockSize; y++)
@@ -38,10 +35,9 @@ namespace TilemapTools.Xenko.Physics
                     {
                         if (IsLeftEdge(block, ref x, ref y))
                         {
-                            cellBounds.X = originCellBounds.X;
-                            cellBounds.Width = originCellBounds.Width;
-                            left = x;
-                            if (hasAdjacent = previousBounds.TryGetValue(x, out adjacentCellBounds))
+                            cellSelection.X = left = x;
+                            cellSelection.Width = 1;
+                            if (hasAdjacent = previousBounds.TryGetValue(x, out adjacent))
                                 previousBounds.Remove(x);
                         }
 
@@ -49,78 +45,57 @@ namespace TilemapTools.Xenko.Physics
                         {
                             if (hasAdjacent)
                             {
-                                if (adjacentCellBounds.Width == cellBounds.Width)
+                                if (adjacent.Width == cellSelection.Width)
                                 {
-                                    adjacentCellBounds.Height += cellBounds.Height;
-                                    currentBounds[left] = adjacentCellBounds;
+                                    adjacent.Height += 1;
+                                    currentBounds[left] = adjacent;
                                 }
                                 else
                                 {
-                                    var colliderBounds = CalculateColliderBounds(ref adjacentCellBounds, ref cellSize);
-
-                                    //TODO: Change this so works for other tile grid types
-                                    var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
-
-                                    AddTileColliderShape(shape);
-
-                                    currentBounds[left] = cellBounds;
+                                    context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref adjacent, block));
+                                    currentBounds[left] = cellSelection;
                                 }
 
                                 hasAdjacent = false;
                             }
                             else
                             {
-                                currentBounds[left] = cellBounds;
+                                currentBounds[left] = cellSelection;
                             }
 
                         }
                         else
                         {
-                            cellBounds.Width += cellSize.X;
-                        }                        
-                        
+                            cellSelection.Width += 1;
+                        }
+
                     }
-                    originCellBounds.X += cellSize.X;
-
+                    
                 }
-                //increment
-                originCellBounds.Y -= cellSize.Y;
-
-                // reset
-                originCellBounds.X = originX;
-                cellBounds = originCellBounds;
-                left = 0;
+                cellSelection.Y += 1;
+                cellSelection.X = left = 0;
+                cellSelection.Width = 1;
 
                 foreach (var item in previousBounds.Values)
                 {
                     var leftOver = item;
-                    var colliderBounds = CalculateColliderBounds(ref leftOver, ref cellSize);
-
-                    //TODO: Change this so works for other tile grid types
-                    var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
-
-                    AddTileColliderShape(shape);
+                    context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref leftOver, block));
                 }
 
                 Utilities.Swap(ref previousBounds, ref currentBounds);
 
                 currentBounds.Clear();
-            }
+            }          
 
             foreach (var item in previousBounds.Values)
             {
                 var leftOver = item;
-                var colliderBounds = CalculateColliderBounds(ref leftOver, ref cellSize);
-
-                //TODO: Change this so works for other tile grid types
-                var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
-
-                AddTileColliderShape(shape);
+                context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref leftOver, block));
             }
 
             previousBounds.Clear();
 
         }
-        
+
     }
 }

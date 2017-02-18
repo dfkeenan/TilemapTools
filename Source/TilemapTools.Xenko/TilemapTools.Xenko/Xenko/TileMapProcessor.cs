@@ -56,7 +56,7 @@ namespace TilemapTools.Xenko
         {
             public PhysicsTriggerComponentBase PhysicsComponent;
             public TileMapComponent TileMapComponent;
-            public TileMapPhysicsShapeBuilder PhysicsShapeBuilder;
+            public PhysicsShapeBuilder PhysicsShapeBuilder;
             public TileGrid TileGrid;
         }
     }

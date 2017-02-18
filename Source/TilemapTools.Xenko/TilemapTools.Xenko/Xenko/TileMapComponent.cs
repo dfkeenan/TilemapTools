@@ -41,6 +41,6 @@ namespace TilemapTools.Xenko
         [DataMember(30)]
         [Display("Physics Shape Builder")]
         [DataMemberCustomSerializer]
-        public TileMapPhysicsShapeBuilder PhysicsShapeBuilder { get; set; }
+        public PhysicsShapeBuilder PhysicsShapeBuilder { get; set; }
     }
 }

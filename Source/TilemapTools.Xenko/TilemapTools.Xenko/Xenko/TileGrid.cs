@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using SiliconStudio.Core;
 using SiliconStudio.Core.Mathematics;
+using SiliconStudio.Xenko.Physics;
 using TilemapTools.Xenko.Graphics;
+using TilemapTools.Xenko.Physics;
 
 namespace TilemapTools.Xenko
 {
     //[DataSerializerGlobal(typeof(ReferenceSerializer<TileGrid>), Profile = "Content")]
     //[ContentSerializer(typeof(DataContentSerializer<TileGrid>))]
     [DataContract("TileGrid")]
-    public abstract class TileGrid: Grid<TileReference, Vector2, TileGridBlock>, ITileDefinitionSource    
+    public abstract class TileGrid: Grid<TileReference, Vector2, TileGridBlock>, ITileDefinitionSource, IColliderShapeProvider
     {
         public const int DefaultCellSize = 1;
 
@@ -230,5 +232,6 @@ namespace TilemapTools.Xenko
 
         public abstract Point? GetCellLocation(ref Vector2 point);
 
+        public abstract IInlineColliderShapeDesc CalculateColliderShape(ref Rectangle cellSelection, TileGridBlock block);
     }
 }

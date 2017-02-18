@@ -10,14 +10,13 @@ using SiliconStudio.Xenko.Physics;
 
 namespace TilemapTools.Xenko.Physics
 {
-    public abstract class TileMapPhysicsShapeBuilder
+    public abstract class PhysicsShapeBuilder
     {
         private Dictionary<ShortPoint, List<IInlineColliderShapeDesc>> tileBlockColliderShapes = new Dictionary<ShortPoint, List<IInlineColliderShapeDesc>>();
         private Dictionary<ShortPoint, List<IInlineColliderShapeDesc>> tileBlockColliderShapesSwap = new Dictionary<ShortPoint, List<IInlineColliderShapeDesc>>();
 
-
-        private TrackingCollection<IInlineColliderShapeDesc> currentPhysicsComponentColliderShapes;
-        private List<IInlineColliderShapeDesc> currentColliderShapes;
+        private readonly PhysicsShapeBuilderContext context = new PhysicsShapeBuilderContext();
+               
 
         public virtual void RemoveAssociatedColliderShapes(PhysicsTriggerComponentBase physicsComponent)
         {
@@ -35,6 +34,7 @@ namespace TilemapTools.Xenko.Physics
         {
             var blocks = tileGrid.InternalBlocks;
             var cellSize = tileGrid.CellSize;
+            context.ColliderShapeProvider = tileGrid;
 
             var changed = false;
 
@@ -61,13 +61,14 @@ namespace TilemapTools.Xenko.Physics
                 {
                     tileBlockColliderShapesSwap[block.Location] = colliderShapes;
 
-                    currentPhysicsComponentColliderShapes = physicsComponent.ColliderShapes;
-                    currentColliderShapes = colliderShapes;
+                    context.PhysicsComponentColliderShapes = physicsComponent.ColliderShapes;
+                    context.ColliderShapes = colliderShapes;
 
-                    Update(block, ref cellSize);
+                    Update(context, block);
 
-                    currentPhysicsComponentColliderShapes = null;
-                    currentColliderShapes = null;
+                    context.PhysicsComponentColliderShapes = null;
+                    context.ColliderShapes = null;
+
                     changed = changed || true;
                 }
                                
@@ -96,13 +97,9 @@ namespace TilemapTools.Xenko.Physics
 
         }
 
-        protected abstract void Update(TileGridBlock block, ref Vector2 cellSize);
+        protected abstract void Update(PhysicsShapeBuilderContext context, TileGridBlock block);
 
-        protected void AddTileColliderShape(IInlineColliderShapeDesc colliderShape)
-        {
-            currentPhysicsComponentColliderShapes.Add(colliderShape);
-            currentColliderShapes.Add(colliderShape);
-        }
+        
 
         private static bool RemoveAssociatedColliderShapes(PhysicsTriggerComponentBase physicsComponent, List<IInlineColliderShapeDesc> colliderShapes)
         {
@@ -116,21 +113,7 @@ namespace TilemapTools.Xenko.Physics
 
             return changed;
         }
-
-        protected static BoundingBoxExt CalculateColliderBounds(ref RectangleF cellBounds, ref Vector2 cellSize, bool extentAsSize = true)
-        {
-            var size = new Vector3(cellBounds.Size.Width, cellBounds.Height, 0);
-
-            var adjustedBounds = new BoundingBoxExt()
-            {
-                Center = (Vector3)cellBounds.Center,
-                Extent = extentAsSize ? size : size / 2f,
-            };
-
-            adjustedBounds.Center.Y -= cellBounds.Height;
-
-            return adjustedBounds;
-        }
+               
 
         protected static bool IsEdge(TileGridBlock block, ref int x, ref int y)
         {

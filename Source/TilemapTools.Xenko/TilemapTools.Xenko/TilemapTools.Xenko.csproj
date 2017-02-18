@@ -112,8 +112,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xenko\Physics\IColliderShapeProvider.cs" />
     <Compile Include="Xenko\Physics\MinimumPhysicsShapeBuilder.cs" />
-    <Compile Include="Xenko\Physics\PerEdgePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Physics\PerEdgeTilePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Physics\PerTilePhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Graphics\ITileMeshDrawBuilder.cs" />
@@ -125,6 +125,7 @@
     <Compile Include="Xenko\ITileDefinitionSource.cs" />
     <Compile Include="Xenko\Module.cs" />
     <Compile Include="Xenko\OrthogonalTileGrid.cs" />
+    <Compile Include="Xenko\Physics\PhysicsShapeBuilderContext.cs" />
     <Compile Include="Xenko\Rendering\RenderTileMap.cs" />
     <Compile Include="Xenko\Rendering\TileMapPipelinePlugin.cs" />
     <Compile Include="Xenko\Rendering\TileMapRendererProcessor.cs" />
@@ -135,7 +136,7 @@
     <Compile Include="Xenko\TileGrid.cs" />
     <Compile Include="Xenko\TileGridBlock.cs" />
     <Compile Include="Xenko\TileMapComponent.cs" />
-    <Compile Include="Xenko\Physics\TileMapPhysicsShapeBuilder.cs" />
+    <Compile Include="Xenko\Physics\PhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\TileMapProcessor.cs" />
     <Compile Include="Xenko\TileReference.cs" />
     <Compile Include="Xenko\TileSet.cs" />

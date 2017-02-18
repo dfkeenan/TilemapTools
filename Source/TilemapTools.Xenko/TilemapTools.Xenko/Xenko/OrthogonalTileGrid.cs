@@ -1,6 +1,7 @@
 ﻿using System;
 using SiliconStudio.Core;
 using SiliconStudio.Core.Mathematics;
+using SiliconStudio.Xenko.Physics;
 using TilemapTools.Xenko.Graphics;
 
 namespace TilemapTools.Xenko
@@ -8,7 +9,8 @@ namespace TilemapTools.Xenko
     [Display("Orthogonal")]
     [DataContract("OrthogonalTileGrid")]
     public class OrthogonalTileGrid : TileGrid
-    {
+    {       
+
         public override ITileMeshDrawBuilder CreateMeshDrawBuilder()
         {
             return new OrthogonalTileMeshDrawBuilder();
@@ -36,5 +38,18 @@ namespace TilemapTools.Xenko
             return null;
         }
 
+        public override IInlineColliderShapeDesc CalculateColliderShape(ref Rectangle cellSelection, TileGridBlock block)
+        {
+            RectangleF cellBounds = new RectangleF();
+            cellBounds.X = block.Origin.X + (cellSelection.X * CellSize.X);
+            cellBounds.Y = block.Origin.Y - ((cellSelection.Y + cellSelection.Height) * CellSize.Y);
+            cellBounds.Width = cellSelection.Width * CellSize.X;
+            cellBounds.Height = cellSelection.Height * CellSize.Y;
+
+
+            var collider = new BoxColliderShapeDesc() { Is2D = true, Size = new Vector3(cellBounds.Width,cellBounds.Height,0), LocalOffset = (Vector3)cellBounds.Center };
+
+            return collider;
+        }
     }
 }

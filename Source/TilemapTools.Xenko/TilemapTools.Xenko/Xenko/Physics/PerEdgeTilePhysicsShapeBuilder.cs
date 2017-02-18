@@ -11,12 +11,12 @@ namespace TilemapTools.Xenko.Physics
 {
     [Display("Collider Shape Per Edge Tile")]
     [DataContract("PerEdgeTilePhysicsShapeBuilder")]
-    public class PerEdgeTilePhysicsShapeBuilder : TileMapPhysicsShapeBuilder
+    public class PerEdgeTilePhysicsShapeBuilder : PhysicsShapeBuilder
     {
-        protected override void Update(TileGridBlock block, ref Vector2 cellSize)
+        protected override void Update(PhysicsShapeBuilderContext context, TileGridBlock block)
         {
-            RectangleF cellBounds = new RectangleF(block.Origin.X, block.Origin.Y, cellSize.X, cellSize.Y);
-            var originX = cellBounds.X;
+           
+            Rectangle cellSelection = new Rectangle(0, 0, 1, 1);
 
             for (int y = 0; y < block.BlockSize; y++)
             {
@@ -26,18 +26,14 @@ namespace TilemapTools.Xenko.Physics
 
                     if (!tile.IsEmpty && IsEdge(block, ref x, ref y))
                     {
-                        var colliderBounds = CalculateColliderBounds(ref cellBounds, ref cellSize);
-
-                        //TODO: Change this so works for other tile grid types
-                        var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
-                        AddTileColliderShape(shape);
+                        context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref cellSelection, block));
                     }
 
-                    cellBounds.X += cellSize.X;
+                    cellSelection.X += 1;
                 }
-                cellBounds.Y -= cellSize.Y;
+                cellSelection.Y += 1;
 
-                cellBounds.X = originX;
+                cellSelection.X = 0;
             }
         }
 

@@ -9,98 +9,94 @@ using SiliconStudio.Xenko.Physics;
 
 namespace TilemapTools.Xenko.Physics
 {
-    //[Display("Collider Shape Per Edge")]
-    //[DataContract("PerEdgePhysicsShapeBuilder")]
-    //public class PerEdgePhysicsShapeBuilder : TileMapPhysicsShapeBuilder
-    //{
-    //    protected override void Update(TileGridBlock block, ref Vector2 cellSize)
-    //    {
-    //        var verticals = new Dictionary<int, RectangleF>();
+    [Display("Collider Shape Per Edge")]
+    [DataContract("PerEdgePhysicsShapeBuilder")]
+    public class PerEdgePhysicsShapeBuilder : PhysicsShapeBuilder
+    {
+        private Dictionary<int, Rectangle> previousBounds = new Dictionary<int, Rectangle>();
+        private Dictionary<int, Rectangle> currentBounds = new Dictionary<int, Rectangle>();
 
-    //        RectangleF originCellBounds = new RectangleF(block.Origin.X, block.Origin.Y, cellSize.X, cellSize.Y);
-    //        var originX = originCellBounds.X;
+        protected override void Update(PhysicsShapeBuilderContext context, TileGridBlock block)
+        {
+            throw new NotImplementedException();
+            //Rectangle cellSelection = new Rectangle(0, 0, 1, 1);
+            //int left = 0;
 
-    //        var horizontalEdgeBounds = originCellBounds;
+            //Rectangle adjacent = default(Rectangle);
+            //bool hasAdjacent = false;
 
-    //        for (int y = 0; y < block.BlockSize; y++)
-    //        {
-    //            var below = y + 1;
+            //for (int y = 0; y < block.BlockSize; y++)
+            //{
+            //    for (int x = 0; x < block.BlockSize; x++)
+            //    {
+            //        var tile = block.GetCell(x, y);
 
-    //            for (int x = 0; x < block.BlockSize; x++)
-    //            {
-    //                var tile = block.GetCell(x, y);
+            //        if (!tile.IsEmpty)
+            //        {
+            //            if (IsLeftEdge(block, ref x, ref y))
+            //            {
+            //                cellSelection.X = left = x;
+            //                cellSelection.Width = 1;
+            //                if (hasAdjacent = previousBounds.TryGetValue(x, out adjacent))
+            //                    previousBounds.Remove(x);
+            //            }
 
-    //                if (!tile.IsEmpty)
-    //                {
-    //                    if (IsHorizontalEdge(block, ref x, ref y))
-    //                    {
-    //                        if(IsLeftEdge(block, ref x, ref y))
-    //                        {
-    //                            horizontalEdgeBounds.X = originCellBounds.X;
-    //                        }
+            //            if (IsRightEdge(block, ref x, ref y))
+            //            {
+            //                if (hasAdjacent)
+            //                {
+            //                    if (adjacent.Width == cellSelection.Width)
+            //                    {
+            //                        adjacent.Height += 1;
+            //                        currentBounds[left] = adjacent;
+            //                    }
+            //                    else
+            //                    {
+            //                        context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref adjacent, block));
+            //                        currentBounds[left] = cellSelection;
+            //                    }
 
-    //                        if (IsRightEdge(block, ref x, ref y))
-    //                        {
-    //                            var colliderBounds = CalculateColliderBounds(ref horizontalEdgeBounds, ref cellSize);
+            //                    hasAdjacent = false;
+            //                }
+            //                else
+            //                {
+            //                    currentBounds[left] = cellSelection;
+            //                }
 
-    //                            //TODO: Change this so works for other tile grid types
-    //                            var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
+            //            }
+            //            else
+            //            {
+            //                cellSelection.Width += 1;
+            //            }
 
-    //                            AddTileColliderShape(shape);
-    //                            horizontalEdgeBounds.X = originCellBounds.X;
-    //                            horizontalEdgeBounds.Width = originCellBounds.Width;
-    //                        }
-    //                        else
-    //                        {
-    //                            horizontalEdgeBounds.Width += cellSize.X;
-    //                        }                            
-    //                    }
-    //                    else if (IsVerticalEdge(block, ref x, ref y))
-    //                    {                           
+            //        }
 
-    //                        RectangleF verticalEdgeBounds;
+            //    }
+            //    cellSelection.Y += 1;
+            //    cellSelection.X = left = 0;
+            //    cellSelection.Width = 1;
 
-    //                        if (verticals.TryGetValue(x, out verticalEdgeBounds))
-    //                        {
-    //                            verticalEdgeBounds.Height += cellSize.Y;
-    //                        }
-    //                        else
-    //                        {
-    //                            verticalEdgeBounds = originCellBounds;
+            //    foreach (var item in previousBounds.Values)
+            //    {
+            //        var leftOver = item;
+            //        context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref leftOver, block));
+            //    }
 
-    //                        }                             
+            //    Utilities.Swap(ref previousBounds, ref currentBounds);
 
-    //                        if (IsBottomEdge(block, ref x, ref below))
-    //                        {
-    //                            var colliderBounds = CalculateColliderBounds(ref verticalEdgeBounds, ref cellSize);
+            //    currentBounds.Clear();
+            //}
 
-    //                            //TODO: Change this so works for other tile grid types
-    //                            var shape = new BoxColliderShapeDesc() { Is2D = true, Size = colliderBounds.Extent, LocalOffset = colliderBounds.Center };
+            //foreach (var item in previousBounds.Values)
+            //{
+            //    var leftOver = item;
+            //    context.AddColliderShape(context.ColliderShapeProvider.CalculateColliderShape(ref leftOver, block));
+            //}
 
-    //                            AddTileColliderShape(shape);
+            //previousBounds.Clear();
 
-    //                            verticals.Remove(x);
-    //                        }
-    //                        else
-    //                        {
+        }
 
-    //                            verticals[x] = verticalEdgeBounds;
-    //                        }
-                            
-    //                    }
-    //                }
 
-    //                originCellBounds.X += cellSize.X;
-    //            }
-    //            //increment
-    //            originCellBounds.Y -= cellSize.Y;
-                
-    //            // reset
-    //            originCellBounds.X = originX;
-    //            horizontalEdgeBounds = originCellBounds;
-    //        }
-    //    }
-
-        
-    //}
+    }
 }
