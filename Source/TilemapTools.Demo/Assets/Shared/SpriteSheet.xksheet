@@ -1,0 +1,17 @@
+!SpriteSheet
+Id: 31ece953-af5e-4d04-9906-71a016b4f58b
+SerializedVersion: {Xenko: 1.5.0-alpha01}
+Tags: []
+Type: Sprite2D
+ColorKeyColor: {R: 255, G: 0, B: 255, A: 255}
+Format: Color32Bits
+Packing: {}
+Sprites:
+    1a6e02939059d319acb87edc549dbbfd:
+        Source: ../../Resources/Capsule.png
+        Name: Idle-001
+        TextureRegion: {X: 0, Y: 0, Width: 64, Height: 64}
+        PixelsPerUnit: 32.0
+        Center: {X: 0.0, Y: 0.0}
+        Borders: {X: 0.0, Y: 0.0, Z: 0.0, W: 0.0}
+        BorderColor: {R: 0, G: 0, B: 0, A: 0}

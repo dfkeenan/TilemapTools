@@ -125,6 +125,7 @@ namespace TilemapTools.Demo
                     var physicsShapeBuilder = new MinimumPhysicsShapeBuilder();
 
                     var staticColliderComponent = new StaticColliderComponent();
+                    staticColliderComponent.Restitution = 0;
                     physicsShapeBuilder.Update(tileMapComponent.Grid, staticColliderComponent);
                     layerEntity.Add(staticColliderComponent);
                 }
