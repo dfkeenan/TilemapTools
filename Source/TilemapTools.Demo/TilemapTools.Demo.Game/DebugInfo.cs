@@ -22,6 +22,11 @@ namespace TilemapTools.Demo
 
         public TimeSpan MessageTimeOut = TimeSpan.FromSeconds(2);
 
+        public Entity Camera;
+
+        private ScriptComponent oldCameraController;
+        private DebugCameraController debugCameraController;
+
         private readonly Queue<string> messages = new Queue<string>();
 
         private TimeSpan elapsedTime = TimeSpan.Zero;
@@ -123,6 +128,15 @@ namespace TilemapTools.Demo
             {
                 simulation.ColliderShapesRendering = false;
             }
+
+            if (Camera != null)
+            {
+                debugCameraController?.Cancel();
+                Camera.Remove<DebugCameraController>();
+
+                if (oldCameraController != null)
+                    Camera.Add(oldCameraController);
+            }
         }
 
         private void EnableDebugInfo()
@@ -132,7 +146,13 @@ namespace TilemapTools.Demo
             {
                 simulation.ColliderShapesRendering = true;
             }
-            
+            if (Camera != null)
+            {
+                oldCameraController = Camera.Get<FollowCamera>();
+                oldCameraController.Cancel();
+                Camera.Remove<FollowCamera>();
+                Camera.Add(debugCameraController = debugCameraController ?? new Demo.DebugCameraController());
+            }            
         }
     }
 }

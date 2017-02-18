@@ -11,27 +11,78 @@ namespace TilemapTools.Xenko.Graphics
         private readonly Dictionary<Texture, List<Tuple<Rectangle, RectangleF>>> tilesByTexture = new Dictionary<Texture, List<Tuple<Rectangle, RectangleF>>>();
         private readonly VertexDeclaration layout;
 
-        protected TileMeshDrawBuilder(VertexDeclaration layout, int indiciesPerTile)
+        private short[] indexBuffer;
+        private TVertex[] vertexBuffer;
+
+        protected TileMeshDrawBuilder(VertexDeclaration layout, int indiciesPerTile, int verticiesPerTile)
         {
             if (layout == null)
                 throw new ArgumentNullException(nameof(layout));
 
             this.layout = layout;
             IndiciesPerTile = indiciesPerTile;
+            VerticiesPerTile = verticiesPerTile;
         }
 
         public int IndiciesPerTile { get; }
+        public int VerticiesPerTile { get; }
 
         public void Clear()
         {
             tilesByTexture.Clear();
         }
 
-        public abstract TileMeshDraw Build(TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsDevice graphicsDevice, ref Vector2 cellSize);
-        
+        public virtual TileMeshDraw Build(TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsContext graphicsContext, ref Vector2 cellSize)
+        {
+            TileMeshDraw tileMeshDraw = null;
+
+            AggregateTiles(block, tileDefinitionSource, graphicsContext, ref cellSize);
+            CompleteBuild(graphicsContext, block.BlockSize * block.BlockSize, ref tileMeshDraw);
+
+            return tileMeshDraw;
+        }
+
+        public virtual void Recycle(TileMeshDraw tileMeshDraw, TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsContext graphicsContext, ref Vector2 cellSize)
+        {
+            AggregateTiles(block, tileDefinitionSource, graphicsContext, ref cellSize);
+            CompleteBuild(graphicsContext, block.BlockSize * block.BlockSize, ref tileMeshDraw);
+        }
+
+        protected virtual void AggregateTiles(TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsContext graphicsContext, ref Vector2 cellSize)
+        {
+            var blockSize = block.BlockSize;
+            RectangleF outRect = new RectangleF();
+            outRect.X = block.Origin.X;
+            outRect.Y = block.Origin.Y;
+            outRect.Width = cellSize.X;
+            outRect.Height = cellSize.Y;
+            for (int y = 0; y < blockSize; y++)
+            {
+                for (int x = 0; x < blockSize; x++)
+                {
+                    var tileRef = block.GetCell(x, y);
+
+                    if (!tileRef.IsEmpty)
+                    {
+                        var tile = tileDefinitionSource.GetTile(ref tileRef);
+
+                        if (tile != null && tile.CanCacheTileMesh)
+                        {
+                            var frame = tile[0];
+
+                            Add(frame.Texture, ref frame.TextureRegion, ref outRect);
+                        }
+                    }
+                    outRect.X += cellSize.X;
+                }
+                outRect.X = block.Origin.X;
+                outRect.Y -= cellSize.Y;
+            }
+        }
+
         protected abstract void BuildIndicies(short[] indices, int tileCount);        
 
-        protected abstract void BuildTile(List<TVertex> vertices, int textureWidth, int textureHeight, Rectangle source, RectangleF dest);
+        protected abstract void BuildTile(TVertex[] vertices, ref int vertexIndex, int textureWidth, int textureHeight, Rectangle source, RectangleF dest);
 
         protected abstract TVertex CreateVertex(Vector2 source, Vector2 destination, Vector2 size);
 
@@ -53,14 +104,30 @@ namespace TilemapTools.Xenko.Graphics
         }
 
 
-        protected virtual TileMeshDraw CompleteBuild(GraphicsDevice graphicsDevice)
+        protected virtual void CompleteBuild(GraphicsContext graphicsContext, int maxTileCount, ref TileMeshDraw tileMeshDraw)
         {
-            var vertices = new List<TVertex>();
-            short[] indices = null;
-            var ranges = new List<TileMeshDraw.DrawRange>();
+            var indexBufferLength = maxTileCount * IndiciesPerTile;
+            bool updateIndexBuffer = false;
+
+            if (indexBuffer == null || indexBuffer.Length != indexBufferLength)
+            {
+                indexBuffer = new short[indexBufferLength];
+                BuildIndicies(indexBuffer, maxTileCount);
+                updateIndexBuffer = true;
+            }
+
+
+            var vertexBufferLength = maxTileCount * IndiciesPerTile;
+
+            if (vertexBuffer == null || vertexBuffer.Length != vertexBufferLength)
+                vertexBuffer = new TVertex[vertexBufferLength];
+
+            tileMeshDraw?.Ranges.Clear();
+                       
+            var ranges = tileMeshDraw?.Ranges ?? new List<TileMeshDraw.DrawRange>();
 
             int tileCount = 0;
-
+            int vertexIndex = 0;
             foreach (var tileGroup in tilesByTexture)
             {
                 var textureWidth = tileGroup.Key.Width;
@@ -71,7 +138,7 @@ namespace TilemapTools.Xenko.Graphics
                     var source = tile.Item1;
                     var dest = tile.Item2;
 
-                    BuildTile(vertices, textureWidth, textureHeight, source, dest);
+                    BuildTile(vertexBuffer, ref vertexIndex, textureWidth, textureHeight, source, dest);
                 }
 
                 ranges.Add(new TileMeshDraw.DrawRange
@@ -84,13 +151,20 @@ namespace TilemapTools.Xenko.Graphics
                 tileCount += tileGroup.Value.Count;
             }
 
-            indices = new short[tileCount * IndiciesPerTile];
+            if(tileMeshDraw == null)
+            {
 
-            BuildIndicies(indices, tileCount);
+                tileMeshDraw = TileMeshDraw.New<TVertex>(graphicsContext.CommandList.GraphicsDevice, layout, vertexBuffer, indexBuffer, ranges);
+            }
+            else
+            {                
+                tileMeshDraw.UpdateVertexBUffer(graphicsContext, vertexBuffer);
 
-            var tileMeshDraw = TileMeshDraw.New<TVertex>(graphicsDevice, layout, vertices.ToArray(), indices.ToArray(), ranges);
-            tilesByTexture.Clear();
-            return tileMeshDraw;
+                if (updateIndexBuffer)
+                    tileMeshDraw.UpdateIndexBuffer(graphicsContext, indexBuffer);
+            }
+            
+            tilesByTexture.Clear();            
         }
     }
 }

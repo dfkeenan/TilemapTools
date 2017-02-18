@@ -6,14 +6,8 @@ using SiliconStudio.Xenko.Input;
 
 namespace TilemapTools.Demo
 {
-    /// <summary>
-    /// A script that allows to move and rotate an entity through keyboard, mouse and touch input to provide basic camera navigation.
-    /// </summary>
-    /// <remarks>
-    /// The entity can be moved using W, A, S, D, Q and E, arrow keys or dragging/scaling using multi-touch.
-    /// Rotation is achieved using the Numpad, the mouse while holding the right mouse button, or dragging using single-touch.
-    /// </remarks>
-    public class BasicCameraController : SyncScript
+    
+    public class DebugCameraController : SyncScript
     {
         private const float MaximumPitch = MathUtil.PiOverTwo * 0.99f;
 

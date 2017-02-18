@@ -9,22 +9,22 @@ namespace TilemapTools.Xenko.Graphics
         where TVertex : struct, IVertex
     {
         
-        public OrthogonalTileMeshDrawBuilder(VertexDeclaration layout):base(layout, 6)
+        public OrthogonalTileMeshDrawBuilder(VertexDeclaration layout):base(layout, 6, 4)
         {
 
         }
 
-        protected override void BuildTile(List<TVertex> vertices, int textureWidth, int textureHeight, Rectangle source, RectangleF dest)
+        protected override void BuildTile(TVertex[] vertices, ref int vertexIndex, int textureWidth, int textureHeight, Rectangle source, RectangleF dest)
         {
             var left = dest.X;
             var top = dest.Y;
             var right = dest.X + dest.Width;
             var bottom = dest.Y + dest.Height * -1;
 
-            vertices.Add(CreateVertex(source.TopLeft, new Vector2(left, top), new Vector2(textureWidth, textureHeight)));
-            vertices.Add(CreateVertex(source.BottomLeft, new Vector2(left, bottom), new Vector2(textureWidth, textureHeight)));
-            vertices.Add(CreateVertex(source.TopRight, new Vector2(right, top), new Vector2(textureWidth, textureHeight)));
-            vertices.Add(CreateVertex(source.BottomRight, new Vector2(right, bottom), new Vector2(textureWidth, textureHeight)));
+            vertices[vertexIndex++] = CreateVertex(source.TopLeft, new Vector2(left, top), new Vector2(textureWidth, textureHeight));
+            vertices[vertexIndex++] = CreateVertex(source.BottomLeft, new Vector2(left, bottom), new Vector2(textureWidth, textureHeight));
+            vertices[vertexIndex++] = CreateVertex(source.TopRight, new Vector2(right, top), new Vector2(textureWidth, textureHeight));
+            vertices[vertexIndex++] = CreateVertex(source.BottomRight, new Vector2(right, bottom), new Vector2(textureWidth, textureHeight));
         }
 
         protected override void BuildIndicies(short[] indices, int tileCount)
@@ -38,40 +38,6 @@ namespace TilemapTools.Xenko.Graphics
                 indices[i * IndiciesPerTile + 4] = (short)(i * 4 + 1);
                 indices[i * IndiciesPerTile + 5] = (short)(i * 4 + 2);
             }
-        }
-
-        public override TileMeshDraw Build(TileGridBlock block, ITileDefinitionSource tileDefinitionSource, GraphicsDevice graphicsDevice, ref Vector2 cellSize)
-        {
-            var blockSize = block.BlockSize;
-            RectangleF outRect = new RectangleF();
-            outRect.X = block.Origin.X;
-            outRect.Y = block.Origin.Y;
-            outRect.Width = cellSize.X;
-            outRect.Height = cellSize.Y;
-            for (int y = 0; y < blockSize; y++)
-            {
-                for (int x = 0; x < blockSize; x++)
-                {
-                    var tileRef = block.GetCell(x, y);
-
-                    if (!tileRef.IsEmpty)
-                    {
-                        var tile = tileDefinitionSource.GetTile(ref tileRef);
-
-                        if (tile != null && tile.CanCacheTileMesh)
-                        {
-                            var frame = tile[0];
-
-                            Add(frame.Texture, ref frame.TextureRegion, ref outRect);
-                        }
-                    }
-                    outRect.X += cellSize.X;
-                }
-                outRect.X = block.Origin.X;
-                outRect.Y -= cellSize.Y;
-            }
-
-            return CompleteBuild(graphicsDevice);
         }
         
     }

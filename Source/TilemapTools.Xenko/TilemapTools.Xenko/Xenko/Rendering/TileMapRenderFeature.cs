@@ -55,7 +55,7 @@ namespace TilemapTools.Xenko.Rendering
                 {
                     tileMeshRenderer.Begin(context.GraphicsContext, ref world, ref viewProjection);
 
-                    tileMesh.GetTileMeshDraws(visibleBlocks, context.GraphicsDevice, ref cellSize, visibleTileMeshDraws);
+                    tileMesh.GetTileMeshDraws(visibleBlocks, context.GraphicsContext, ref cellSize, visibleTileMeshDraws);
 
                     for (int i = 0; i < visibleTileMeshDraws.Count; i++)
                     {

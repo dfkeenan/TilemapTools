@@ -11,14 +11,20 @@ namespace TilemapTools.Xenko.Graphics
         private ITileMeshDrawBuilder tileMeshDrawBuilder;
         private readonly ITileDefinitionSource tileDefinitionSource;
         private Dictionary<ShortPoint, TileMeshDraw> tileMeshDraws;
-        private Dictionary<ShortPoint, TileMeshDraw> tileMeshDrawsSwap;
+        private Dictionary<ShortPoint, TileMeshDraw> previousTileMeshDraws;
+
+        private readonly List<TileMeshDraw> tileMeshDrawsForRecycle;
+        private readonly List<TileGridBlock> pendingBlocks;
 
         public TileMesh(ITileMeshDrawBuilder tileMeshDrawBuilder, ITileDefinitionSource tileDefinitionSource)
         {
             this.tileMeshDrawBuilder = tileMeshDrawBuilder;
-            tileMeshDraws = new Dictionary<ShortPoint, Graphics.TileMeshDraw>();
-            tileMeshDrawsSwap = new Dictionary<ShortPoint, Graphics.TileMeshDraw>();
             this.tileDefinitionSource = tileDefinitionSource;
+            tileMeshDraws = new Dictionary<ShortPoint, TileMeshDraw>();
+            previousTileMeshDraws = new Dictionary<ShortPoint, TileMeshDraw>();
+            tileMeshDrawsForRecycle = new List<TileMeshDraw>();
+            pendingBlocks = new List<TileGridBlock>();
+
         }
 
         public void Dispose()
@@ -31,13 +37,13 @@ namespace TilemapTools.Xenko.Graphics
             tileMeshDraws.Clear();
         }
 
-        public void GetTileMeshDraws(IList<TileGridBlock> blocks, GraphicsDevice graphicsDevice, ref Vector2 cellSize, IList<TileMeshDraw> tileMeshDrawsOut)
+        public void GetTileMeshDraws(IList<TileGridBlock> blocks, GraphicsContext graphicsContext, ref Vector2 cellSize, IList<TileMeshDraw> tileMeshDrawsOut)
         {
             if (blocks == null)
                 throw new ArgumentNullException(nameof(blocks));
 
-            if (graphicsDevice == null)
-                throw new ArgumentNullException(nameof(graphicsDevice));
+            if (graphicsContext == null)
+                throw new ArgumentNullException(nameof(graphicsContext));
 
             if (tileMeshDrawsOut == null)
                 throw new ArgumentNullException(nameof(tileMeshDrawsOut));
@@ -50,28 +56,70 @@ namespace TilemapTools.Xenko.Graphics
                 var currentBlock = blocks[i];
                 TileMeshDraw tileMeshDraw = null;
 
-                if(currentBlock.VisualyInvalidated || !tileMeshDraws.TryGetValue(currentBlock.Location, out tileMeshDraw))
+                if(previousTileMeshDraws.TryGetValue(currentBlock.Location, out tileMeshDraw))
                 {
-                    tileMeshDraw = tileMeshDrawBuilder.Build(currentBlock, tileDefinitionSource, graphicsDevice, ref cellSize);
+                    if(currentBlock.VisualyInvalidated)
+                    {
+                        pendingBlocks.Add(currentBlock);
+                        tileMeshDrawsForRecycle.Add(tileMeshDraw);
+                    }
+                    else
+                    {
+                        tileMeshDraws[currentBlock.Location] = tileMeshDraw;
+                        tileMeshDrawsOut.Add(tileMeshDraw);
+                    }
+
+                    previousTileMeshDraws.Remove(currentBlock.Location);
                 }
                 else
                 {
-                    tileMeshDraws.Remove(currentBlock.Location);
+                    pendingBlocks.Add(currentBlock);
+                }
+                
+            }
+
+            if(pendingBlocks.Count > 0)
+            {
+                tileMeshDrawsForRecycle.AddRange(previousTileMeshDraws.Values);
+
+                for (int i = 0; i < pendingBlocks.Count; i++)
+                {
+                    var currentBlock = pendingBlocks[i];
+
+                    TileMeshDraw tileMeshDraw = null;
+
+                    if(tileMeshDrawsForRecycle.Count > 0)
+                    {
+                        var lastIndex = tileMeshDrawsForRecycle.Count - 1;
+                        tileMeshDraw = tileMeshDrawsForRecycle[lastIndex];
+                        tileMeshDrawsForRecycle.RemoveAt(lastIndex);
+
+                        //Recycle
+                        tileMeshDrawBuilder.Recycle(tileMeshDraw, currentBlock, tileDefinitionSource, graphicsContext, ref cellSize);
+                    }
+                    else
+                    {
+                        tileMeshDraw = tileMeshDrawBuilder.Build(currentBlock, tileDefinitionSource, graphicsContext, ref cellSize);
+                    }
+
+                    tileMeshDraws[currentBlock.Location] = tileMeshDraw;
+                    currentBlock.VisualyInvalidated = false;
                 }
 
-                tileMeshDrawsSwap[currentBlock.Location] = tileMeshDraw;
-                tileMeshDrawsOut.Add(tileMeshDraw);
-                currentBlock.VisualyInvalidated = false;
             }
 
-            Utilities.Swap(ref tileMeshDraws, ref tileMeshDrawsSwap);
+            pendingBlocks.Clear();
 
-            foreach (var tileMeshDraw in tileMeshDrawsSwap.Values)
+            for (int i = 0; i < tileMeshDrawsForRecycle.Count; i++)
             {
-                tileMeshDraw.Dispose();
+                tileMeshDrawsForRecycle[i].Dispose();
             }
 
-            tileMeshDrawsSwap.Clear();
+            tileMeshDrawsForRecycle.Clear();
+                        
+            Utilities.Swap(ref tileMeshDraws, ref previousTileMeshDraws);
+            tileMeshDraws.Clear();
+
 
         }
 

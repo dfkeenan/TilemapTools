@@ -29,19 +29,19 @@ namespace TilemapTools.Xenko.Graphics
             Ranges?.Clear();
         }
 
-        public static TileMeshDraw New<TVertex>(GraphicsDevice graphicsDevice, VertexDeclaration layout, TVertex[] vertices, int[] indices, IEnumerable<DrawRange> ranges)
+        public static TileMeshDraw New<TVertex>(GraphicsDevice graphicsDevice, VertexDeclaration layout, TVertex[] vertexBuffer, int[] indexBuffer, IEnumerable<DrawRange> ranges)
             where TVertex : struct, IVertex
         {
-            return New<TVertex, int>(graphicsDevice, layout, vertices, indices, ranges);
+            return New<TVertex, int>(graphicsDevice, layout, vertexBuffer, indexBuffer, ranges);
         }
 
-        public static TileMeshDraw New<TVertex>(GraphicsDevice graphicsDevice, VertexDeclaration layout, TVertex[] vertices, short[] indices, IEnumerable<DrawRange> ranges)
+        public static TileMeshDraw New<TVertex>(GraphicsDevice graphicsDevice, VertexDeclaration layout, TVertex[] vertexBuffer, short[] indexBuffer, IEnumerable<DrawRange> ranges)
             where TVertex : struct, IVertex
         {
-            return New<TVertex, short>(graphicsDevice, layout, vertices, indices, ranges);
+            return New<TVertex, short>(graphicsDevice, layout, vertexBuffer, indexBuffer, ranges);
         }
 
-        private static TileMeshDraw New<TVertex,TIndex>(GraphicsDevice graphicsDevice, VertexDeclaration layout, TVertex[] vertices, TIndex[] indices, IEnumerable<DrawRange> ranges)
+        private static TileMeshDraw New<TVertex,TIndex>(GraphicsDevice graphicsDevice, VertexDeclaration layout, TVertex[] vertexBuffer, TIndex[] indexBuffer, IEnumerable<DrawRange> ranges)
             where TVertex : struct, IVertex
             where TIndex : struct
         {
@@ -51,21 +51,21 @@ namespace TilemapTools.Xenko.Graphics
             if (layout == null)
                 throw new ArgumentNullException(nameof(layout));
 
-            if (vertices == null)
-                throw new ArgumentNullException(nameof(vertices));
+            if (vertexBuffer == null)
+                throw new ArgumentNullException(nameof(vertexBuffer));
 
-            if (indices == null)
-                throw new ArgumentNullException(nameof(indices));
+            if (indexBuffer == null)
+                throw new ArgumentNullException(nameof(indexBuffer));
 
             if (ranges == null)
                 throw new ArgumentNullException(nameof(ranges));
 
             var batch = new TileMeshDraw()
             {
-                VertexBuffer = new VertexBufferBinding(Buffer.Vertex.New<TVertex>(graphicsDevice, vertices),layout,vertices.Length),
-                IndexBuffer = new IndexBufferBinding(Buffer.Index.New(graphicsDevice, indices), Utilities.SizeOf<TVertex>() == sizeof(Int32) , indices.Length),
+                VertexBuffer = new VertexBufferBinding(Buffer.Vertex.New<TVertex>(graphicsDevice, vertexBuffer,GraphicsResourceUsage.Dynamic),layout,vertexBuffer.Length),
+                IndexBuffer = new IndexBufferBinding(Buffer.Index.New(graphicsDevice, indexBuffer,GraphicsResourceUsage.Dynamic), Utilities.SizeOf<TIndex>() == sizeof(Int32) , indexBuffer.Length),
                 Ranges = new List<DrawRange>(ranges),
-            };
+            };            
 
             return batch;
         }
@@ -75,6 +75,42 @@ namespace TilemapTools.Xenko.Graphics
             public Texture Texture;
             public int StartIndex;
             public int IndexCount;
+        }
+
+        public void UpdateBuffers<TVertex, TIndex>(GraphicsContext graphicsContext, TVertex[] vertexBuffer, TIndex[] indexBuffer) 
+            where TVertex : struct, IVertex
+            where TIndex : struct
+        {
+            UpdateVertexBUffer(graphicsContext, vertexBuffer);
+            UpdateIndexBuffer(graphicsContext, indexBuffer);
+        }
+
+        public void UpdateIndexBuffer<TIndex>(GraphicsContext graphicsContext, TIndex[] indexBuffer)
+            where TIndex : struct
+        {
+            if (IndexBuffer.Count != indexBuffer.Length)
+            {
+                IndexBuffer.Buffer.Dispose();
+                IndexBuffer = new IndexBufferBinding(Buffer.Index.New<TIndex>(graphicsContext.CommandList.GraphicsDevice, indexBuffer, GraphicsResourceUsage.Dynamic), Utilities.SizeOf<TIndex>() == sizeof(Int32), indexBuffer.Length);
+            }
+            else
+            {
+                IndexBuffer.Buffer.SetData(graphicsContext.CommandList, indexBuffer);
+            }
+        }
+
+        public void UpdateVertexBUffer<TVertex>(GraphicsContext graphicsContext, TVertex[] vertexBuffer) 
+            where TVertex : struct, IVertex
+        {
+            if (VertexBuffer.Stride != vertexBuffer.Length)
+            {
+                VertexBuffer.Buffer.Dispose();
+                VertexBuffer = new VertexBufferBinding(Buffer.Vertex.New<TVertex>(graphicsContext.CommandList.GraphicsDevice, vertexBuffer, GraphicsResourceUsage.Dynamic), VertexBuffer.Declaration, vertexBuffer.Length);
+            }
+            else
+            {
+                VertexBuffer.Buffer.SetData(graphicsContext.CommandList, vertexBuffer);
+            }
         }
     }
 }

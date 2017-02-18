@@ -59,7 +59,7 @@ namespace TilemapTools.Xenko.Graphics
         public void Begin(GraphicsContext graphicsContext, ref Matrix world, ref Matrix viewProjection)
         {
             CheckEndHasBeenCalled();
-
+            
             GraphicsContext = graphicsContext;
             ViewProjectionMatrix = viewProjection;
 
@@ -105,7 +105,7 @@ namespace TilemapTools.Xenko.Graphics
         public void End()
         {
             CheckBeginHasBeenCalled();
-
+            
             hasBegun = false;
         }
 

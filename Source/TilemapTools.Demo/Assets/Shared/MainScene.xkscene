@@ -46,11 +46,12 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    b39b5f3ce9cf73d7aadad6208d216058: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
-                        Id: cef7aa53-02ce-402d-9b4f-3fc17b48a02e
-                        ToggleKey: F12
+                    8e495a95017f5f2babbe67394d211387: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
+                        Id: da6c4bff-9a89-4b15-a953-7c2b45c7c1fe
+                        ToggleKey: Tab
                         DebuggingEnabled: false
                         MessageTimeOut: 0:00:00:02.0000000
+                        Camera: c06b34cf-2a10-4374-ba2f-2222109628ca
                         Font: 3ead5314-08db-4985-b3b5-05fa7480204b:DebugFont
         -   Folder: 
             Entity:
@@ -59,7 +60,7 @@ Hierarchy:
                 Components:
                     ba616eaabfeab0eb3bcacc964217cd94: !TransformComponent
                         Id: 92ed0a61-dc88-4ba8-b80e-b26eb98e3a1f
-                        Position: {X: 0.0, Y: 0.0, Z: 7.03218}
+                        Position: {X: 0.0, Y: 0.0, Z: 20.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
@@ -67,8 +68,8 @@ Hierarchy:
                         Id: 4aec135e-7ff4-4d56-8d67-8aa729cd6e76
                         Projection: Orthographic
                         NearClipPlane: 0.001
-                    f885b6c69f7f51a2840b0d4e4c370b2a: !TilemapTools.Demo.FollowCamera,TilemapTools.Demo.Game
-                        Id: f64d986d-66fb-493b-b7e6-79c7426f691a
+                    85941b280008520cfd5c318d6edf9d00: !TilemapTools.Demo.FollowCamera,TilemapTools.Demo.Game
+                        Id: c83f8e4e-3277-4cc9-a3f5-627defc09b7a
                         Target: ec4194f5-7c94-4bbe-93e9-fd40800548c0/a856bd61-ef0c-41ff-a74b-075d95be9bc7
                         SpringStiffness: 10.0
                         Dampening: 5.0
@@ -82,8 +83,8 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    d8b1571ca4ef7065e57d3f973c9fde80: !TilemapTools.Demo.TileMapComponentTest,TilemapTools.Demo.Game
-                        Id: 86899007-0f31-4a78-b89e-05befea167aa
+                    af3fc49d6f198789120cd2079c7eebc9: !TilemapTools.Demo.TileMapComponentTest,TilemapTools.Demo.Game
+                        Id: bf150b01-e1f6-43cd-8697-8502008088b1
                         MapName: Maps/Dungeon
         -   Entity:
                 Id: ec4194f5-7c94-4bbe-93e9-fd40800548c0
@@ -115,11 +116,11 @@ Hierarchy:
                                 Radius: 0.45
                                 LocalOffset: {X: 0.0, Y: 0.0, Z: 0.0}
                                 LocalRotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
-                    7938a8447dfe41f698d9c4711ae7ef51: !PhysicsSample.CharacterScript,TilemapTools.Demo.Game
-                        Id: 87e2760c-cb29-4ce5-b287-3b2f53b45d8f
                     dacdc1780f952f409927fbb6855ba9ff: !SpriteComponent
                         Id: 412b786e-77b1-4747-8a35-93ccf882fa85
                         SpriteProvider: !SpriteFromSheet
                             Sheet: 31ece953-af5e-4d04-9906-71a016b4f58b:SpriteSheet
                         Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
                         Sampler: PointClamp
+                    97f88fe847daf45f8b422813e3a014f9: !PhysicsSample.CharacterScript,TilemapTools.Demo.Game
+                        Id: 41f1be21-6ca2-42e5-9feb-e04e5fe4da91
