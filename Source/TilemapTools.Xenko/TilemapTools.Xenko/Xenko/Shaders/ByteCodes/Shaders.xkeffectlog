@@ -1,0 +1,7 @@
+---
+!EffectCompileRequest
+EffectName: TileMeshRendererShader
+UsedParameters:
+    EffectSourceCode.Enable: true
+    EffectSourceCode.Namespace: TilemapTools.Xenko.Graphics
+

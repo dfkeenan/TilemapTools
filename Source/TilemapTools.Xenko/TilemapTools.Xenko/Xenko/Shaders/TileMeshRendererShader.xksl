@@ -1,0 +1,8 @@
+﻿using SiliconStudio.Xenko.Rendering;
+
+namespace TilemapTools.Xenko.Graphics 
+{
+    shader TileMeshRendererShader : TileMeshBase
+    {
+    };
+}

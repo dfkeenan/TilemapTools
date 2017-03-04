@@ -46,8 +46,8 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    8e495a95017f5f2babbe67394d211387: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
-                        Id: da6c4bff-9a89-4b15-a953-7c2b45c7c1fe
+                    225a7df37493823387a72a0b75197dbc: !TilemapTools.Demo.DebugInfo,TilemapTools.Demo.Game
+                        Id: 4fd17704-ebff-4916-84cf-0cc2d22a0cd3
                         ToggleKey: Tab
                         DebuggingEnabled: false
                         MessageTimeOut: 0:00:00:02.0000000
@@ -68,8 +68,8 @@ Hierarchy:
                         Id: 4aec135e-7ff4-4d56-8d67-8aa729cd6e76
                         Projection: Orthographic
                         NearClipPlane: 0.001
-                    85941b280008520cfd5c318d6edf9d00: !TilemapTools.Demo.FollowCamera,TilemapTools.Demo.Game
-                        Id: c83f8e4e-3277-4cc9-a3f5-627defc09b7a
+                    30e9ff97dc2bf218e77a64e508993a00: !TilemapTools.Demo.FollowCamera,TilemapTools.Demo.Game
+                        Id: df450b51-0d5f-4e2a-9893-ec649d89038b
                         Target: ec4194f5-7c94-4bbe-93e9-fd40800548c0/a856bd61-ef0c-41ff-a74b-075d95be9bc7
                         SpringStiffness: 10.0
                         Dampening: 5.0
@@ -83,8 +83,8 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    af3fc49d6f198789120cd2079c7eebc9: !TilemapTools.Demo.TileMapComponentTest,TilemapTools.Demo.Game
-                        Id: bf150b01-e1f6-43cd-8697-8502008088b1
+                    edd1d2cfca2b095773f7c1305be1fabe: !TilemapTools.Demo.TileMapComponentTest,TilemapTools.Demo.Game
+                        Id: c83573a0-6e76-41d6-90a9-93e1762c5c67
                         MapName: Maps/Dungeon
         -   Entity:
                 Id: ec4194f5-7c94-4bbe-93e9-fd40800548c0
@@ -102,7 +102,7 @@ Hierarchy:
                         Restitution: 0.0
                         Friction: 0.0
                         RollingFriction: 0.0
-                        CcdMotionThreshold: 0.0
+                        CcdMotionThreshold: 22.0
                         CcdSweptSphereRadius: 0.0
                         StepHeight: 0.5
                         FallSpeed: 20.0
@@ -122,5 +122,5 @@ Hierarchy:
                             Sheet: 31ece953-af5e-4d04-9906-71a016b4f58b:SpriteSheet
                         Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
                         Sampler: PointClamp
-                    97f88fe847daf45f8b422813e3a014f9: !PhysicsSample.CharacterScript,TilemapTools.Demo.Game
-                        Id: 41f1be21-6ca2-42e5-9feb-e04e5fe4da91
+                    8f873352b2dce34f732e2fb1dc15775b: !PhysicsSample.CharacterScript,TilemapTools.Demo.Game
+                        Id: 91d2e41e-cc05-4508-bb93-d6bea02d6338

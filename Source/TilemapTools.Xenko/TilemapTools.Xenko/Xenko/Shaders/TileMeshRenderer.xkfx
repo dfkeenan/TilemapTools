@@ -1,0 +1,11 @@
+﻿using SiliconStudio.Xenko.Rendering;
+using TilemapTools.Xenko.Graphics;
+
+namespace TilemapTools.Xenko.Rendering
+{
+    partial effect TileMeshRenderer
+    {
+        using params TileMeshBaseKeys; 
+        mixin TileMeshRendererShader;
+    };
+}

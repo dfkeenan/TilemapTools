@@ -112,6 +112,8 @@ namespace TilemapTools.Demo
                     if (y == 0) y--;
                 }
 
+                tileMapComponent.Color = new Color4(1, 1, 1, 1) * (float)layer.Opacity; //PreMulitplied Alpha
+
                 var layerEntity = new Entity()
                 {
                     tileMapComponent,

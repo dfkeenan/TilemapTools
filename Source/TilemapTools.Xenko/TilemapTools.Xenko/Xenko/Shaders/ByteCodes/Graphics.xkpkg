@@ -1,0 +1,22 @@
+﻿!Package
+Id: 57461FEE-1843-446C-8835-B83DD1C2C267
+Meta:
+    Name: TilemapTools.Xenko
+    Version: 1.0.0
+    Dependencies:
+        -   Name: Xenko
+            Version: 1.9.0-beta
+            RootAssets: []
+Profiles:
+    -   Name: Shared
+        AssetFolders:
+            - Path: ..
+            - Path: .
+    -   Name: Windows
+        Platform: Windows
+    -   Name: Windows-OpenGL
+        Platform: Windows
+    -   Name: Windows-OpenGLES
+        Platform: Windows
+    -   Name: Windows-Vulkan
+        Platform: Windows

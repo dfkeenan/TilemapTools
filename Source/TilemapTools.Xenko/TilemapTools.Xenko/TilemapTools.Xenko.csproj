@@ -27,7 +27,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE;SILICONSTUDIO_PLATFORM_WINDOWS;SILICONSTUDIO_PLATFORM_WINDOWS_DESKTOP</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;SILICONSTUDIO_PLATFORM_WINDOWS;SILICONSTUDIO_PLATFORM_WINDOWS_DESKTOP;SILICONSTUDIO_XENKO_GRAPHICS_API_DIRECT3D</DefineConstants>
     <SiliconStudioPlatform>Windows</SiliconStudioPlatform>
     <SiliconStudioBuildProfile>Windows</SiliconStudioBuildProfile>
     <OutputPath>..\Bin\Windows\Debug\</OutputPath>
@@ -106,12 +106,29 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="project.json" />
+    <None Include="Xenko\Shaders\ByteCodes\CompileShaders.cmd" />
+    <None Include="Xenko\Shaders\ByteCodes\Graphics.xkpkg" />
+    <None Include="Xenko\Shaders\ByteCodes\Shaders.xkeffectlog" />
+    <None Include="Xenko\Shaders\TileMeshBase.xksl">
+      <Generator>XenkoShaderKeyGenerator</Generator>
+      <LastGenOutput>TileMeshBase.cs</LastGenOutput>
+    </None>
+    <None Include="Xenko\Shaders\TileMeshRenderer.xkfx">
+      <Generator>XenkoShaderKeyGenerator</Generator>
+      <LastGenOutput>TileMeshRenderer.cs</LastGenOutput>
+    </None>
+    <None Include="Xenko\Shaders\TileMeshRendererShader.xksl">
+      <Generator>XenkoShaderKeyGenerator</Generator>
+      <LastGenOutput>TileMeshRendererShader.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(SolutionDir)\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xenko\Shaders\ByteCodes\TileMeshRendererShader.bytecode.Direct3D11.Level_10_0.cs" />
+    <Compile Include="Xenko\Graphics\TileMeshRendererShader.cs" />
     <Compile Include="Xenko\Physics\IColliderShapeProvider.cs" />
     <Compile Include="Xenko\Physics\MinimumPhysicsShapeBuilder.cs" />
     <Compile Include="Xenko\Physics\PerEdgePhysicsShapeBuilder.cs" />
@@ -131,6 +148,24 @@
     <Compile Include="Xenko\Rendering\TileMapPipelinePlugin.cs" />
     <Compile Include="Xenko\Rendering\TileMapRendererProcessor.cs" />
     <Compile Include="Xenko\Rendering\TileMapRenderFeature.cs" />
+    <Compile Include="Xenko\Shaders\TileMeshBase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>TileMeshBase.xksl</DependentUpon>
+    </Compile>
+    <Compile Include="Xenko\Shaders\TileMeshRenderer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>TileMeshRenderer.xkfx</DependentUpon>
+    </Compile>
+    <Compile Include="Xenko\Shaders\TileMeshRendererShader.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>TileMeshRendererShader.xksl</DependentUpon>
+    </Compile>
     <Compile Include="Xenko\Tile.cs" />
     <Compile Include="Xenko\Tiled\XenkoTileLookup.cs" />
     <Compile Include="Xenko\TileFrame.cs" />
@@ -148,6 +183,7 @@
       <Name>TilemapTools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SiliconStudioPackageProps)" Condition="Exists('$(SiliconStudioPackageProps)')" />
   <Import Project="$(SiliconStudioXenkoDir)\Targets\SiliconStudio.Common.targets" Condition="Exists('$(SiliconStudioXenkoDir)\Targets\SiliconStudio.Common.targets')" />

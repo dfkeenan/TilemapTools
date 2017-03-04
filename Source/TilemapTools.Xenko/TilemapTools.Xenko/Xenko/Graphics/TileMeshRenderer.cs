@@ -29,7 +29,7 @@ namespace TilemapTools.Xenko.Graphics
 
             GraphicsDevice = graphicsDevice;
             MutablePipeline = new MutablePipelineState(graphicsDevice);
-            DefaultEffect = new EffectInstance(new Effect(GraphicsDevice, SpriteEffect.Bytecode){ Name = "BatchDefaultEffect"});
+            DefaultEffect = new EffectInstance(new Effect(GraphicsDevice, TileMeshRendererShader.Bytecode){ Name = "BatchDefaultEffect"});
         }
 
         private void PrepareForRendering()
@@ -56,7 +56,7 @@ namespace TilemapTools.Xenko.Graphics
 
         }
 
-        public void Begin(GraphicsContext graphicsContext, ref Matrix world, ref Matrix viewProjection)
+        public void Begin(GraphicsContext graphicsContext, ref Matrix world, ref Matrix viewProjection, ref Color4 color)
         {
             CheckEndHasBeenCalled();
             
@@ -80,8 +80,8 @@ namespace TilemapTools.Xenko.Graphics
 
             
             var wvp = world * ViewProjectionMatrix;
-            Parameters.Set(SpriteBaseKeys.MatrixTransform, wvp);
-
+            Parameters.Set(TileMeshBaseKeys.MatrixTransform, wvp);
+            Parameters.Set(TileMeshBaseKeys.Color, color);
             hasBegun = true;
         }
         

@@ -1,0 +1,39 @@
+﻿using SiliconStudio.Xenko.Rendering;
+
+namespace TilemapTools.Xenko.Graphics 
+{
+    shader TileMeshBase : ShaderBase, Texturing
+    {
+        // -------------------------------------
+        // streams
+        // -------------------------------------
+        stage stream float4 Position : POSITION;
+
+        cbuffer PerDraw
+        {
+            // Color used to tint the tilemap
+            [Color]
+            stage float4 Color = float4(1,1,1,1);
+            stage float4x4 MatrixTransform;
+        }
+        
+        // -------------------------------------
+        // VertexShader
+        // -------------------------------------
+        stage override void VSMain()
+        {
+            streams.ShadingPosition = mul(streams.Position, MatrixTransform);
+        }
+
+        // Shading of the tile mesh
+        stage override void PSMain()
+        {
+            streams.ColorTarget = Shading();
+        }
+
+        stage float4 Shading()
+        {
+            return Texture0.Sample(Sampler, streams.TexCoord) * Color;
+        }
+    };
+}

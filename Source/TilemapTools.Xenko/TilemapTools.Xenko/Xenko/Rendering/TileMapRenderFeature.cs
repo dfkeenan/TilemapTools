@@ -46,6 +46,7 @@ namespace TilemapTools.Xenko.Rendering
                 if (grid == null || tileMesh == null)
                     continue;
 
+                var color = tileMapComp.Color;
                 var world = renderTileMap.TransformComponent.WorldMatrix;
                 var viewProjection = renderView.ViewProjection;
                 var cellSize = grid.CellSize;
@@ -53,7 +54,7 @@ namespace TilemapTools.Xenko.Rendering
                 grid.FindVisibleGridBlocks(ref world, ref viewProjection, visibleBlocks);
                 if (visibleBlocks.Count > 0)
                 {
-                    tileMeshRenderer.Begin(context.GraphicsContext, ref world, ref viewProjection);
+                    tileMeshRenderer.Begin(context.GraphicsContext, ref world, ref viewProjection, ref color);
 
                     tileMesh.GetTileMeshDraws(visibleBlocks, context.GraphicsContext, ref cellSize, visibleTileMeshDraws);
 
