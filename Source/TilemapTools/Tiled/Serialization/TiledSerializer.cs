@@ -416,7 +416,7 @@ namespace TilemapTools.Tiled.Serialization
                             {
                                 Name = (string)prop.Attribute("name"),
                                 Type = ParseEnum<PropertyType>(typeValue),
-                                Value = (string)prop.Attribute("value"),
+                                RawValue = (string)prop.Attribute("value"),
                             };
 
                 foreach (var prop in props)

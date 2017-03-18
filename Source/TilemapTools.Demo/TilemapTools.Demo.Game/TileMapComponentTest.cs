@@ -122,8 +122,7 @@ namespace TilemapTools.Demo
 
                 layerEntity.Transform.Position = new Vector3(0, 0, layerDepth);
 
-                //TODO: Improve properties usability
-                if (layer.Properties.ContainsKey("CollisionEnabled"))
+                if (layer.Property<bool>("CollisionEnabled"))
                 {
                     var physicsShapeBuilder = new MinimumPhysicsShapeBuilder();
 
