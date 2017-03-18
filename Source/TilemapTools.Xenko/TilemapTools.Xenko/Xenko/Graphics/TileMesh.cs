@@ -94,9 +94,11 @@ namespace TilemapTools.Xenko.Graphics
             }
 
             tileMeshDrawsForRecycle.AddRange(previousTileMeshDraws.Values);
+            previousTileMeshDraws.Clear();
 
             if (pendingBlocks.Count > 0)
             {                
+
                 for (int i = 0; i < pendingBlocks.Count; i++)
                 {
                     var currentBlock = pendingBlocks[i];
@@ -125,7 +127,6 @@ namespace TilemapTools.Xenko.Graphics
             pendingBlocks.Clear();
                         
             Utilities.Swap(ref tileMeshDraws, ref previousTileMeshDraws);
-            tileMeshDraws.Clear();
 
             //Clean up unused recyclables.
             while (tileMeshDrawsForRecycle.Count > 4) //Should be configurable
