@@ -6,6 +6,7 @@ using SiliconStudio.Xenko.Engine.Design;
 using TilemapTools.Xenko.Rendering;
 using TilemapTools.Xenko.Physics;
 using System.ComponentModel;
+using System;
 
 namespace TilemapTools.Xenko
 {
@@ -70,10 +71,27 @@ namespace TilemapTools.Xenko
         public TileMapSampler Sampler { get; set; } = TileMapSampler.PointClamp;
 
 
+        [DataMember(50)]
+        [DefaultValue(0)]
+        [Display("Frames Per Second")]
+        public int FramesPerSecond
+        {
+            get
+            {
+                return framesPerSecond;
+            }
+            set
+            {
+                framesPerSecond = value;
+                frameTime = framesPerSecond == 0 ? TimeSpan.Zero : TimeSpan.FromMilliseconds(1000 / framesPerSecond);
+                isAnimated = Math.Abs(framesPerSecond) > 1;
+            }
+        }
+
         /// <summary>
         /// The grid of the tile map.
         /// </summary>
-        [DataMember(50)]
+        [DataMember(60)]
         [Display("Grid")]
         [NotNull]
         [DataMemberCustomSerializer]
@@ -83,9 +101,38 @@ namespace TilemapTools.Xenko
         /// <summary>
         /// The physics shape builder of the tile map.
         /// </summary>
-        [DataMember(60)]
+        [DataMember(70)]
         [Display("Physics Shape Builder")]
         [DataMemberCustomSerializer]
         public PhysicsShapeBuilder PhysicsShapeBuilder { get; set; }
+
+
+        private int framesPerSecond = 0;
+        private TimeSpan frameTime = TimeSpan.Zero;
+        private TimeSpan elapsedTime = TimeSpan.Zero;
+        private bool isAnimated = false;
+
+        internal bool IsAnimated
+        {
+            get
+            {
+                return isAnimated;
+            }
+        }
+
+        internal void UpdateAnimatedTiles(ref TimeSpan elapsedTime)
+        {
+            if (!isAnimated) return;
+
+            this.elapsedTime += elapsedTime;
+
+            if(this.elapsedTime >= frameTime)
+            {
+                //Increment tileFrames;
+
+
+                this.elapsedTime -= frameTime;
+            }
+        }
     }
 }

@@ -24,8 +24,8 @@ namespace TilemapTools.Demo
 
         public Entity Camera;
 
-        private ScriptComponent oldCameraController;
-        private DebugCameraController debugCameraController;
+        private FollowCamera FollowCameraController;
+        private DebugCameraController DebugCameraController;
 
         private readonly Queue<string> messages = new Queue<string>();
 
@@ -45,6 +45,9 @@ namespace TilemapTools.Demo
             var scene = SceneSystem.SceneInstance.Scene;
             var compositor = ((SceneGraphicsCompositorLayers)scene.Settings.GraphicsCompositor);
             compositor.Master.Renderers.Add(delegateRenderer = new SceneDelegateRenderer(Draw));
+
+            DebugCameraController = DebugCameraController ?? Camera?.Get<DebugCameraController>();
+            FollowCameraController = FollowCameraController ?? Camera?.Get<FollowCamera>();
         }        
 
         public override void Update()
@@ -128,14 +131,16 @@ namespace TilemapTools.Demo
             {
                 simulation.ColliderShapesRendering = false;
             }
-
-            if (Camera != null)
+            
+            if (DebugCameraController != null)
             {
-                debugCameraController?.Cancel();
-                Camera.Remove<DebugCameraController>();
+                DebugCameraController.Reset();
+                DebugCameraController.IsEnabled = false;
+            }
 
-                if (oldCameraController != null)
-                    Camera.Add(oldCameraController);
+            if (FollowCameraController != null)
+            {
+                FollowCameraController.IsEnabled = true;
             }
         }
 
@@ -146,13 +151,18 @@ namespace TilemapTools.Demo
             {
                 simulation.ColliderShapesRendering = true;
             }
-            if (Camera != null)
+
+            if (FollowCameraController != null)
             {
-                oldCameraController = Camera.Get<FollowCamera>();
-                oldCameraController.Cancel();
-                Camera.Remove<FollowCamera>();
-                Camera.Add(debugCameraController = debugCameraController ?? new Demo.DebugCameraController());
-            }            
+                FollowCameraController.IsEnabled = false;
+            }
+
+            if (DebugCameraController != null)
+            {
+                DebugCameraController.Reset();
+                DebugCameraController.IsEnabled = true;
+            }
+            
         }
     }
 }

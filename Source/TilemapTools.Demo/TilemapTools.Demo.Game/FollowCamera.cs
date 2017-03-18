@@ -17,7 +17,7 @@ namespace TilemapTools.Demo
 
         public float Dampening = 5;
 
-
+        public bool IsEnabled = true;
 
         private Vector3 oldPosition;
         private Vector3 relativeVelocity;
@@ -28,7 +28,8 @@ namespace TilemapTools.Demo
 
             while (Game.IsRunning)
             {
-                if(Target != null)
+
+                if(IsEnabled && Target != null)
                 {
                     var displacement = Target.Position - this.Entity.Transform.Position;
                     displacement.Z = 0;

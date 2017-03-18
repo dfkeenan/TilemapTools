@@ -35,6 +35,19 @@ namespace TilemapTools.Xenko.Graphics
                 item.Dispose();
             }
             tileMeshDraws.Clear();
+
+            foreach (var item in previousTileMeshDraws.Values)
+            {
+                item.Dispose();
+            }
+            previousTileMeshDraws.Clear();
+
+            for (int i = 0; i < tileMeshDrawsForRecycle.Count; i++)
+            {
+                tileMeshDrawsForRecycle[i].Dispose();
+            }
+
+            tileMeshDrawsForRecycle.Clear();
         }
 
         public void GetTileMeshDraws(IList<TileGridBlock> blocks, GraphicsContext graphicsContext, ref Vector2 cellSize, IList<TileMeshDraw> tileMeshDrawsOut)
@@ -50,6 +63,8 @@ namespace TilemapTools.Xenko.Graphics
 
 
             if (tileMeshDrawBuilder == null) return;
+
+
 
             for (int i = 0; i < blocks.Count; i++)
             {
@@ -78,10 +93,10 @@ namespace TilemapTools.Xenko.Graphics
                 
             }
 
-            if(pendingBlocks.Count > 0)
-            {
-                tileMeshDrawsForRecycle.AddRange(previousTileMeshDraws.Values);
+            tileMeshDrawsForRecycle.AddRange(previousTileMeshDraws.Values);
 
+            if (pendingBlocks.Count > 0)
+            {                
                 for (int i = 0; i < pendingBlocks.Count; i++)
                 {
                     var currentBlock = pendingBlocks[i];
@@ -94,7 +109,6 @@ namespace TilemapTools.Xenko.Graphics
                         tileMeshDraw = tileMeshDrawsForRecycle[lastIndex];
                         tileMeshDrawsForRecycle.RemoveAt(lastIndex);
 
-                        //Recycle
                         tileMeshDrawBuilder.Recycle(tileMeshDraw, currentBlock, tileDefinitionSource, graphicsContext, ref cellSize);
                     }
                     else
@@ -109,20 +123,18 @@ namespace TilemapTools.Xenko.Graphics
             }
 
             pendingBlocks.Clear();
-
-            for (int i = 0; i < tileMeshDrawsForRecycle.Count; i++)
-            {
-                tileMeshDrawsForRecycle[i].Dispose();
-            }
-
-            tileMeshDrawsForRecycle.Clear();
                         
             Utilities.Swap(ref tileMeshDraws, ref previousTileMeshDraws);
             tileMeshDraws.Clear();
 
-
-        }
-
-        
+            //Clean up unused recyclables.
+            while (tileMeshDrawsForRecycle.Count > 4) //Should be configurable
+            {
+                var lastIndex = tileMeshDrawsForRecycle.Count - 1;
+                tileMeshDrawsForRecycle[lastIndex].Dispose();
+                tileMeshDrawsForRecycle.RemoveAt(lastIndex);
+            }
+                        
+        }        
     }
 }

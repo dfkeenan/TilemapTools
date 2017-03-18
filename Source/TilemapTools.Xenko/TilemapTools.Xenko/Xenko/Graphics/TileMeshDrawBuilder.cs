@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SiliconStudio.Core;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Graphics;
 
@@ -158,13 +159,93 @@ namespace TilemapTools.Xenko.Graphics
             }
             else
             {                
-                tileMeshDraw.UpdateVertexBUffer(graphicsContext, vertexBuffer);
+                tileMeshDraw.VertexBuffer = UpdateVertexBuffer(graphicsContext, tileMeshDraw.VertexBuffer);
 
                 if (updateIndexBuffer)
-                    tileMeshDraw.UpdateIndexBuffer(graphicsContext, indexBuffer);
+                    tileMeshDraw.IndexBuffer = UpdateIndexBuffer(graphicsContext, tileMeshDraw.IndexBuffer);
             }
             
             tilesByTexture.Clear();            
+        }
+
+        
+        private IndexBufferBinding UpdateIndexBuffer(GraphicsContext graphicsContext, IndexBufferBinding indexBufferBinding)
+        {
+            int indexStructSize = Utilities.SizeOf<short>();
+
+            if (indexBufferBinding.Count != indexBuffer.Length)
+            {
+                indexBufferBinding.Buffer.Dispose();
+                return new IndexBufferBinding(SiliconStudio.Xenko.Graphics.Buffer.Index.New<short>(graphicsContext.CommandList.GraphicsDevice, indexBuffer, GraphicsResourceUsage.Dynamic), indexStructSize == sizeof(Int32), indexBuffer.Length);
+            }
+            else
+            {
+
+                //var mappedIndices = graphicsContext.CommandList.MapSubresource(indexBufferBinding.Buffer, 0, MapMode.Write, false, 0, indexStructSize * indexBufferBinding.Count);
+                //var indexPointer = mappedIndices.DataBox.DataPointer;
+
+                //for (int i = 0; i < indexBuffer.Length; i++)
+                //{
+
+
+                //    indexPointer += indexStructSize;
+                //}
+
+                //graphicsContext.CommandList.UnmapSubresource(mappedIndices);
+                indexBufferBinding.Buffer.SetData(graphicsContext.CommandList, indexBuffer);
+
+                return indexBufferBinding;
+            }
+        }
+
+        public VertexBufferBinding UpdateVertexBuffer(GraphicsContext graphicsContext, VertexBufferBinding vertexBufferBinding)
+        {
+            if (vertexBufferBinding.Count != vertexBuffer.Length)
+            {
+                vertexBufferBinding.Buffer.Dispose();
+                return new VertexBufferBinding(SiliconStudio.Xenko.Graphics.Buffer.Vertex.New<TVertex>(graphicsContext.CommandList.GraphicsDevice, vertexBuffer, GraphicsResourceUsage.Dynamic), vertexBufferBinding.Declaration, vertexBuffer.Length);
+            }
+            else
+            {
+                //var vertexStructSize = vertexBufferBinding.Declaration.CalculateSize();
+
+                //var mappedVertices = graphicsContext.CommandList.MapSubresource(vertexBufferBinding.Buffer, 0, MapMode.WriteNoOverwrite, false, 0, vertexStructSize * vertexBufferBinding.Count);
+                //var vertexPointer = mappedVertices.DataBox.DataPointer;
+
+                //for (int i = 0; i < vertexBuffer.Length; i++)
+                //{
+                //    UpdateVertex(vertexPointer, vertexBuffer[i]);
+
+                //    vertexPointer += vertexStructSize;
+                //}
+
+                //graphicsContext.CommandList.UnmapSubresource(mappedVertices);
+
+                vertexBufferBinding.Buffer.SetData(graphicsContext.CommandList, vertexBuffer);
+                return vertexBufferBinding;
+            }
+        }
+
+        protected abstract unsafe void UpdateVertex(IntPtr bufferPointer, TVertex vertex);
+    }
+
+    public abstract class TileMeshDrawBuilder : TileMeshDrawBuilder<VertexPositionTexture>
+    {
+        public TileMeshDrawBuilder(int indiciesPerTile, int verticiesPerTile) : base(VertexPositionTexture.Layout, indiciesPerTile, verticiesPerTile)
+        {
+        }
+
+        protected override VertexPositionTexture CreateVertex(Vector2 source, Vector2 destination, Vector2 size)
+        {
+            return new VertexPositionTexture(new Vector3(destination, 0f), (source / size));
+        }
+
+        protected override unsafe void UpdateVertex(IntPtr bufferPointer, VertexPositionTexture vertex)
+        {
+            var pointer = (VertexPositionTexture*)bufferPointer;
+
+            pointer->Position = vertex.Position;
+            pointer->TextureCoordinate = vertex.TextureCoordinate;
         }
     }
 }

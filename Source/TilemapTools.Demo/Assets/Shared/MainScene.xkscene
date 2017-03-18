@@ -72,6 +72,16 @@ Hierarchy:
                         Target: ec4194f5-7c94-4bbe-93e9-fd40800548c0/a856bd61-ef0c-41ff-a74b-075d95be9bc7
                         SpringStiffness: 10.0
                         Dampening: 5.0
+                        IsEnabled: true
+                    9f9f3c0c0e3ad5d3b23ea513564a3505: !TilemapTools.Demo.DebugCameraController,TilemapTools.Demo.Game
+                        Id: bc2ce7d5-80d6-4e6a-8cd7-7d81fad6f5be
+                        IsEnabled: false
+                        KeyboardMovementSpeed: {X: 5.0, Y: 5.0, Z: 5.0}
+                        TouchMovementSpeed: {X: 40.0, Y: 40.0, Z: 20.0}
+                        SpeedFactor: 5.0
+                        KeyboardRotationSpeed: {X: 3.0, Y: 3.0}
+                        MouseRotationSpeed: {X: 90.0, Y: 60.0}
+                        TouchRotationSpeed: {X: 60.0, Y: 40.0}
         -   Entity:
                 Id: d0a9db31-7143-444c-a7f1-f44b351cc3b1
                 Name: Map

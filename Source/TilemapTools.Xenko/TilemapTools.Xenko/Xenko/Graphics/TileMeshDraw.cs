@@ -9,8 +9,8 @@ namespace TilemapTools.Xenko.Graphics
 {
     public class TileMeshDraw : IDisposable
     {
-        public VertexBufferBinding VertexBuffer { get; private set;}
-        public IndexBufferBinding IndexBuffer { get; private set; }
+        public VertexBufferBinding VertexBuffer { get; internal set;}
+        public IndexBufferBinding IndexBuffer { get; internal set; }
         public List<DrawRange> Ranges { get; private set; }
 
         private TileMeshDraw()
@@ -20,10 +20,10 @@ namespace TilemapTools.Xenko.Graphics
 
         public void Dispose()
         {
-            VertexBuffer.Buffer.Dispose();
+            VertexBuffer.Buffer?.Dispose();
             VertexBuffer = default(VertexBufferBinding);
 
-            IndexBuffer.Buffer.Dispose();
+            IndexBuffer?.Buffer?.Dispose();
             IndexBuffer = default(IndexBufferBinding);
 
             Ranges?.Clear();
@@ -62,8 +62,8 @@ namespace TilemapTools.Xenko.Graphics
 
             var batch = new TileMeshDraw()
             {
-                VertexBuffer = new VertexBufferBinding(Buffer.Vertex.New<TVertex>(graphicsDevice, vertexBuffer,GraphicsResourceUsage.Dynamic),layout,vertexBuffer.Length),
-                IndexBuffer = new IndexBufferBinding(Buffer.Index.New(graphicsDevice, indexBuffer,GraphicsResourceUsage.Dynamic), Utilities.SizeOf<TIndex>() == sizeof(Int32) , indexBuffer.Length),
+                VertexBuffer = new VertexBufferBinding(Buffer.Vertex.New<TVertex>(graphicsDevice, vertexBuffer,GraphicsResourceUsage.Default),layout,vertexBuffer.Length),
+                IndexBuffer = new IndexBufferBinding(Buffer.Index.New(graphicsDevice, indexBuffer,GraphicsResourceUsage.Default), Utilities.SizeOf<TIndex>() == sizeof(Int32) , indexBuffer.Length),
                 Ranges = new List<DrawRange>(ranges),
             };            
 
@@ -75,42 +75,6 @@ namespace TilemapTools.Xenko.Graphics
             public Texture Texture;
             public int StartIndex;
             public int IndexCount;
-        }
-
-        public void UpdateBuffers<TVertex, TIndex>(GraphicsContext graphicsContext, TVertex[] vertexBuffer, TIndex[] indexBuffer) 
-            where TVertex : struct, IVertex
-            where TIndex : struct
-        {
-            UpdateVertexBUffer(graphicsContext, vertexBuffer);
-            UpdateIndexBuffer(graphicsContext, indexBuffer);
-        }
-
-        public void UpdateIndexBuffer<TIndex>(GraphicsContext graphicsContext, TIndex[] indexBuffer)
-            where TIndex : struct
-        {
-            if (IndexBuffer.Count != indexBuffer.Length)
-            {
-                IndexBuffer.Buffer.Dispose();
-                IndexBuffer = new IndexBufferBinding(Buffer.Index.New<TIndex>(graphicsContext.CommandList.GraphicsDevice, indexBuffer, GraphicsResourceUsage.Dynamic), Utilities.SizeOf<TIndex>() == sizeof(Int32), indexBuffer.Length);
-            }
-            else
-            {
-                IndexBuffer.Buffer.SetData(graphicsContext.CommandList, indexBuffer);
-            }
-        }
-
-        public void UpdateVertexBUffer<TVertex>(GraphicsContext graphicsContext, TVertex[] vertexBuffer) 
-            where TVertex : struct, IVertex
-        {
-            if (VertexBuffer.Stride != vertexBuffer.Length)
-            {
-                VertexBuffer.Buffer.Dispose();
-                VertexBuffer = new VertexBufferBinding(Buffer.Vertex.New<TVertex>(graphicsContext.CommandList.GraphicsDevice, vertexBuffer, GraphicsResourceUsage.Dynamic), VertexBuffer.Declaration, vertexBuffer.Length);
-            }
-            else
-            {
-                VertexBuffer.Buffer.SetData(graphicsContext.CommandList, vertexBuffer);
-            }
         }
     }
 }

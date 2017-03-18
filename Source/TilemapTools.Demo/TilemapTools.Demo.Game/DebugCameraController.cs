@@ -28,6 +28,8 @@ namespace TilemapTools.Demo
 
         public Vector2 TouchRotationSpeed { get; set; } = new Vector2(60.0f, 40.0f);
 
+        public bool IsEnabled = true;
+
         public override void Start()
         {
             base.Start();
@@ -45,6 +47,8 @@ namespace TilemapTools.Demo
 
         public override void Update()
         {
+            if (!IsEnabled) return;
+
             ProcessInput();
             UpdateTransform();
         }
@@ -76,9 +80,7 @@ namespace TilemapTools.Demo
                        
             if(Input.IsKeyPressed(Keys.R))
             {
-                yaw = 0;
-                pitch = 0;
-                Entity.Transform.Rotation = Quaternion.Identity;               
+                Reset();
             }
 
             // Alternative translation speed
@@ -118,6 +120,13 @@ namespace TilemapTools.Demo
             {
                 Input.UnlockMousePosition();
             }
+        }
+
+        internal void Reset()
+        {
+            yaw = 0;
+            pitch = 0;
+            Entity.Transform.Rotation = Quaternion.Identity;
         }
 
         private void UpdateTransform()

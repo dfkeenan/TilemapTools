@@ -5,16 +5,15 @@ using SiliconStudio.Xenko.Graphics;
 
 namespace TilemapTools.Xenko.Graphics
 {
-    public abstract class OrthogonalTileMeshDrawBuilder<TVertex> : TileMeshDrawBuilder<TVertex>, IDisposable
-        where TVertex : struct, IVertex
+    public class OrthogonalTileMeshDrawBuilder : TileMeshDrawBuilder
     {
         
-        public OrthogonalTileMeshDrawBuilder(VertexDeclaration layout):base(layout, 6, 4)
+        public OrthogonalTileMeshDrawBuilder():base(6, 4)
         {
 
         }
 
-        protected override void BuildTile(TVertex[] vertices, ref int vertexIndex, int textureWidth, int textureHeight, Rectangle source, RectangleF dest)
+        protected override void BuildTile(VertexPositionTexture[] vertices, ref int vertexIndex, int textureWidth, int textureHeight, Rectangle source, RectangleF dest)
         {
             var left = dest.X;
             var top = dest.Y;
@@ -40,18 +39,5 @@ namespace TilemapTools.Xenko.Graphics
             }
         }
         
-    }
-
-    public class OrthogonalTileMeshDrawBuilder : OrthogonalTileMeshDrawBuilder<VertexPositionTexture>
-    {
-        public OrthogonalTileMeshDrawBuilder() : base(VertexPositionTexture.Layout)
-        {
-
-        }
-
-        protected override VertexPositionTexture CreateVertex(Vector2 source, Vector2 destination, Vector2 size)
-        {
-            return new VertexPositionTexture(new Vector3(destination, 0f), (source / size));
-        }
-    }
+    }   
 }

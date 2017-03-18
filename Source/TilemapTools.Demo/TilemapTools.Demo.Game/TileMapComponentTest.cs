@@ -113,7 +113,7 @@ namespace TilemapTools.Demo
                 }
 
                 tileMapComponent.Color = new Color4(1, 1, 1, 1) * (float)layer.Opacity; //PreMulitplied Alpha
-
+                tileMapComponent.FramesPerSecond = layer.Property<int>("FramesPerSecond");
 
                 var layerEntity = new Entity()
                 {
