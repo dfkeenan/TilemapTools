@@ -9,7 +9,7 @@ Meta:
     RootNamespace: TilemapTools.Demo
     Dependencies:
         -   Name: Xenko
-            Version: 1.9.2-beta
+            Version: 1.10.0-alpha01
             RootAssets: []
 LocalDependencies:
     - fb29ae63-5448-4151-a0db-49a1a90f4efa:../TilemapTools.Xenko/TilemapTools.Xenko.xkpkg

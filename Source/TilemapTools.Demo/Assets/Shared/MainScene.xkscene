@@ -53,8 +53,7 @@ Hierarchy:
                         MessageTimeOut: 0:00:00:02.0000000
                         Camera: c06b34cf-2a10-4374-ba2f-2222109628ca
                         Font: 3ead5314-08db-4985-b3b5-05fa7480204b:DebugFont
-        -   Folder: 
-            Entity:
+        -   Entity:
                 Id: c06b34cf-2a10-4374-ba2f-2222109628ca
                 Name: Camera
                 Components:

@@ -15,9 +15,9 @@ The primary goal of this project is to provide tile map support for the [Xenko](
 
 #### Versions/Branches
 
-| Branch | Version |  Status  | .NET Standard | Xenko |
-| ------ |:-------:| :-------:| :------------:| :---: |
-| master | 0.1.0   | unstable | 1.4           | 1.9.0 |
+| Branch | Version |  Status  | .NET Standard | Xenko  |
+| ------ |:-------:| :-------:| :------------:| :----: |
+| master | 0.1.0   | unstable | 1.4           | 1.10.0 |
 
 
 ### TilemapTools
