@@ -5,6 +5,7 @@ using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Engine.Design;
 using TilemapTools.Xenko.Rendering;
 using TilemapTools.Xenko.Physics;
+using System.ComponentModel;
 
 namespace TilemapTools.Xenko
 {
@@ -17,7 +18,21 @@ namespace TilemapTools.Xenko
     [DefaultEntityComponentRenderer(typeof(TileMapRendererProcessor))]
     [ComponentOrder(50000)]
     public sealed class TileMapComponent: ActivableEntityComponent
-    {      
+    {
+
+        public enum TileMapSampler
+        {
+            [Display("Point (Nearest)")]
+            PointClamp,
+
+            [Display("Linear")]
+            LinearClamp,
+
+            [Display("Anisotropic")]
+            AnisotropicClamp,
+
+        }
+
         /// <summary>
         /// The color to apply on the tile map.
         /// </summary>
@@ -26,9 +41,39 @@ namespace TilemapTools.Xenko
         public Color4 Color = Color4.White;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the tile map is a pre-multiplied alpha (default is true).
+        /// </summary>
+        /// <value><c>true</c> if the texture is pre-multiplied by alpha; otherwise, <c>false</c>.</value>
+        [DataMember(20)]
+        [DefaultValue(true)]
+        public bool PremultipliedAlpha { get; set; } = true;
+
+        /// <summary>
+        /// Ignore the depth of other elements of the scene when rendering the tile map by disabling the depth test.
+        /// </summary>
+        /// <userdoc>Ignore the depth of other elements of the scene when rendering the tile map. When checked, the tile map is always put on top of previous elements.</userdoc>
+        [DataMember(30)]
+        [DefaultValue(false)]
+        [Display("Ignore Depth")]
+        public bool IgnoreDepth;
+
+
+        /// <summary>
+        /// Specifies the texture sampling method to be used for this tile map
+        /// </summary>
+        /// <userdoc>
+        /// Specifies the texture sampling method to be used for this tile map
+        /// </userdoc>
+        [DataMember(40)]
+        [DefaultValue(TileMapSampler.PointClamp)]
+        [Display("Sampler")]
+        public TileMapSampler Sampler { get; set; } = TileMapSampler.PointClamp;
+
+
+        /// <summary>
         /// The grid of the tile map.
         /// </summary>
-        [DataMember(20)]
+        [DataMember(50)]
         [Display("Grid")]
         [NotNull]
         [DataMemberCustomSerializer]
@@ -38,7 +83,7 @@ namespace TilemapTools.Xenko
         /// <summary>
         /// The physics shape builder of the tile map.
         /// </summary>
-        [DataMember(30)]
+        [DataMember(60)]
         [Display("Physics Shape Builder")]
         [DataMemberCustomSerializer]
         public PhysicsShapeBuilder PhysicsShapeBuilder { get; set; }

@@ -20,6 +20,11 @@ namespace TilemapTools.Xenko.Graphics
         private Matrix ViewProjectionMatrix;
         private bool hasBegun;
 
+        private BlendStateDescription? BlendState;
+        private RasterizerStateDescription? RasterizerState;
+        private SamplerState SamplerState;
+        private DepthStencilStateDescription? DepthStencilState;
+
         public ParameterCollection Parameters => Effect.Parameters;
 
         public TileMeshRenderer(GraphicsDevice graphicsDevice)
@@ -34,7 +39,7 @@ namespace TilemapTools.Xenko.Graphics
 
         private void PrepareForRendering()
         {
-            var localSamplerState =  GraphicsDevice.SamplerStates.PointClamp;
+            var localSamplerState = SamplerState ?? GraphicsDevice.SamplerStates.PointClamp;
 
             // Sets the sampler state of the effect
             if (samplerUpdater.HasValue)
@@ -46,9 +51,9 @@ namespace TilemapTools.Xenko.Graphics
             MutablePipeline.State.SetDefaults();
             MutablePipeline.State.RootSignature = Effect.RootSignature;
             MutablePipeline.State.EffectBytecode = Effect.Effect.Bytecode;
-            MutablePipeline.State.BlendState = BlendStates.AlphaBlend;
-            MutablePipeline.State.DepthStencilState = DepthStencilStates.Default;
-            MutablePipeline.State.RasterizerState = RasterizerStates.CullBack;
+            MutablePipeline.State.BlendState = BlendState ?? BlendStates.AlphaBlend;
+            MutablePipeline.State.DepthStencilState = DepthStencilState ?? DepthStencilStates.Default;
+            MutablePipeline.State.RasterizerState = RasterizerState ?? RasterizerStates.CullBack;
             MutablePipeline.State.InputElements = VertexPositionTexture.Layout.CreateInputElements();
             MutablePipeline.State.PrimitiveType = PrimitiveType.TriangleList;
             MutablePipeline.State.Output.CaptureState(GraphicsContext.CommandList);
@@ -56,12 +61,18 @@ namespace TilemapTools.Xenko.Graphics
 
         }
 
-        public void Begin(GraphicsContext graphicsContext, ref Matrix world, ref Matrix viewProjection, ref Color4 color)
+        public void Begin(GraphicsContext graphicsContext, Matrix world,Matrix viewProjection, Color4 color, BlendStateDescription? blendState = null, SamplerState samplerState = null, DepthStencilStateDescription? depthStencilState = null, RasterizerStateDescription? rasterizerState = null)
         {
             CheckEndHasBeenCalled();
             
             GraphicsContext = graphicsContext;
             ViewProjectionMatrix = viewProjection;
+
+            BlendState = blendState;
+            SamplerState = samplerState;
+            DepthStencilState = depthStencilState;
+            RasterizerState = rasterizerState;
+
 
             textureUpdater = null;
             if (Effect.Effect.HasParameter(TexturingKeys.Texture0))

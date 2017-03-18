@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Rendering;
 using TilemapTools.Xenko.Graphics;
 
@@ -51,10 +52,27 @@ namespace TilemapTools.Xenko.Rendering
                 var viewProjection = renderView.ViewProjection;
                 var cellSize = grid.CellSize;
 
+                BlendStateDescription? blendState = tileMapComp.PremultipliedAlpha ? BlendStates.AlphaBlend : BlendStates.NonPremultiplied;
+                SamplerState samplerState = context.GraphicsDevice.SamplerStates.PointClamp;
+                if (tileMapComp.Sampler != TileMapComponent.TileMapSampler.PointClamp)
+                {
+                    switch (tileMapComp.Sampler)
+                    {
+                        case TileMapComponent.TileMapSampler.LinearClamp:
+                            samplerState = context.GraphicsDevice.SamplerStates.LinearClamp;
+                            break;
+                        case TileMapComponent.TileMapSampler.AnisotropicClamp:
+                            samplerState = context.GraphicsDevice.SamplerStates.AnisotropicClamp;
+                            break;
+                    }
+                }
+
+                DepthStencilStateDescription? depthStencilState = tileMapComp.IgnoreDepth ? DepthStencilStates.None : DepthStencilStates.Default;
+
                 grid.FindVisibleGridBlocks(ref world, ref viewProjection, visibleBlocks);
                 if (visibleBlocks.Count > 0)
                 {
-                    tileMeshRenderer.Begin(context.GraphicsContext, ref world, ref viewProjection, ref color);
+                    tileMeshRenderer.Begin(context.GraphicsContext, world, viewProjection, color,blendState,samplerState,depthStencilState,RasterizerStates.CullNone);
 
                     tileMesh.GetTileMeshDraws(visibleBlocks, context.GraphicsContext, ref cellSize, visibleTileMeshDraws);
 
