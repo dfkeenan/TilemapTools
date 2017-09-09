@@ -22,7 +22,7 @@ namespace TilemapTools.Xenko.Offline
     /// </summary>
     public class TileSetAssetCompiler : AssetCompilerBase
     {
-        protected override void Compile(AssetCompilerContext context, AssetItem assetItem, string targetUrlInStorage, AssetCompilerResult result)
+        protected override void Prepare(AssetCompilerContext context, AssetItem assetItem, string targetUrlInStorage, AssetCompilerResult result)
         {
             throw new NotImplementedException();
         }

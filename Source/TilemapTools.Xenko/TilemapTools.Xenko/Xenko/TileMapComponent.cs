@@ -106,6 +106,8 @@ namespace TilemapTools.Xenko
         [DataMemberCustomSerializer]
         public PhysicsShapeBuilder PhysicsShapeBuilder { get; set; }
 
+        [DataMember(90)]
+        public RenderGroup RenderGroup { get; set; }
 
         private int framesPerSecond = 0;
         private TimeSpan frameTime = TimeSpan.Zero;

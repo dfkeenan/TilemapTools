@@ -107,6 +107,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="project.json" />
     <None Include="Xenko\Shaders\ByteCodes\CompileShaders.cmd" />
+    <None Include="Xenko\Shaders\ByteCodes\GameSettings.xkgamesettings" />
     <None Include="Xenko\Shaders\ByteCodes\Graphics.xkpkg" />
     <None Include="Xenko\Shaders\ByteCodes\Shaders.xkeffectlog" />
     <None Include="Xenko\Shaders\TileMeshBase.xksl">

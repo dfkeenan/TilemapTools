@@ -24,7 +24,7 @@ namespace TilemapTools.Xenko.Offline
     [AssetFormatVersion(TilemapToolsConfig.PackageName, "0.1.0")]
     [AssetDescription(FileExtension)]
     [AssetContentType(typeof(TileSet))]
-    [AssetCompiler(typeof(TileSetAssetCompiler))]
+   // [AssetCompiler(typeof(TileSetAssetCompiler))]
     [Display(1600, "Tile Set")]
     public class TileSetAsset : Asset
     {
@@ -63,10 +63,10 @@ namespace TilemapTools.Xenko.Offline
         /// <userdoc>
         /// The texture format in which all the images of the set should be converted to.
         /// </userdoc>
-        [DataMember(40)]
-        [DefaultValue(TextureFormat.Compressed)]
-        [Display(category: "Parameters")]
-        public TextureFormat Format { get; set; } = TextureFormat.Compressed;
+        //[DataMember(40)]
+        //[DefaultValue(TextureFormat.Compressed)]
+        //[Display(category: "Parameters")]
+        //public TextureFormat Format { get; set; } = TextureFormat.Compressed;
 
         /// <summary>
         /// Gets or sets the value indicating whether the output texture is encoded into the standard RGB color space.
@@ -75,10 +75,10 @@ namespace TilemapTools.Xenko.Offline
         /// If checked, the input image is considered as an sRGB image. This should be default for colored texture
         /// with a HDR/gamma correct rendering.
         /// </userdoc>
-        [DataMember(45)]
-        [DefaultValue(TextureColorSpace.Auto)]
-        [Display("ColorSpace", "Parameters")]
-        public TextureColorSpace ColorSpace { get; set; } = TextureColorSpace.Auto;
+        //[DataMember(45)]
+        //[DefaultValue(TextureColorSpace.Auto)]
+        //[Display("ColorSpace", "Parameters")]
+        //public TextureColorSpace ColorSpace { get; set; } = TextureColorSpace.Auto;
 
         /// <summary>
         /// Gets or sets the alpha format.

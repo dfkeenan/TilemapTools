@@ -19,12 +19,13 @@ namespace TilemapTools.Xenko.Graphics
             var top = dest.Y;
             var right = dest.X + dest.Width;
             var bottom = dest.Y + dest.Height * -1;
+            var textureSize = new Vector2(textureWidth, textureHeight);
 
-            vertices[vertexIndex++] = CreateVertex(source.TopLeft, new Vector2(left, top), new Vector2(textureWidth, textureHeight));
-            vertices[vertexIndex++] = CreateVertex(source.BottomLeft, new Vector2(left, bottom), new Vector2(textureWidth, textureHeight));
-            vertices[vertexIndex++] = CreateVertex(source.TopRight, new Vector2(right, top), new Vector2(textureWidth, textureHeight));
-            vertices[vertexIndex++] = CreateVertex(source.BottomRight, new Vector2(right, bottom), new Vector2(textureWidth, textureHeight));
-        }
+            vertices[vertexIndex++] = new VertexPositionTexture(new Vector3(left, top, 0f), source.TopLeft / textureSize);
+            vertices[vertexIndex++] = new VertexPositionTexture(new Vector3(left, bottom, 0f), source.BottomLeft / textureSize);
+            vertices[vertexIndex++] = new VertexPositionTexture(new Vector3(right, top, 0f), source.TopRight / textureSize);
+            vertices[vertexIndex++] = new VertexPositionTexture(new Vector3(right, bottom, 0f), source.BottomRight / textureSize);
+        }                                                                                                        
 
         protected override void BuildIndicies(short[] indices, int tileCount)
         {

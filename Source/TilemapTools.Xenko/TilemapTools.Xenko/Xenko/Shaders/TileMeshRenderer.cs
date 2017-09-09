@@ -6,16 +6,8 @@
 // and re-save the associated .xkfx.
 // </auto-generated>
 
-using System;
 using SiliconStudio.Core;
-using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Shaders;
-using SiliconStudio.Core.Mathematics;
-using Buffer = SiliconStudio.Xenko.Graphics.Buffer;
-
-using SiliconStudio.Xenko.Rendering;
-using TilemapTools.Xenko.Graphics;
 namespace TilemapTools.Xenko.Rendering
 {
     internal static partial class ShaderMixins

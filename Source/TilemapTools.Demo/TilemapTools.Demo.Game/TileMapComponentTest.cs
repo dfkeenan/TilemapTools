@@ -6,7 +6,6 @@ using TilemapTools.Tiled;
 using TilemapTools.Tiled.Serialization;
 using TilemapTools.Xenko;
 using TilemapTools.Xenko.Tiled;
-using SiliconStudio.Xenko.Physics;
 using System.Collections.Generic;
 using SiliconStudio.Core.Mathematics;
 using TilemapTools.Xenko.Physics;
@@ -112,6 +111,7 @@ namespace TilemapTools.Demo
                     if (y == 0) y--;
                 }
 
+                //tileMapComponent.Sampler = TileMapComponent.TileMapSampler.LinearClamp;
                 tileMapComponent.Color = new Color4(1, 1, 1, 1) * (float)layer.Opacity; //PreMulitplied Alpha
                 tileMapComponent.FramesPerSecond = layer.Property<int>("FramesPerSecond");
 

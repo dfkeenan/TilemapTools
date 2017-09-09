@@ -85,8 +85,6 @@ namespace TilemapTools.Xenko.Graphics
 
         protected abstract void BuildTile(TVertex[] vertices, ref int vertexIndex, int textureWidth, int textureHeight, Rectangle source, RectangleF dest);
 
-        protected abstract TVertex CreateVertex(Vector2 source, Vector2 destination, Vector2 size);
-
         public void Dispose()
         {
             tilesByTexture.Clear();
@@ -181,7 +179,7 @@ namespace TilemapTools.Xenko.Graphics
             else
             {
 
-                //var mappedIndices = graphicsContext.CommandList.MapSubresource(indexBufferBinding.Buffer, 0, MapMode.Write, false, 0, indexStructSize * indexBufferBinding.Count);
+                //var mappedIndices = graphicsContext.CommandList.MapSubresource(indexBufferBinding.Buffer, 0, MapMode.WriteNoOverwrite, false, 0, indexStructSize * indexBufferBinding.Count);
                 //var indexPointer = mappedIndices.DataBox.DataPointer;
 
                 //for (int i = 0; i < indexBuffer.Length; i++)
@@ -235,11 +233,6 @@ namespace TilemapTools.Xenko.Graphics
         {
         }
 
-        protected override VertexPositionTexture CreateVertex(Vector2 source, Vector2 destination, Vector2 size)
-        {
-            return new VertexPositionTexture(new Vector3(destination, 0f), (source / size));
-        }
-
         protected override unsafe void UpdateVertex(IntPtr bufferPointer, VertexPositionTexture vertex)
         {
             var pointer = (VertexPositionTexture*)bufferPointer;
@@ -248,4 +241,13 @@ namespace TilemapTools.Xenko.Graphics
             pointer->TextureCoordinate = vertex.TextureCoordinate;
         }
     }
+
+    //public struct VertexPositionFrame
+    //{
+    //    public Vector3 Position;
+    //    public short Offset;
+    //    public short FrameCount;
+    //}
+
+
 }

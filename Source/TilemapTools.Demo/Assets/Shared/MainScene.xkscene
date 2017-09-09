@@ -1,34 +1,9 @@
 !SceneAsset
 Id: 2b7bab49-40c9-4730-a950-660ebcaa0e54
-SerializedVersion: {Xenko: 1.9.0-beta06}
+SerializedVersion: {Xenko: 2.0.0.0}
 Tags: []
-SceneSettings:
-    Id: a9295c0d-6f62-4bbc-8190-d0ab9898e8b3
-    GraphicsCompositor: !SceneGraphicsCompositorLayers
-        Cameras:
-            6ea142336361e908afdcbe79f925c276:
-                Name: null
-                Camera: c06b34cf-2a10-4374-ba2f-2222109628ca/4aec135e-7ff4-4d56-8d67-8aa729cd6e76
-        Layers: {}
-        Master:
-            Name: SceneGraphicsLayer
-            Output: !MasterRenderFrameProvider {}
-            Renderers:
-                688d8f7b08b44e9043c39f76c31e4ba2: !ClearRenderFrameRenderer
-                    Color: {R: 0.392156869, G: 0.58431375, B: 0.929411769, A: 1.0}
-                    Output: !CurrentRenderFrameProvider {}
-                f0175fc2c75ecf2bcde02819593a3328: !SceneCameraRenderer
-                    Mode: !CameraRendererModeForward {}
-                    Camera:
-                        Index: 0
-                    Output: !CurrentRenderFrameProvider {}
-                    Viewport: {X: 0.0, Y: 0.0, Width: 100.0, Height: 100.0}
-                    ForceAspectRatio: false
-    EditorSettings:
-        GridColor: {R: 0.7058824, G: 0.7058824, B: 0.7058824}
-        SceneUnit: 1.0
-        Mode: !SceneEditorGraphicsModeLDRSettings
-            BackgroundColor: {R: 0.196078435, G: 0.196078435, B: 0.196078435}
+ChildrenIds: []
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
 Hierarchy:
     RootPartIds:
         - d0a9db31-7143-444c-a7f1-f44b351cc3b1
@@ -51,7 +26,7 @@ Hierarchy:
                         ToggleKey: Tab
                         DebuggingEnabled: false
                         MessageTimeOut: 0:00:00:02.0000000
-                        Camera: c06b34cf-2a10-4374-ba2f-2222109628ca
+                        Camera: ref!! c06b34cf-2a10-4374-ba2f-2222109628ca
                         Font: 3ead5314-08db-4985-b3b5-05fa7480204b:DebugFont
         -   Entity:
                 Id: c06b34cf-2a10-4374-ba2f-2222109628ca
@@ -65,11 +40,13 @@ Hierarchy:
                         Children: {}
                     cb6d668b4a63a39bfaa214e24adfe602: !CameraComponent
                         Id: 4aec135e-7ff4-4d56-8d67-8aa729cd6e76
+                        Name: null
                         Projection: Orthographic
                         NearClipPlane: 0.001
+                        Slot: d0a6bf72-b3cd-4bd4-94ca-69952999d537
                     30e9ff97dc2bf218e77a64e508993a00: !TilemapTools.Demo.FollowCamera,TilemapTools.Demo.Game
                         Id: df450b51-0d5f-4e2a-9893-ec649d89038b
-                        Target: ec4194f5-7c94-4bbe-93e9-fd40800548c0/a856bd61-ef0c-41ff-a74b-075d95be9bc7
+                        Target: ref!! a856bd61-ef0c-41ff-a74b-075d95be9bc7
                         SpringStiffness: 10.0
                         Dampening: 5.0
                         IsEnabled: true

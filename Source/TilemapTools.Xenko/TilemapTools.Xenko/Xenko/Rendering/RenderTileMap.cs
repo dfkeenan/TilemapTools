@@ -4,7 +4,7 @@ using TilemapTools.Xenko.Graphics;
 
 namespace TilemapTools.Xenko.Rendering
 {
-    [DefaultPipelinePlugin(typeof(TileMapPipelinePlugin))]
+    //[DefaultPipelinePlugin(typeof(TileMapPipelinePlugin))]
     public class RenderTileMap : RenderObject
     {
         public TileMapComponent TileMapComponent;

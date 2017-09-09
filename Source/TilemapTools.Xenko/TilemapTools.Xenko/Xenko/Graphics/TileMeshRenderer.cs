@@ -110,6 +110,7 @@ namespace TilemapTools.Xenko.Graphics
                 Effect.Apply(GraphicsContext);
 
                 GraphicsContext.CommandList.DrawIndexed(range.IndexCount, range.StartIndex);
+                
             }
         }
 

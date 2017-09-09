@@ -6,15 +6,8 @@
 // and re-save the associated .xkfx.
 // </auto-generated>
 
-using System;
-using SiliconStudio.Core;
 using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Graphics;
-using SiliconStudio.Xenko.Shaders;
 using SiliconStudio.Core.Mathematics;
-using Buffer = SiliconStudio.Xenko.Graphics.Buffer;
-
-using SiliconStudio.Xenko.Rendering;
 namespace TilemapTools.Xenko.Graphics
 {
     public static partial class TileMeshBaseKeys

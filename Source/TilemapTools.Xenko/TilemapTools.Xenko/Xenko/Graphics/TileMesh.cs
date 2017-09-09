@@ -92,10 +92,7 @@ namespace TilemapTools.Xenko.Graphics
                 }
                 
             }
-
-            tileMeshDrawsForRecycle.AddRange(previousTileMeshDraws.Values);
-            previousTileMeshDraws.Clear();
-
+            
             if (pendingBlocks.Count > 0)
             {                
 
@@ -124,11 +121,12 @@ namespace TilemapTools.Xenko.Graphics
 
             }
 
-            pendingBlocks.Clear();
-                        
+            tileMeshDrawsForRecycle.AddRange(previousTileMeshDraws.Values);
+            previousTileMeshDraws.Clear();
+            pendingBlocks.Clear();                        
             Utilities.Swap(ref tileMeshDraws, ref previousTileMeshDraws);
 
-            //Clean up unused recyclables.
+            //Reduce cache.
             while (tileMeshDrawsForRecycle.Count > 4) //Should be configurable
             {
                 var lastIndex = tileMeshDrawsForRecycle.Count - 1;

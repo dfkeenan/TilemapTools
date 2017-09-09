@@ -36,7 +36,7 @@ namespace TilemapTools.Xenko.Rendering
                     // For now we only set a center for sorting, but no extent (which disable culling)
                     var world = renderTileMap.TransformComponent.WorldMatrix;
                     renderTileMap.BoundingBox = new BoundingBoxExt { Center = world.TranslationVector };
-                    renderTileMap.RenderGroup = renderTileMap.TileMapComponent.Entity.Group;
+                    renderTileMap.RenderGroup = renderTileMap.TileMapComponent.RenderGroup;
                 }
             }
         }

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SiliconStudio.Core.Mathematics;
 using SiliconStudio.Xenko.Engine;
 using SiliconStudio.Xenko.Graphics;
 using SiliconStudio.Xenko.Input;
 using SiliconStudio.Xenko.Physics;
 using SiliconStudio.Xenko.Rendering;
-using SiliconStudio.Xenko.Rendering.Composers;
+using SiliconStudio.Xenko.Rendering.Compositing;
 
 namespace TilemapTools.Demo
 {
@@ -30,7 +27,7 @@ namespace TilemapTools.Demo
         private readonly Queue<string> messages = new Queue<string>();
 
         private TimeSpan elapsedTime = TimeSpan.Zero;
-        private SceneDelegateRenderer delegateRenderer;
+        private DelegateSceneRenderer delegateRenderer;
         private SpriteBatch spriteBatch;
 
         public SpriteFont Font { get; set; }
@@ -42,13 +39,18 @@ namespace TilemapTools.Demo
             var virtualResolution = new Vector3(GraphicsDevice.Presenter.BackBuffer.Width, GraphicsDevice.Presenter.BackBuffer.Height, 1);
             spriteBatch = new SpriteBatch(GraphicsDevice) { VirtualResolution = virtualResolution };
 
-            var scene = SceneSystem.SceneInstance.Scene;
-            var compositor = ((SceneGraphicsCompositorLayers)scene.Settings.GraphicsCompositor);
-            compositor.Master.Renderers.Add(delegateRenderer = new SceneDelegateRenderer(Draw));
+            GetSceneRendererCollection()?.Children.Add(delegateRenderer = new DelegateSceneRenderer(Draw));
 
             DebugCameraController = DebugCameraController ?? Camera?.Get<DebugCameraController>();
             FollowCameraController = FollowCameraController ?? Camera?.Get<FollowCamera>();
-        }        
+        }
+
+        private SceneRendererCollection GetSceneRendererCollection()
+        {
+            var cameraRenderer = this.SceneSystem.GraphicsCompositor.Game as SceneCameraRenderer;
+            var rendererCollection = cameraRenderer?.Child as SceneRendererCollection;
+            return rendererCollection;
+        }
 
         public override void Update()
         {
@@ -81,7 +83,7 @@ namespace TilemapTools.Demo
         public void WriteMessage(string message) => messages.Enqueue(message);
 
 
-        private void Draw(RenderDrawContext renderContext, RenderFrame frame)
+        private void Draw(RenderDrawContext renderContext)
         {
             if(DebuggingEnabled)
             {
@@ -116,9 +118,9 @@ namespace TilemapTools.Demo
         public override void Cancel()
         {
             // Remove the delegate renderer from the pipeline
-            var scene = SceneSystem.SceneInstance.Scene;
-            var compositor = ((SceneGraphicsCompositorLayers)scene.Settings.GraphicsCompositor);
-            compositor.Master.Renderers.Remove(delegateRenderer);
+
+            SceneRendererCollection rendererCollection = GetSceneRendererCollection();
+            rendererCollection?.Children.Remove(delegateRenderer);
 
             // destroy graphic objects
             spriteBatch.Dispose();
@@ -129,7 +131,7 @@ namespace TilemapTools.Demo
             var simulation = this.GetSimulation();
             if (simulation != null)
             {
-                simulation.ColliderShapesRendering = false;
+                //simulation.ColliderShapesRendering = false;
             }
             
             if (DebugCameraController != null)
@@ -149,7 +151,7 @@ namespace TilemapTools.Demo
             var simulation = this.GetSimulation();
             if(simulation != null)
             {
-                simulation.ColliderShapesRendering = true;
+                //simulation.ColliderShapesRendering = true;
             }
 
             if (FollowCameraController != null)
