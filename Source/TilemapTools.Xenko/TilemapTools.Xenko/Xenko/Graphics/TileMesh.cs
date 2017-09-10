@@ -102,7 +102,7 @@ namespace TilemapTools.Xenko.Graphics
 
                     TileMeshDraw tileMeshDraw = null;
 
-                    if(tileMeshDrawsForRecycle.Count > 0)
+                    if (tileMeshDrawsForRecycle.Count > 0)
                     {
                         var lastIndex = tileMeshDrawsForRecycle.Count - 1;
                         tileMeshDraw = tileMeshDrawsForRecycle[lastIndex];
@@ -117,6 +117,7 @@ namespace TilemapTools.Xenko.Graphics
 
                     tileMeshDraws[currentBlock.Location] = tileMeshDraw;
                     currentBlock.VisualyInvalidated = false;
+                    tileMeshDrawsOut.Add(tileMeshDraw);
                 }
 
             }

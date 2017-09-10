@@ -116,7 +116,7 @@ namespace TilemapTools.Xenko.Graphics
             }
 
 
-            var vertexBufferLength = maxTileCount * IndiciesPerTile;
+            var vertexBufferLength = maxTileCount * VerticiesPerTile;
 
             if (vertexBuffer == null || vertexBuffer.Length != vertexBufferLength)
                 vertexBuffer = new TVertex[vertexBufferLength];
@@ -174,7 +174,7 @@ namespace TilemapTools.Xenko.Graphics
             if (indexBufferBinding.Count != indexBuffer.Length)
             {
                 indexBufferBinding.Buffer.Dispose();
-                return new IndexBufferBinding(SiliconStudio.Xenko.Graphics.Buffer.Index.New<short>(graphicsContext.CommandList.GraphicsDevice, indexBuffer, GraphicsResourceUsage.Dynamic), indexStructSize == sizeof(Int32), indexBuffer.Length);
+                return new IndexBufferBinding(SiliconStudio.Xenko.Graphics.Buffer.Index.New<short>(graphicsContext.CommandList.GraphicsDevice, indexBuffer, GraphicsResourceUsage.Default), indexStructSize == sizeof(Int32), indexBuffer.Length);
             }
             else
             {
@@ -198,12 +198,12 @@ namespace TilemapTools.Xenko.Graphics
 
         public VertexBufferBinding UpdateVertexBuffer(GraphicsContext graphicsContext, VertexBufferBinding vertexBufferBinding)
         {
-            if (vertexBufferBinding.Count != vertexBuffer.Length)
+            //if (vertexBufferBinding.Count != vertexBuffer.Length)
             {
                 vertexBufferBinding.Buffer.Dispose();
-                return new VertexBufferBinding(SiliconStudio.Xenko.Graphics.Buffer.Vertex.New<TVertex>(graphicsContext.CommandList.GraphicsDevice, vertexBuffer, GraphicsResourceUsage.Dynamic), vertexBufferBinding.Declaration, vertexBuffer.Length);
+                return new VertexBufferBinding(SiliconStudio.Xenko.Graphics.Buffer.Vertex.New<TVertex>(graphicsContext.CommandList.GraphicsDevice, vertexBuffer, GraphicsResourceUsage.Default), vertexBufferBinding.Declaration, vertexBuffer.Length);
             }
-            else
+            //else
             {
                 //var vertexStructSize = vertexBufferBinding.Declaration.CalculateSize();
 

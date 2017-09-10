@@ -117,7 +117,7 @@ namespace TilemapTools.Xenko.Graphics
         public void End()
         {
             CheckBeginHasBeenCalled();
-            
+
             hasBegun = false;
         }
 
