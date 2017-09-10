@@ -128,7 +128,7 @@ namespace TilemapTools.Xenko.Graphics
             Utilities.Swap(ref tileMeshDraws, ref previousTileMeshDraws);
 
             //Reduce cache.
-            while (tileMeshDrawsForRecycle.Count > 4) //Should be configurable
+            while (tileMeshDrawsForRecycle.Count > 4) //Should be configurable. Yes it should.
             {
                 var lastIndex = tileMeshDrawsForRecycle.Count - 1;
                 tileMeshDrawsForRecycle[lastIndex].Dispose();
