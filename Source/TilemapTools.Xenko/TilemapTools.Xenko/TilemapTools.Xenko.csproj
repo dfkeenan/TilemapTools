@@ -146,7 +146,6 @@
     <Compile Include="Xenko\OrthogonalTileGrid.cs" />
     <Compile Include="Xenko\Physics\PhysicsShapeBuilderContext.cs" />
     <Compile Include="Xenko\Rendering\RenderTileMap.cs" />
-    <Compile Include="Xenko\Rendering\TileMapPipelinePlugin.cs" />
     <Compile Include="Xenko\Rendering\TileMapRendererProcessor.cs" />
     <Compile Include="Xenko\Rendering\TileMapRenderFeature.cs" />
     <Compile Include="Xenko\Shaders\TileMeshBase.cs">
