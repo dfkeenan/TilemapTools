@@ -71,8 +71,8 @@
     <Compile Include="Tiled\PropertyDictionary.cs" />
     <Compile Include="Tiled\PropertyType.cs" />
     <Compile Include="Tiled\RenderOrder.cs" />
-    <Compile Include="Tiled\Serialization\TiledSerializer.cs" />
-    <Compile Include="Tiled\Serialization\TiledSerializerOptions.cs" />
+    <Compile Include="Tiled\Serialization\TiledDeserializer.cs" />
+    <Compile Include="Tiled\Serialization\TiledDeserializerOptions.cs" />
     <Compile Include="Tiled\Serialization\TileInfo.cs" />
     <Compile Include="Tiled\Serialization\TileLookup.cs" />
     <Compile Include="Tiled\StaggerAxis.cs" />

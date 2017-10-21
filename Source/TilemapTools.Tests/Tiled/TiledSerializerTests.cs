@@ -8,11 +8,11 @@ namespace TilemapTools.Tests.Tiled
     [TestClass]
     public class TiledSerializerTests
     {
-        private TiledSerializerOptions options;
+        private TiledDeserializerOptions options;
 
         public TiledSerializerTests()
         {
-            this.options = new TiledSerializerOptions(File.OpenRead);
+            this.options = new TiledDeserializerOptions(File.OpenRead);
         }
 
         [TestMethod]
@@ -30,13 +30,13 @@ namespace TilemapTools.Tests.Tiled
         public void TiledSerializer_ParseEnum()
         {
 
-            Assert.AreEqual(TiledSerializer.ParseEnum<StaggerAxis>("x"), StaggerAxis.X);
+            Assert.AreEqual(TiledDeserializer.ParseEnum<StaggerAxis>("x"), StaggerAxis.X);
 
-            Assert.AreEqual(TiledSerializer.ParseEnum<StaggerAxis>("X"), StaggerAxis.X);
+            Assert.AreEqual(TiledDeserializer.ParseEnum<StaggerAxis>("X"), StaggerAxis.X);
 
-            Assert.AreEqual(TiledSerializer.ParseEnum<RenderOrder>("right-down"), RenderOrder.RightDown);
+            Assert.AreEqual(TiledDeserializer.ParseEnum<RenderOrder>("right-down"), RenderOrder.RightDown);
 
-            Assert.AreEqual(TiledSerializer.ParseEnum<RenderOrder>(null), RenderOrder.RightDown);
+            Assert.AreEqual(TiledDeserializer.ParseEnum<RenderOrder>(null), RenderOrder.RightDown);
         }
 
     }

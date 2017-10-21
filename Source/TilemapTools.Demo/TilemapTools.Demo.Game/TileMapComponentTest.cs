@@ -39,7 +39,7 @@ namespace TilemapTools.Demo
             if (string.IsNullOrEmpty(MapName) || !Content.Exists(MapName))
                 return;
 
-            var serial = new TiledSerializer(new TiledSerializerOptions((s) => Content.OpenAsStream(s, StreamFlags.None), VirtualFileSystem.Combine));
+            var serial = new TiledDeserializer(new TiledDeserializerOptions((s) => Content.OpenAsStream(s, StreamFlags.None), VirtualFileSystem.Combine));
             var map = serial.LoadTileMap(MapName);
 
             var lookup = new XenkoTileLookup(map, Content);

@@ -8,13 +8,13 @@ using TilemapTools.Mathematics;
 
 namespace TilemapTools.Tiled.Serialization
 {
-    public class TiledSerializer
+    public class TiledDeserializer
     {
-        private readonly TiledSerializerOptions options;
+        private readonly TiledDeserializerOptions options;
 
-        public TiledSerializer(TiledSerializerOptions options = null)
+        public TiledDeserializer(TiledDeserializerOptions options = null)
         {
-            options = options ?? TiledSerializerOptions.Default;
+            options = options ?? TiledDeserializerOptions.Default;
 
             this.options = options.Clone();
         }
